@@ -1,0 +1,1446 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | TechShop</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Google Font (Poppins) -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <!-- Custom Admin CSS -->
+    <link rel="stylesheet" href="styles/styles.css">
+    <!-- Placeholder for Select2/Choices CSS if needed -->
+    <!-- <link rel="stylesheet" href="path/to/select2.min.css"> -->
+</head>
+
+<body>
+<div class="admin-container">
+
+    <!-- ======================= Sidebar Navigation ======================= -->
+    <aside class="admin-sidebar" id="adminSidebar">
+        <div class="sidebar-logo">
+            <a href="#">Tech<span>Shop</span><small>.Admin</small></a>
+        </div>
+        <nav class="sidebar-nav">
+            <ul>
+                <li><a href="#" class="sidebar-link active" data-section="dashboard"><i class="fas fa-tachometer-alt fa-fw"></i><span>Tổng Quan</span></a></li>
+                <li><a href="#" class="sidebar-link" data-section="products"><i class="fas fa-box-open fa-fw"></i><span>Sản Phẩm</span></a></li>
+                <li><a href="#" class="sidebar-link" data-section="orders"><i class="fas fa-file-invoice-dollar fa-fw"></i><span>Đơn Hàng</span></a></li>
+                <li><a href="#" class="sidebar-link" data-section="services"><i class="fas fa-concierge-bell fa-fw"></i><span>Yêu Cầu Dịch Vụ</span></a></li>
+                <li><a href="#" class="sidebar-link" data-section="customers"><i class="fas fa-users fa-fw"></i><span>Khách Hàng</span></a></li>
+                <li><a href="#" class="sidebar-link" data-section="reports"><i class="fas fa-chart-line fa-fw"></i><span>Báo Cáo</span></a></li>
+                <li><a href="#" class="sidebar-link" data-section="content"><i class="fas fa-file-alt fa-fw"></i><span>Nội Dung</span></a></li>
+                <li><a href="#" class="sidebar-link" data-section="settings"><i class="fas fa-cogs fa-fw"></i><span>Cài Đặt</span></a></li>
+                <li><a href="#" class="sidebar-link" data-section="admins"><i class="fas fa-user-shield fa-fw"></i><span>Tài Khoản Admin</span></a></li>
+            </ul>
+        </nav>
+        <!-- Logout Link -->
+        <div class="sidebar-logout">
+            <a href="#" id="adminLogoutLink" class="sidebar-logout-link">
+                <i class="fas fa-sign-out-alt fa-fw"></i>
+                <span>Đăng Xuất</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- ======================= Main Content Area ======================= -->
+    <main class="admin-main" id="adminMainContent">
+        <!-- Header -->
+        <header class="admin-header">
+            <div class="header-left">
+                <button id="sidebarToggle" aria-label="Toggle Sidebar"><i class="fas fa-bars"></i></button>
+                <div class="search-bar">
+                    <input type="text" placeholder="Tìm kiếm Sản phẩm, Đơn hàng..." aria-label="Search">
+                    <button aria-label="Search Button"><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+            <div class="header-right">
+                <!-- Notification Icon -->
+                <div class="notification-icon" id="adminNotificationBell">
+                    <i class="fas fa-bell"></i>
+                    <span class="badge" id="adminNotificationCount">3</span> <!-- Example count -->
+                    <div class="notification-panel" id="adminNotificationPanel">
+                        <h4>Thông báo Admin</h4>
+                        <ul id="adminNotificationList">
+                            <!-- JS Populated -->
+                            <li data-notif-id="n1"><span>Đơn hàng mới #P999 cần xử lý.</span><span class="timestamp">10:30 AM</span></li>
+                            <li data-notif-id="n2"><span>Yêu cầu dịch vụ #S777 mới.</span><span class="timestamp">10:15 AM</span></li>
+                            <li class="unread" data-notif-id="n3"><span>Sản phẩm 'Laptop X' sắp hết hàng (còn 2).</span><span class="timestamp">09:00 AM</span></li>
+                            <li data-notif-id="n4"><span>Cập nhật thành công cài đặt thanh toán.</span><span class="timestamp">Hôm qua</span></li>
+                        </ul>
+                        <a href="#" class="view-all" id="clearAdminNotifications">Xem tất cả & đánh dấu đã đọc</a>
+                    </div>
+                </div>
+                <!-- User Menu -->
+                <div class="user-menu" id="adminUserMenuToggle">
+                    <img src="https://via.placeholder.com/40/d63031/ffffff?text=A" alt="Admin Avatar" class="user-avatar">
+                    <span class="user-name">Admin Demo</span>
+                    <i class="fas fa-chevron-down"></i>
+                    <div class="user-dropdown" id="adminUserDropdown">
+                        <a href="#"><i class="fas fa-user-circle fa-fw"></i> Hồ sơ của tôi</a>
+                        <a href="#" id="adminLogoutLinkDropdown"><i class="fas fa-sign-out-alt fa-fw"></i> Đăng xuất</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dynamic Content Sections -->
+        <div class="admin-content">
+
+            <!-- ======================= Dashboard Section ======================= -->
+            <section id="dashboard-section" class="admin-section active">
+                <h2><i class="fas fa-tachometer-alt fa-fw"></i>Tổng Quan</h2>
+                <!-- KPI Cards -->
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <i class="fas fa-dollar-sign icon-success"></i>
+                        <div>
+                            <h4>Doanh thu hôm nay</h4>
+                            <p>15.500.000đ</p>
+                            <span class="kpi-change positive"><i class="fas fa-arrow-up"></i> 12% vs hôm qua</span>
+                        </div>
+                    </div>
+                    <div class="kpi-card clickable" data-target-section="orders" data-filter-status="pending" title="Xem đơn hàng chờ xử lý">
+                        <i class="fas fa-receipt icon-warning"></i>
+                        <div>
+                            <h4>Đơn hàng mới</h4>
+                            <p>8</p>
+                            <span class="kpi-change">Chờ xử lý</span>
+                        </div>
+                    </div>
+                    <div class="kpi-card clickable" data-target-section="services" data-filter-status="new" title="Xem yêu cầu dịch vụ mới">
+                        <i class="fas fa-concierge-bell icon-info"></i>
+                        <div>
+                            <h4>Yêu cầu DV mới</h4>
+                            <p>3</p>
+                            <span class="kpi-change">Cần xem xét</span>
+                        </div>
+                    </div>
+                    <div class="kpi-card clickable" data-target-section="products" data-filter-status="low_stock" title="Xem sản phẩm sắp hết hàng">
+                        <i class="fas fa-exclamation-triangle icon-danger"></i>
+                        <div>
+                            <h4>Sắp hết hàng</h4>
+                            <p>5</p>
+                            <span class="kpi-change">Dưới 5 sản phẩm</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts -->
+                <div class="chart-grid">
+                    <div class="chart-container content-block">
+                        <h3>Doanh thu (7 ngày gần nhất)</h3>
+                        <canvas id="revenueChart" aria-label="Biểu đồ doanh thu 7 ngày"></canvas>
+                    </div>
+                    <div class="chart-container content-block">
+                        <h3>Trạng thái đơn hàng (30 ngày)</h3>
+                        <canvas id="orderStatusChart" aria-label="Biểu đồ trạng thái đơn hàng"></canvas>
+                    </div>
+                    <div class="chart-container content-block">
+                        <h3>Top Sản phẩm bán chạy (Tháng)</h3>
+                        <canvas id="topProductsChart" aria-label="Biểu đồ sản phẩm bán chạy"></canvas>
+                    </div>
+                </div>
+
+                <!-- Quick Lists -->
+                <div class="quick-list-grid">
+                    <div class="content-block">
+                        <h3><i class="fas fa-receipt"></i> Đơn hàng mới nhất</h3>
+                        <ul class="quick-list">
+                            <li>
+                                <span>#P999 - Nguyễn Văn A - 2.500.000đ</span>
+                                <button class="btn btn-sm btn-outline btn-view-order" data-order-id="P999">Xử lý</button>
+                            </li>
+                            <li>
+                                <span>#P998 - Trần Thị B - 18.990.000đ</span>
+                                <button class="btn btn-sm btn-outline btn-view-order" data-order-id="P998">Xử lý</button>
+                            </li>
+                            <li>
+                                <span>#P997 - Lê Văn C - 950.000đ</span>
+                                <button class="btn btn-sm btn-outline btn-view-order" data-order-id="P997">Xử lý</button>
+                            </li>
+                        </ul>
+                        <a href="#" class="view-all-link sidebar-link" data-section="orders">Xem tất cả đơn hàng <i class="fas fa-arrow-right fa-xs"></i></a>
+                    </div>
+                    <div class="content-block">
+                        <h3><i class="fas fa-bell"></i> Yêu cầu DV mới</h3>
+                        <ul class="quick-list">
+                            <li>
+                                <span>#S777 - Nguyễn Văn A - Sửa chữa</span>
+                                <button class="btn btn-sm btn-outline btn-view-service" data-service-id="S777">Xem</button>
+                            </li>
+                            <li>
+                                <span>#S776 - Phạm Thị D - Tư vấn</span>
+                                <button class="btn btn-sm btn-outline btn-view-service" data-service-id="S776">Xem</button>
+                            </li>
+                            <li>
+                                <span>#S775 - Hoàng Văn E - Lắp đặt</span>
+                                <button class="btn btn-sm btn-outline btn-view-service" data-service-id="S775">Xem</button>
+                            </li>
+                        </ul>
+                        <a href="#" class="view-all-link sidebar-link" data-section="services">Xem tất cả yêu cầu <i class="fas fa-arrow-right fa-xs"></i></a>
+                    </div>
+                    <div class="content-block">
+                        <h3><i class="fas fa-box-open"></i> Sản phẩm sắp hết hàng</h3>
+                        <ul class="quick-list product-list">
+                            <li>
+                                <img src="https://via.placeholder.com/40x40/fdcb6e/2d3436?text=M" alt="Product">
+                                <span>Chuột GadgetPro Z1 (Còn 2)</span>
+                                <button class="btn btn-sm btn-outline btn-edit-product" data-product-id="GP-AC-01">Nhập kho</button>
+                            </li>
+                            <li>
+                                <img src="https://via.placeholder.com/40x40/a29bfe/ffffff?text=P" alt="Product">
+                                <span>NovaTech Phone X (Còn 3)</span>
+                                <button class="btn btn-sm btn-outline btn-edit-product" data-product-id="NT-PH-01">Nhập kho</button>
+                            </li>
+                            <li>
+                                <img src="https://via.placeholder.com/40x40/6c5ce7/ffffff?text=W" alt="Product">
+                                <span>Webcam TechBrand HD (Còn 1)</span>
+                                <button class="btn btn-sm btn-outline btn-edit-product" data-product-id="TB-AC-01">Nhập kho</button>
+                            </li>
+                        </ul>
+                        <a href="#" class="view-all-link sidebar-link" data-section="products">Xem tất cả sản phẩm <i class="fas fa-arrow-right fa-xs"></i></a>
+                    </div>
+                    <div class="content-block">
+                        <h3><i class="fas fa-history"></i> Hoạt động gần đây</h3>
+                        <ul class="activity-log">
+                            <li><strong>Admin Demo</strong> đã cập nhật trạng thái đơn hàng <a href="#" class="link-view-order" data-order-id="P998">#P998</a> thành "Đang giao". <span class="timestamp">5 phút trước</span></li>
+                            <li><strong>Khách hàng</strong> Trần Thị B đã gửi đánh giá 5 sao cho sản phẩm <a href="#" class="link-edit-product" data-product-id="NT-PH-01">NovaTech Phone X</a>. <span class="timestamp">1 giờ trước</span></li>
+                            <li><strong>Hệ thống</strong> đã tự động cập nhật tồn kho cho <a href="#" class="link-edit-product" data-product-id="NT-CP-01">SSD NovaTech</a> (+50). <span class="timestamp">2 giờ trước</span></li>
+                            <li><strong>Admin Demo</strong> đã thêm sản phẩm mới <a href="#" class="link-edit-product" data-product-id="KB-XYZ">Bàn phím cơ XYZ</a>. <span class="timestamp">Hôm qua</span></li>
+                        </ul>
+                        <!-- Optional: Link to full activity log -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- ======================= Products Section ======================= -->
+            <section id="products-section" class="admin-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-box-open fa-fw"></i>Quản Lý Sản Phẩm</h2>
+                    <button class="btn btn-primary btn-add-product"><i class="fas fa-plus"></i> Thêm Sản Phẩm</button>
+                </div>
+
+                <!-- Product Filters -->
+                <div class="filters-container content-block">
+                    <div class="filter-group">
+                        <input type="text" class="form-control" placeholder="Tìm theo Tên, SKU..." aria-label="Filter by Name/SKU">
+                    </div>
+                    <div class="filter-group">
+                        <select class="form-control-sm" aria-label="Filter by Category">
+                            <option value="">-- Danh mục --</option>
+                            <option value="laptops">Laptop</option>
+                            <option value="phones">Điện thoại</option>
+                            <option value="accessories">Phụ kiện</option>
+                            <option value="monitors">Màn hình</option>
+                            <option value="components">Linh kiện</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <select class="form-control-sm" aria-label="Filter by Brand">
+                            <option value="">-- Thương hiệu --</option>
+                            <option value="TechBrand">TechBrand</option>
+                            <option value="NovaTech">NovaTech</option>
+                            <option value="GadgetPro">GadgetPro</option>
+                            <option value="ZyStore">ZyStore</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <select class="form-control-sm" aria-label="Filter by Status">
+                            <option value="">-- Trạng thái --</option>
+                            <option value="published">Đang bán</option>
+                            <option value="draft">Nháp</option>
+                            <option value="archived">Lưu trữ</option>
+                            <option value="low_stock">Sắp hết hàng</option>
+                            <option value="out_of_stock">Hết hàng</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-sm btn-secondary">Lọc</button>
+                    <button class="btn btn-sm btn-outline btn-clear-filters">Xóa lọc</button>
+                </div>
+
+                <!-- Bulk Actions -->
+                <div class="bulk-actions-container">
+                    <select class="form-control-sm" id="productBulkAction" aria-label="Product Bulk Actions">
+                        <option value="">-- Hành động hàng loạt --</option>
+                        <option value="delete">Xóa sản phẩm đã chọn</option>
+                        <option value="publish">Chuyển sang Đang bán</option>
+                        <option value="draft">Chuyển sang Nháp</option>
+                        <option value="archive">Lưu trữ</option>
+                    </select>
+                    <button class="btn btn-sm btn-primary" id="applyProductBulkAction">Áp dụng</button>
+                </div>
+
+                <!-- Product List Table -->
+                <div class="content-block table-responsive">
+                    <table class="admin-table">
+                        <thead>
+                        <tr>
+                            <th><input type="checkbox" id="selectAllProducts" aria-label="Select all products"></th>
+                            <th>Ảnh</th>
+                            <th>Tên Sản Phẩm</th>
+                            <th>SKU</th>
+                            <th>Giá</th>
+                            <th>Tồn kho</th>
+                            <th>Trạng thái</th>
+                            <th>Hành động</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!-- Example Row 1 -->
+                        <tr data-product-row-id="TB-LP-01">
+                            <td><input type="checkbox" class="product-checkbox" value="TB-LP-01" aria-label="Select product TB-LP-01"></td>
+                            <td><img src="https://via.placeholder.com/50x50/6c5ce7/ffffff?text=L" alt="Laptop"></td>
+                            <td><a href="#" class="link-edit-product" data-product-id="TB-LP-01">Laptop TechBrand Pro 14</a></td>
+                            <td>TB-LP-01</td>
+                            <td>32.500.000đ</td>
+                            <td>15</td>
+                            <td><span class="status status-published">Đang bán</span></td>
+                            <td>
+                                <button class="btn-icon btn-edit-product" title="Sửa" data-product-id="TB-LP-01"><i class="fas fa-edit"></i></button>
+                                <button class="btn-icon btn-delete-product" title="Xóa" data-product-id="TB-LP-01"><i class="fas fa-trash-alt"></i></button>
+                                <a href="/product/laptop-techbrand-pro-14" target="_blank" class="btn-icon" title="Xem trên web"><i class="fas fa-eye"></i></a>
+                                <button class="btn-icon" title="Nhân bản"><i class="fas fa-copy"></i></button>
+                            </td>
+                        </tr>
+                        <!-- Example Row 2 -->
+                        <tr data-product-row-id="NT-PH-01">
+                            <td><input type="checkbox" class="product-checkbox" value="NT-PH-01" aria-label="Select product NT-PH-01"></td>
+                            <td><img src="https://via.placeholder.com/50x50/a29bfe/ffffff?text=P" alt="Phone"></td>
+                            <td><a href="#" class="link-edit-product" data-product-id="NT-PH-01">NovaTech Phone X</a></td>
+                            <td>NT-PH-01</td>
+                            <td>18.990.000đ</td>
+                            <td class="stock-low">3</td> <!-- Low stock example -->
+                            <td><span class="status status-published">Đang bán</span></td>
+                            <td>
+                                <button class="btn-icon btn-edit-product" title="Sửa" data-product-id="NT-PH-01"><i class="fas fa-edit"></i></button>
+                                <button class="btn-icon btn-delete-product" title="Xóa" data-product-id="NT-PH-01"><i class="fas fa-trash-alt"></i></button>
+                                <a href="/product/novatech-phone-x" target="_blank" class="btn-icon" title="Xem trên web"><i class="fas fa-eye"></i></a>
+                                <button class="btn-icon" title="Nhân bản"><i class="fas fa-copy"></i></button>
+                            </td>
+                        </tr>
+                        <!-- Example Row 3 -->
+                        <tr data-product-row-id="GP-AC-01">
+                            <td><input type="checkbox" class="product-checkbox" value="GP-AC-01" aria-label="Select product GP-AC-01"></td>
+                            <td><img src="https://via.placeholder.com/50x50/fdcb6e/2d3436?text=M" alt="Mouse"></td>
+                            <td><a href="#" class="link-edit-product" data-product-id="GP-AC-01">Chuột không dây GadgetPro Z1</a></td>
+                            <td>GP-AC-01</td>
+                            <td>950.000đ <span class="old-price-inline">1.100.000đ</span></td> <!-- Sale price example -->
+                            <td class="stock-out">0</td> <!-- Out of stock example -->
+                            <td><span class="status status-draft">Nháp</span></td>
+                            <td>
+                                <button class="btn-icon btn-edit-product" title="Sửa" data-product-id="GP-AC-01"><i class="fas fa-edit"></i></button>
+                                <button class="btn-icon btn-delete-product" title="Xóa" data-product-id="GP-AC-01"><i class="fas fa-trash-alt"></i></button>
+                                <a href="/product/mouse-gadgetpro-z1" target="_blank" class="btn-icon" title="Xem trên web"><i class="fas fa-eye"></i></a>
+                                <button class="btn-icon" title="Nhân bản"><i class="fas fa-copy"></i></button>
+                            </td>
+                        </tr>
+                        <tr data-product-row-id="ZS-MN-01">
+                            <td><input type="checkbox" class="product-checkbox" value="ZS-MN-01" aria-label="Select product ZS-MN-01"></td>
+                            <td><img src="https://via.placeholder.com/50x50/d63031/ffffff?text=S" alt="Monitor"></td>
+                            <td><a href="#" class="link-edit-product" data-product-id="ZS-MN-01">Màn hình ZyStore 27" QHD</a></td>
+                            <td>ZS-MN-01</td>
+                            <td>7.200.000đ</td>
+                            <td>25</td>
+                            <td><span class="status status-published">Đang bán</span></td>
+                            <td>
+                                <button class="btn-icon btn-edit-product" title="Sửa" data-product-id="ZS-MN-01"><i class="fas fa-edit"></i></button>
+                                <button class="btn-icon btn-delete-product" title="Xóa" data-product-id="ZS-MN-01"><i class="fas fa-trash-alt"></i></button>
+                                <a href="/product/monitor-zystore-27" target="_blank" class="btn-icon" title="Xem trên web"><i class="fas fa-eye"></i></a>
+                                <button class="btn-icon" title="Nhân bản"><i class="fas fa-copy"></i></button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <nav class="pagination-container" aria-label="Product navigation">
+                    <ul class="pagination">
+                        <li class="page-item disabled"><a class="page-link" href="#" aria-label="Previous page">«</a></li>
+                        <li class="page-item active"><a class="page-link" href="#" aria-current="page">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#" aria-label="Next page">»</a></li>
+                    </ul>
+                </nav>
+
+                <!-- Add/Edit Product Form (Initially hidden) -->
+                <div id="product-form-container" class="content-block form-view" style="display: none;"> <!-- Hide initially -->
+                    <h3>Thêm Sản Phẩm Mới</h3>
+                    <form id="productForm">
+                        <!-- Tabs Navigation -->
+                        <nav class="tabs product-form-tabs">
+                            <button type="button" class="tab-link active" data-tab="product-basic-info">Thông tin cơ bản</button>
+                            <button type="button" class="tab-link" data-tab="product-price-stock">Giá & Kho</button>
+                            <button type="button" class="tab-link" data-tab="product-images">Hình ảnh</button>
+                            <button type="button" class="tab-link" data-tab="product-variants">Biến thể</button>
+                            <button type="button" class="tab-link" data-tab="product-seo">SEO</button>
+                        </nav>
+
+                        <!-- Tab Content -->
+                        <div id="product-basic-info" class="tab-content active">
+                            <div class="form-group">
+                                <label for="productName">Tên sản phẩm *</label>
+                                <input type="text" id="productName" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="productSlug">Đường dẫn (URL Slug)</label>
+                                <input type="text" id="productSlug" class="form-control" aria-describedby="slugHelp">
+                                <small id="slugHelp">Để trống để tự tạo từ tên sản phẩm. Chỉ chứa chữ thường, số và dấu gạch ngang.</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="productShortDescription">Mô tả ngắn</label>
+                                <textarea id="productShortDescription" class="form-control" rows="3"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="productDescription">Mô tả đầy đủ</label>
+                                <div id="productDescriptionEditor" class="wysiwyg-editor-placeholder" aria-label="Rich text editor for product description">Trình soạn thảo WYSIWYG sẽ ở đây...</div>
+                                <textarea id="productDescription" style="display:none;" aria-hidden="true"></textarea> <!-- Hidden textarea for editor content -->
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="productCategory">Danh mục</label>
+                                    <select id="productCategory" class="form-control select-searchable" multiple aria-label="Select product categories">
+                                        <option value="laptops">Laptop</option>
+                                        <option value="phones">Điện thoại</option>
+                                        <option value="accessories">Phụ kiện</option>
+                                        <option value="monitors">Màn hình</option>
+                                        <option value="components">Linh kiện</option>
+                                        <option value="gaming">Gaming Gear</option>
+                                    </select>
+                                    <small>Chọn một hoặc nhiều danh mục. (Demo: cần thư viện select)</small>
+                                </div>
+                                <div class="form-group">
+                                    <label for="productBrand">Thương hiệu</label>
+                                    <select id="productBrand" class="form-control" aria-label="Select product brand">
+                                        <option value="">-- Chọn thương hiệu --</option>
+                                        <option value="TechBrand">TechBrand</option>
+                                        <option value="NovaTech">NovaTech</option>
+                                        <option value="GadgetPro">GadgetPro</option>
+                                        <option value="ZyStore">ZyStore</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="productStatusForm">Trạng thái</label>
+                                <select id="productStatusForm" class="form-control">
+                                    <option value="published">Đang bán (Published)</option>
+                                    <option value="draft" selected>Nháp (Draft)</option>
+                                    <option value="archived">Lưu trữ (Archived)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div id="product-price-stock" class="tab-content">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="productPrice">Giá bán thường *</label>
+                                    <input type="number" id="productPrice" class="form-control" required min="0" step="1000">
+                                </div>
+                                <div class="form-group">
+                                    <label for="productSalePrice">Giá khuyến mãi</label>
+                                    <input type="number" id="productSalePrice" class="form-control" min="0" step="1000">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="saleStartDate">Ngày bắt đầu KM</label>
+                                    <input type="datetime-local" id="saleStartDate" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="saleEndDate">Ngày kết thúc KM</label>
+                                    <input type="datetime-local" id="saleEndDate" class="form-control">
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="form-group form-check">
+                                <input type="checkbox" id="manageStock" class="form-check-input" checked>
+                                <label for="manageStock" class="form-check-label">Quản lý tồn kho?</label>
+                            </div>
+                            <div class="form-row stock-fields"> <!-- Initially shown if manageStock is checked -->
+                                <div class="form-group">
+                                    <label for="productSku">SKU (Mã sản phẩm)</label>
+                                    <input type="text" id="productSku" class="form-control">
+                                    <small>Mã duy nhất cho sản phẩm này.</small>
+                                </div>
+                                <div class="form-group">
+                                    <label for="productStock">Số lượng tồn kho</label>
+                                    <input type="number" id="productStock" class="form-control" min="0">
+                                </div>
+                            </div>
+                            <div class="form-group stock-fields">
+                                <label for="lowStockThreshold">Ngưỡng báo tồn kho thấp</label>
+                                <input type="number" id="lowStockThreshold" class="form-control" min="0" value="5">
+                            </div>
+                            <div class="form-group form-check stock-fields">
+                                <input type="checkbox" id="allowBackorder" class="form-check-input">
+                                <label for="allowBackorder" class="form-check-label">Cho phép đặt hàng trước khi hết hàng?</label>
+                            </div>
+                        </div>
+
+                        <div id="product-images" class="tab-content">
+                            <div class="form-group">
+                                <label>Ảnh đại diện</label>
+                                <div class="image-upload-placeholder" id="featuredImageUpload" role="button" tabindex="0" aria-label="Upload featured image">Kéo thả hoặc Nhấn để chọn ảnh</div>
+                                <div id="featuredImagePreview" class="image-preview-container">
+                                    <!-- Preview loaded here -->
+                                    <!-- Example: <img src="..." alt="Preview"><button>Xóa</button> -->
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Thư viện ảnh</label>
+                                <div class="image-upload-placeholder" id="galleryImageUpload" role="button" tabindex="0" aria-label="Upload gallery images">Kéo thả hoặc Nhấn để chọn nhiều ảnh</div>
+                                <div id="galleryImagePreview" class="gallery-preview-grid">
+                                    <!-- Previews loaded here -->
+                                    <!-- Example: <div class="gallery-item"><img src="..." alt="Preview"><button>Xóa</button></div> -->
+                                </div>
+                                <small>Kéo thả để sắp xếp thứ tự ảnh.</small>
+                            </div>
+                        </div>
+
+                        <div id="product-variants" class="tab-content">
+                            <p>Quản lý các phiên bản khác nhau của sản phẩm (ví dụ: theo màu sắc, kích thước). Tính năng này cần logic JS phức tạp để hoạt động.</p>
+                            <div class="form-group">
+                                <label>Thuộc tính</label>
+                                <button type="button" class="btn btn-sm btn-secondary btn-add-attribute"><i class="fas fa-plus"></i> Thêm thuộc tính</button>
+                            </div>
+                            <div id="attribute-section">
+                                <!-- Attribute selection (e.g., select dropdown for "Color", "Size") -->
+                                <!-- Value input (e.g., text input for "Red, Blue, Green") -->
+                            </div>
+                            <hr>
+                            <h4>Biến thể đã tạo</h4>
+                            <div id="variant-table-container" class="table-responsive">
+                                <!-- Table of variants generated by JS based on attributes -->
+                                <table class="admin-table variant-table">
+                                    <thead>
+                                    <tr><th>Biến thể</th><th>SKU</th><th>Giá</th><th>Tồn kho</th><th>Ảnh</th><th>Hành động</th></tr>
+                                    </thead>
+                                    <tbody>
+                                    <!-- Example variant row -->
+                                    <tr>
+                                        <td>Màu: Đỏ / Size: L</td>
+                                        <td><input type="text" class="form-control-sm" value="PROD-RED-L"></td>
+                                        <td><input type="number" class="form-control-sm" value="1600000"></td>
+                                        <td><input type="number" class="form-control-sm" value="5"></td>
+                                        <td><button class="btn btn-xs btn-outline">Chọn ảnh</button></td>
+                                        <td><button class="btn-icon text-danger"><i class="fas fa-trash-alt"></i></button></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div id="product-seo" class="tab-content">
+                            <div class="form-group">
+                                <label for="seoTitle">Meta Title</label>
+                                <input type="text" id="seoTitle" class="form-control" maxlength="60">
+                                <small>Tối ưu cho công cụ tìm kiếm. Khoảng 60 ký tự.</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="seoDescription">Meta Description</label>
+                                <textarea id="seoDescription" class="form-control" rows="3" maxlength="160"></textarea>
+                                <small>Mô tả ngắn gọn hiển thị trên kết quả tìm kiếm. Khoảng 160 ký tự.</small>
+                            </div>
+                            <div class="seo-preview">
+                                <h4>Xem trước trên Google</h4>
+                                <p class="seo-preview-title">[Tên sản phẩm] - TechShop</p>
+                                <p class="seo-preview-url">https://techshop.example/san-pham/[url-san-pham]</p>
+                                <p class="seo-preview-desc">[Mô tả ngắn hoặc phần đầu mô tả đầy đủ sẽ hiện ở đây...]</p>
+                            </div>
+                        </div>
+
+                        <!-- Form Actions -->
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Lưu Sản Phẩm</button>
+                            <button type="button" class="btn btn-secondary btn-save-draft">Lưu Nháp</button>
+                            <button type="button" class="btn btn-outline btn-cancel-product">Hủy bỏ</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- ======================= Orders Section ======================= -->
+            <section id="orders-section" class="admin-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-file-invoice-dollar fa-fw"></i>Quản Lý Đơn Hàng</h2>
+                </div>
+
+                <!-- Order Filters -->
+                <div class="filters-container content-block">
+                    <div class="filter-group">
+                        <input type="text" class="form-control" placeholder="Tìm Mã ĐH, Tên KH..." aria-label="Filter by Order ID or Customer Name">
+                    </div>
+                    <div class="filter-group date-range-filter">
+                        <label for="orderDateFrom">Từ ngày:</label>
+                        <input type="date" class="form-control-sm" id="orderDateFrom" aria-label="Order date from">
+                        <label for="orderDateTo">Đến ngày:</label>
+                        <input type="date" class="form-control-sm" id="orderDateTo" aria-label="Order date to">
+                    </div>
+                    <div class="filter-group">
+                        <select class="form-control-sm" aria-label="Filter by Payment Status">
+                            <option value="">-- TT Thanh toán --</option>
+                            <option value="paid">Đã thanh toán</option>
+                            <option value="pending">Chưa thanh toán</option>
+                            <option value="failed">Lỗi</option>
+                            <option value="refunded">Đã hoàn tiền</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <select class="form-control-sm" aria-label="Filter by Order Status">
+                            <option value="">-- TT Đơn hàng --</option>
+                            <option value="pending">Chờ xử lý</option>
+                            <option value="processing">Đang chuẩn bị</option>
+                            <option value="shipped">Đang giao</option>
+                            <option value="completed">Hoàn thành</option>
+                            <option value="cancelled">Đã hủy</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-sm btn-secondary">Lọc Đơn Hàng</button>
+                </div>
+
+                <!-- Bulk Actions -->
+                <div class="bulk-actions-container">
+                    <select class="form-control-sm" id="orderBulkAction" aria-label="Order Bulk Actions">
+                        <option value="">-- Hành động hàng loạt --</option>
+                        <option value="mark_processing">Chuyển sang Đang chuẩn bị</option>
+                        <option value="mark_shipped">Chuyển sang Đang giao (+ Nhập Vận đơn)</option>
+                        <option value="mark_completed">Chuyển sang Hoàn thành</option>
+                        <option value="mark_cancelled">Hủy đơn hàng</option>
+                        <option value="print_invoice">In hóa đơn</option>
+                        <option value="print_shipping_label">In phiếu giao hàng</option>
+                    </select>
+                    <button class="btn btn-sm btn-primary" id="applyOrderBulkAction">Áp dụng</button>
+                </div>
+
+                <!-- Order List Table -->
+                <div class="content-block table-responsive">
+                    <table class="admin-table">
+                        <thead>
+                        <tr>
+                            <th><input type="checkbox" id="selectAllOrders" aria-label="Select all orders"></th>
+                            <th>Mã ĐH</th>
+                            <th>Khách Hàng</th>
+                            <th>Ngày Đặt</th>
+                            <th>Tổng Tiền</th>
+                            <th>TT Thanh Toán</th>
+                            <th>TT Đơn Hàng</th>
+                            <th>Hành động</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!-- Example Row 1 -->
+                        <tr class="order-new" data-order-row-id="P999"> <!-- Example highlight -->
+                            <td><input type="checkbox" class="order-checkbox" value="P999" aria-label="Select order P999"></td>
+                            <td><a href="#" class="link-view-order" data-order-id="P999">#P999</a></td>
+                            <td><a href="#" class="link-view-customer" data-customer-id="1">Nguyễn Văn A</a></td>
+                            <td>25/12/2023 10:30</td>
+                            <td>2.500.000đ</td>
+                            <td><span class="status status-unpaid" title="Chưa thanh toán">Chưa TT</span></td>
+                            <td>
+                                <select class="form-control-sm status-dropdown" data-order-id="P999" aria-label="Order Status for P999">
+                                    <option value="pending" selected>Chờ xử lý</option>
+                                    <option value="processing">Đang chuẩn bị</option>
+                                    <option value="shipped">Đang giao</option>
+                                    <option value="completed">Hoàn thành</option>
+                                    <option value="cancelled">Hủy</option>
+                                </select>
+                            </td>
+                            <td>
+                                <button class="btn-icon btn-view-order" title="Xem chi tiết" data-order-id="P999"><i class="fas fa-eye"></i></button>
+                                <button class="btn-icon btn-print-invoice" title="In hóa đơn" data-order-id="P999"><i class="fas fa-print"></i></button>
+                            </td>
+                        </tr>
+                        <!-- Example Row 2 -->
+                        <tr data-order-row-id="P998">
+                            <td><input type="checkbox" class="order-checkbox" value="P998" aria-label="Select order P998"></td>
+                            <td><a href="#" class="link-view-order" data-order-id="P998">#P998</a></td>
+                            <td><a href="#" class="link-view-customer" data-customer-id="2">Trần Thị B</a></td>
+                            <td>24/12/2023 15:00</td>
+                            <td>18.990.000đ</td>
+                            <td><span class="status status-paid" title="Đã thanh toán qua VNPAY">Đã TT (VNPAY)</span></td>
+                            <td>
+                                <select class="form-control-sm status-dropdown" data-order-id="P998" aria-label="Order Status for P998">
+                                    <option value="pending">Chờ xử lý</option>
+                                    <option value="processing">Đang chuẩn bị</option>
+                                    <option value="shipped" selected>Đang giao</option>
+                                    <option value="completed">Hoàn thành</option>
+                                    <option value="cancelled">Hủy</option>
+                                </select>
+                            </td>
+                            <td>
+                                <button class="btn-icon btn-view-order" title="Xem chi tiết" data-order-id="P998"><i class="fas fa-eye"></i></button>
+                                <button class="btn-icon btn-print-invoice" title="In hóa đơn" data-order-id="P998"><i class="fas fa-print"></i></button>
+                            </td>
+                        </tr>
+                        <!-- Example Row 3 -->
+                        <tr data-order-row-id="P997">
+                            <td><input type="checkbox" class="order-checkbox" value="P997" aria-label="Select order P997"></td>
+                            <td><a href="#" class="link-view-order" data-order-id="P997">#P997</a></td>
+                            <td><a href="#" class="link-view-customer" data-customer-id="3">Lê Văn C</a></td>
+                            <td>24/12/2023 09:10</td>
+                            <td>950.000đ</td>
+                            <td><span class="status status-paid" title="Đã thanh toán COD">Đã TT (COD)</span></td>
+                            <td>
+                                <select class="form-control-sm status-dropdown" data-order-id="P997" aria-label="Order Status for P997">
+                                    <option value="pending">Chờ xử lý</option>
+                                    <option value="processing">Đang chuẩn bị</option>
+                                    <option value="shipped">Đang giao</option>
+                                    <option value="completed" selected>Hoàn thành</option>
+                                    <option value="cancelled">Hủy</option>
+                                </select>
+                            </td>
+                            <td>
+                                <button class="btn-icon btn-view-order" title="Xem chi tiết" data-order-id="P997"><i class="fas fa-eye"></i></button>
+                                <button class="btn-icon btn-print-invoice" title="In hóa đơn" data-order-id="P997"><i class="fas fa-print"></i></button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <nav class="pagination-container" aria-label="Order navigation">
+                    <ul class="pagination">
+                        <li class="page-item disabled"><a class="page-link" href="#" aria-label="Previous page">«</a></li>
+                        <li class="page-item active"><a class="page-link" href="#" aria-current="page">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#" aria-label="Next page">»</a></li>
+                    </ul>
+                </nav>
+
+                <!-- Order Detail View (Placeholder) -->
+                <div id="order-detail-view" class="content-block form-view" style="display: none;">
+                    <h3>Chi Tiết Đơn Hàng #<span id="detailOrderId"></span></h3>
+                    <!-- Order detail content loaded by JS -->
+                    <div id="orderDetailContentPlaceholder">
+                        <!-- Example Structure (Load dynamically) -->
+                        <div class="order-detail-grid">
+                            <div class="order-detail-col">
+                                <h4>Thông tin chung</h4>
+                                <p><strong>Ngày đặt:</strong> <span id="detailOrderDate">...</span></p>
+                                <p><strong>Trạng thái:</strong> <select class="form-control-sm" id="detailOrderStatus"><option>...</option></select></p>
+                                <h4>Khách hàng</h4>
+                                <p><a href="#" id="detailCustomerLink">...</a></p>
+                                <p><i class="fas fa-envelope fa-fw"></i> <span id="detailCustomerEmail">...</span></p>
+                                <p><i class="fas fa-phone fa-fw"></i> <span id="detailCustomerPhone">...</span></p>
+                            </div>
+                            <div class="order-detail-col">
+                                <h4>Sản phẩm</h4>
+                                <ul id="detailProductList" class="detail-item-list"><li>Loading...</li></ul>
+                                <h4>Tổng cộng</h4>
+                                <table class="totals-table">
+                                    <tr><td>Tạm tính:</td><td id="detailSubtotal">...</td></tr>
+                                    <tr><td>Vận chuyển:</td><td id="detailShipping">...</td></tr>
+                                    <tr><td><strong>Tổng cộng:</strong></td><td id="detailGrandTotal">...</td></tr>
+                                </table>
+                                <p><strong>Thanh toán:</strong> <span id="detailPaymentMethod">...</span></p>
+                            </div>
+                            <div class="order-detail-col">
+                                <h4>Vận chuyển</h4>
+                                <p><strong>Địa chỉ:</strong> <span id="detailShippingAddress">...</span> <a href="#" target="_blank" title="Xem bản đồ"><i class="fas fa-map-marker-alt"></i></a></p>
+                                <p><strong>Phương thức:</strong> <span id="detailShippingMethod">...</span></p>
+                                <div class="form-group">
+                                    <label for="trackingCode">Mã vận đơn:</label>
+                                    <input type="text" id="trackingCode" class="form-control-sm">
+                                    <button class="btn btn-xs btn-outline btn-add-tracking">Lưu</button>
+                                </div>
+                                <h4>Ghi chú</h4>
+                                <p><strong>Khách hàng:</strong> <span id="detailCustomerNote">...</span></p>
+                                <div class="form-group">
+                                    <label for="internalNote">Ghi chú nội bộ:</label>
+                                    <textarea id="internalNote" class="form-control" rows="3"></textarea>
+                                    <button class="btn btn-xs btn-secondary btn-add-note">Thêm ghi chú</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="order-history-log">
+                            <h4>Lịch sử đơn hàng</h4>
+                            <ul id="detailOrderHistory"><li>Loading...</li></ul>
+                        </div>
+                        <div class="form-actions">
+                            <button class="btn btn-primary">Lưu thay đổi</button>
+                            <button class="btn btn-outline btn-print-invoice-detail">In hóa đơn</button>
+                            <button class="btn btn-danger btn-refund-order">Tạo đơn hoàn tiền</button>
+                            <button type="button" class="btn btn-secondary btn-close-detail">Đóng chi tiết</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ======================= Services Section ======================= -->
+            <section id="services-section" class="admin-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-concierge-bell fa-fw"></i>Quản Lý Yêu Cầu Dịch Vụ</h2>
+                </div>
+                <!-- Service Filters -->
+                <div class="filters-container content-block">
+                    <div class="filter-group">
+                        <input type="text" class="form-control" placeholder="Tìm Mã YC, Tên KH..." aria-label="Filter by Request ID or Customer">
+                    </div>
+                    <div class="filter-group">
+                        <select class="form-control-sm" aria-label="Filter by Service Type">
+                            <option value="">-- Loại dịch vụ --</option>
+                            <option value="repair">Sửa chữa</option>
+                            <option value="installation">Lắp đặt</option>
+                            <option value="consulting">Tư vấn</option>
+                            <option value="other">Khác</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <select class="form-control-sm" aria-label="Filter by Service Status">
+                            <option value="">-- Trạng thái --</option>
+                            <option value="new">Mới</option>
+                            <option value="assigned">Đã tiếp nhận</option>
+                            <option value="processing">Đang xử lý</option>
+                            <option value="waiting">Chờ phản hồi</option>
+                            <option value="completed">Hoàn thành</option>
+                            <option value="closed">Đã đóng</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <select class="form-control-sm" aria-label="Filter by Assignee">
+                            <option value="">-- Người phụ trách --</option>
+                            <option value="admin1">Admin Demo</option>
+                            <option value="admin2">Nhân viên A</option>
+                            <option value="unassigned">Chưa gán</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-sm btn-secondary">Lọc Yêu Cầu</button>
+                </div>
+                <!-- Service List Table -->
+                <div class="content-block table-responsive">
+                    <table class="admin-table">
+                        <thead>
+                        <tr>
+                            <th>Mã YC</th>
+                            <th>Khách Hàng</th>
+                            <th>Loại DV</th>
+                            <th>Chủ Đề</th>
+                            <th>Ngày Gửi</th>
+                            <th>Trạng Thái</th>
+                            <th>Phụ Trách</th>
+                            <th>Hành động</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!-- Example Row 1 -->
+                        <tr data-service-row-id="S777">
+                            <td><a href="#" class="link-view-service" data-service-id="S777">#S777</a></td>
+                            <td><a href="#" class="link-view-customer" data-customer-id="1">Nguyễn Văn A</a></td>
+                            <td>Sửa chữa</td>
+                            <td>Laptop không lên nguồn</td>
+                            <td>25/12/2023 10:15</td>
+                            <td>
+                                <select class="form-control-sm status-dropdown" data-service-id="S777" aria-label="Service status for S777">
+                                    <option value="new" selected>Mới</option>
+                                    <option value="assigned">Đã tiếp nhận</option>
+                                    <option value="processing">Đang xử lý</option>
+                                    <option value="waiting">Chờ phản hồi</option>
+                                    <option value="completed">Hoàn thành</option>
+                                    <option value="closed">Đóng</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="form-control-sm assignee-dropdown" data-service-id="S777" aria-label="Assignee for S777">
+                                    <option value="">-- Gán --</option>
+                                    <option value="admin1">Admin Demo</option>
+                                    <option value="admin2">Nhân viên A</option>
+                                </select>
+                            </td>
+                            <td>
+                                <button class="btn-icon btn-view-service" title="Xem chi tiết" data-service-id="S777"><i class="fas fa-eye"></i></button>
+                            </td>
+                        </tr>
+                        <!-- Example Row 2 -->
+                        <tr data-service-row-id="S776">
+                            <td><a href="#" class="link-view-service" data-service-id="S776">#S776</a></td>
+                            <td><a href="#" class="link-view-customer" data-customer-id="4">Phạm Thị D</a></td>
+                            <td>Tư vấn</td>
+                            <td>Tư vấn cấu hình PC Gaming</td>
+                            <td>24/12/2023 09:00</td>
+                            <td><span class="status status-processing">Đang xử lý</span></td>
+                            <td>Admin Demo</td>
+                            <td>
+                                <button class="btn-icon btn-view-service" title="Xem chi tiết" data-service-id="S776"><i class="fas fa-eye"></i></button>
+                            </td>
+                        </tr>
+                        <tr data-service-row-id="S775">
+                            <td><a href="#" class="link-view-service" data-service-id="S775">#S775</a></td>
+                            <td><a href="#" class="link-view-customer" data-customer-id="5">Hoàng Văn E</a></td>
+                            <td>Lắp đặt</td>
+                            <td>Lắp đặt mạng LAN văn phòng</td>
+                            <td>23/12/2023 14:30</td>
+                            <td><span class="status status-completed">Hoàn thành</span></td>
+                            <td>Nhân viên A</td>
+                            <td>
+                                <button class="btn-icon btn-view-service" title="Xem chi tiết" data-service-id="S775"><i class="fas fa-eye"></i></button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Pagination -->
+                <nav class="pagination-container" aria-label="Service request navigation">
+                    <ul class="pagination">
+                        <li class="page-item disabled"><a class="page-link" href="#" aria-label="Previous page">«</a></li>
+                        <li class="page-item active"><a class="page-link" href="#" aria-current="page">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#" aria-label="Next page">»</a></li>
+                    </ul>
+                </nav>
+
+                <!-- Service Detail View (Placeholder) -->
+                <div id="service-detail-view" class="content-block form-view" style="display: none;">
+                    <h3>Chi Tiết Yêu Cầu Dịch Vụ #<span id="detailServiceId"></span></h3>
+                    <div id="serviceDetailContentPlaceholder">
+                        <!-- Example Structure -->
+                        <div class="service-detail-grid">
+                            <div class="service-detail-col">
+                                <h4>Thông tin Yêu cầu</h4>
+                                <p><strong>Loại:</strong> <span id="detailServiceType">...</span></p>
+                                <p><strong>Chủ đề:</strong> <span id="detailServiceSubject">...</span></p>
+                                <p><strong>Ngày gửi:</strong> <span id="detailServiceDate">...</span></p>
+                                <p><strong>Trạng thái:</strong> <select id="detailServiceStatus" class="form-control-sm"><option>...</option></select></p>
+                                <h4>Khách hàng</h4>
+                                <p><a href="#" id="detailServiceCustomerLink">...</a></p>
+                                <p><i class="fas fa-envelope fa-fw"></i> <span id="detailServiceCustomerEmail">...</span></p>
+                            </div>
+                            <div class="service-detail-col">
+                                <h4>Mô tả chi tiết</h4>
+                                <p id="detailServiceDescription">...</p>
+                                <h4>File đính kèm</h4>
+                                <ul id="detailServiceAttachments"><li>Không có</li></ul>
+                                <h4>Phân công</h4>
+                                <select id="detailServiceAssignee" class="form-control-sm"><option>...</option></select>
+                            </div>
+                        </div>
+                        <div class="internal-notes-section">
+                            <h4>Ghi chú / Trao đổi nội bộ</h4>
+                            <textarea id="serviceInternalNote" class="form-control" rows="4" placeholder="Thêm ghi chú mới..."></textarea>
+                            <button class="btn btn-sm btn-secondary btn-add-service-note">Thêm ghi chú</button>
+                            <ul id="serviceNoteHistory" class="activity-log"><li>Chưa có ghi chú.</li></ul>
+                        </div>
+                        <div class="form-actions">
+                            <button class="btn btn-primary">Lưu thay đổi</button>
+                            <button type="button" class="btn btn-outline btn-close-detail">Đóng chi tiết</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ======================= Customers Section ======================= -->
+            <section id="customers-section" class="admin-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-users fa-fw"></i>Quản Lý Khách Hàng</h2>
+                </div>
+                <!-- Customer Filters -->
+                <div class="filters-container content-block">
+                    <div class="filter-group">
+                        <input type="text" class="form-control" placeholder="Tìm Tên, Email, SĐT..." aria-label="Filter by Customer Info">
+                    </div>
+                    <!-- Add other filters like registration date, total spent range -->
+                    <button class="btn btn-sm btn-secondary">Lọc Khách Hàng</button>
+                </div>
+                <!-- Customer List Table -->
+                <div class="content-block table-responsive">
+                    <table class="admin-table">
+                        <thead>
+                        <tr>
+                            <th>Tên Khách Hàng</th>
+                            <th>Email</th>
+                            <th>Số Điện Thoại</th>
+                            <th>Ngày Đăng Ký</th>
+                            <th>Số Đơn Hàng</th>
+                            <th>Tổng Chi Tiêu</th>
+                            <th>Hành động</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!-- Example Row 1 -->
+                        <tr data-customer-row-id="1">
+                            <td><a href="#" class="link-view-customer" data-customer-id="1">Nguyễn Văn A</a></td>
+                            <td>a.nguyen@email.com</td>
+                            <td>090xxxx123</td>
+                            <td>15/10/2023</td>
+                            <td>5</td>
+                            <td>12.500.000đ</td>
+                            <td>
+                                <button class="btn-icon btn-view-customer" title="Xem chi tiết" data-customer-id="1"><i class="fas fa-eye"></i></button>
+                                <button class="btn-icon btn-email-customer" title="Gửi Email" data-customer-id="1"><i class="fas fa-envelope"></i></button>
+                                <button class="btn-icon text-danger" title="Xóa Khách hàng" data-customer-id="1"><i class="fas fa-user-times"></i></button>
+                            </td>
+                        </tr>
+                        <!-- Example Row 2 -->
+                        <tr data-customer-row-id="2">
+                            <td><a href="#" class="link-view-customer" data-customer-id="2">Trần Thị B</a></td>
+                            <td>b.tran@email.com</td>
+                            <td>091xxxx456</td>
+                            <td>01/11/2023</td>
+                            <td>1</td>
+                            <td>18.990.000đ</td>
+                            <td>
+                                <button class="btn-icon btn-view-customer" title="Xem chi tiết" data-customer-id="2"><i class="fas fa-eye"></i></button>
+                                <button class="btn-icon btn-email-customer" title="Gửi Email" data-customer-id="2"><i class="fas fa-envelope"></i></button>
+                                <button class="btn-icon text-danger" title="Xóa Khách hàng" data-customer-id="2"><i class="fas fa-user-times"></i></button>
+                            </td>
+                        </tr>
+                        <tr data-customer-row-id="3">
+                            <td><a href="#" class="link-view-customer" data-customer-id="3">Lê Văn C</a></td>
+                            <td>c.le@email.com</td>
+                            <td>098xxxx789</td>
+                            <td>20/11/2023</td>
+                            <td>2</td>
+                            <td>1.900.000đ</td>
+                            <td>
+                                <button class="btn-icon btn-view-customer" title="Xem chi tiết" data-customer-id="3"><i class="fas fa-eye"></i></button>
+                                <button class="btn-icon btn-email-customer" title="Gửi Email" data-customer-id="3"><i class="fas fa-envelope"></i></button>
+                                <button class="btn-icon text-danger" title="Xóa Khách hàng" data-customer-id="3"><i class="fas fa-user-times"></i></button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Pagination -->
+                <nav class="pagination-container" aria-label="Customer navigation">
+                    <ul class="pagination">
+                        <li class="page-item disabled"><a class="page-link" href="#" aria-label="Previous page">«</a></li>
+                        <li class="page-item active"><a class="page-link" href="#" aria-current="page">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#" aria-label="Next page">»</a></li>
+                    </ul>
+                </nav>
+
+                <!-- Customer Detail View (Placeholder) -->
+                <div id="customer-detail-view" class="content-block form-view" style="display: none;">
+                    <h3>Chi Tiết Khách Hàng: <span id="detailCustomerName">...</span></h3>
+                    <nav class="tabs customer-detail-tabs">
+                        <button type="button" class="tab-link active" data-tab="customer-info">Thông tin</button>
+                        <button type="button" class="tab-link" data-tab="customer-addresses">Địa chỉ</button>
+                        <button type="button" class="tab-link" data-tab="customer-order-history">Lịch sử Đơn hàng</button>
+                        <button type="button" class="tab-link" data-tab="customer-service-history">Lịch sử Yêu cầu DV</button>
+                        <button type="button" class="tab-link" data-tab="customer-notes">Ghi chú Admin</button>
+                    </nav>
+                    <div id="customerDetailContentPlaceholder">
+                        <!-- Content for each tab will be loaded here -->
+                        <div id="customer-info" class="tab-content active">
+                            <p><strong>Email:</strong> <span id="custDetailEmail">...</span></p>
+                            <p><strong>SĐT:</strong> <span id="custDetailPhone">...</span></p>
+                            <p><strong>Ngày ĐK:</strong> <span id="custDetailRegDate">...</span></p>
+                        </div>
+                        <div id="customer-addresses" class="tab-content">
+                            <div class="address-list">
+                                <div class="address-item">Loading...</div>
+                            </div>
+                            <button class="btn btn-sm btn-secondary"><i class="fas fa-plus"></i> Thêm địa chỉ</button>
+                        </div>
+                        <div id="customer-order-history" class="tab-content table-responsive">
+                            <table class="admin-table mini-table"><thead><tr><th>Mã ĐH</th><th>Ngày</th><th>Tổng tiền</th><th>Trạng thái</th><th></th></tr></thead><tbody><tr><td colspan="5">Loading...</td></tr></table>
+                        </div>
+                        <div id="customer-service-history" class="tab-content table-responsive">
+                            <table class="admin-table mini-table"><thead><tr><th>Mã YC</th><th>Ngày</th><th>Loại</th><th>Trạng thái</th><th></th></tr></thead><tbody><tr><td colspan="5">Loading...</td></tr></table>
+                        </div>
+                        <div id="customer-notes" class="tab-content">
+                            <textarea class="form-control" rows="5" placeholder="Thêm ghi chú về khách hàng này..."></textarea>
+                            <button class="btn btn-sm btn-secondary" style="margin-top: 10px;">Lưu ghi chú</button>
+                            <ul class="activity-log" style="margin-top: 15px;"><li>Chưa có ghi chú.</li></ul>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-outline btn-close-detail">Đóng chi tiết</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ======================= Reports Section ======================= -->
+            <section id="reports-section" class="admin-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-chart-line fa-fw"></i>Báo Cáo & Thống Kê</h2>
+                </div>
+                <div class="filters-container content-block">
+                    <div class="filter-group date-range-filter">
+                        <label for="reportStartDate">Từ ngày:</label>
+                        <input type="date" class="form-control-sm" id="reportStartDate" aria-label="Report start date">
+                        <label for="reportEndDate">Đến ngày:</label>
+                        <input type="date" class="form-control-sm" id="reportEndDate" aria-label="Report end date">
+                    </div>
+                    <div class="filter-group">
+                        <select class="form-control-sm" aria-label="Select Report Type">
+                            <option value="revenue">Doanh thu</option>
+                            <option value="products">Sản phẩm</option>
+                            <option value="customers">Khách hàng</option>
+                            <option value="stock">Tồn kho</option>
+                            <option value="services">Dịch vụ</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-sm btn-secondary">Xem Báo Cáo</button>
+                    <button class="btn btn-sm btn-outline"><i class="fas fa-file-export"></i> Xuất Excel</button>
+                </div>
+
+                <div class="report-grid">
+                    <div class="content-block chart-container">
+                        <h3>Báo cáo Doanh thu (Demo)</h3>
+                        <canvas id="reportRevenueChart" aria-label="Biểu đồ báo cáo doanh thu"></canvas>
+                    </div>
+                    <div class="content-block chart-container">
+                        <h3>Báo cáo Sản phẩm bán chạy (Demo)</h3>
+                        <canvas id="reportTopProductsChart" aria-label="Biểu đồ báo cáo sản phẩm bán chạy"></canvas>
+                    </div>
+                    <div class="content-block">
+                        <h3>Báo cáo Tồn kho (Demo)</h3>
+                        <p>Sản phẩm sắp hết hàng: <strong class="text-danger">5</strong> (<a href="#">Xem chi tiết</a>)</p>
+                        <p>Sản phẩm đã hết hàng: <strong class="text-danger">2</strong> (<a href="#">Xem chi tiết</a>)</p>
+                        <p>Tổng giá trị tồn kho (Ước tính): <strong>150.000.000đ</strong></p>
+                    </div>
+                    <div class="content-block">
+                        <h3>Báo cáo Khách hàng (Demo)</h3>
+                        <p>Khách hàng mới trong kỳ: <strong>50</strong></p>
+                        <p>Tỷ lệ khách quay lại: <strong>25%</strong></p>
+                        <p>Top khách hàng chi tiêu: Nguyễn Văn A (12.5M), Trần Thị B (18.9M), ...</p>
+                    </div>
+                    <div class="content-block">
+                        <h3>Báo cáo Dịch vụ (Demo)</h3>
+                        <p>Tổng số yêu cầu trong kỳ: <strong>15</strong></p>
+                        <p>Yêu cầu theo loại: Sửa chữa (8), Tư vấn (5), Lắp đặt (2)</p>
+                        <p>Thời gian xử lý trung bình: <strong>2 giờ 30 phút</strong></p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ======================= Content Section ======================= -->
+            <section id="content-section" class="admin-section">
+                <h2><i class="fas fa-file-alt fa-fw"></i>Quản Lý Nội Dung</h2>
+                <nav class="tabs content-tabs">
+                    <button type="button" class="tab-link active" data-tab="content-pages">Trang Tĩnh</button>
+                    <button type="button" class="tab-link" data-tab="content-banners">Banners/Sliders</button>
+                    <button type="button" class="tab-link" data-tab="content-faq">FAQ</button>
+                </nav>
+
+                <div id="content-pages" class="tab-content active">
+                    <div class="section-header sub-header">
+                        <h3>Quản lý Trang tĩnh</h3>
+                        <button class="btn btn-sm btn-primary"><i class="fas fa-plus"></i> Thêm Trang mới</button>
+                    </div>
+                    <div class="content-block table-responsive">
+                        <table class="admin-table">
+                            <thead><tr><th>Tiêu đề Trang</th><th>Đường dẫn (Slug)</th><th>Ngày cập nhật</th><th>Hành động</th></tr></thead>
+                            <tbody>
+                            <tr><td>Giới thiệu</td><td>/gioi-thieu</td><td>20/12/2023</td><td><button class="btn-icon" title="Sửa"><i class="fas fa-edit"></i></button> <button class="btn-icon" title="Xem"><i class="fas fa-eye"></i></button> <button class="btn-icon text-danger" title="Xóa"><i class="fas fa-trash-alt"></i></button></td></tr>
+                            <tr><td>Chính sách bảo hành</td><td>/chinh-sach-bao-hanh</td><td>15/11/2023</td><td><button class="btn-icon" title="Sửa"><i class="fas fa-edit"></i></button> <button class="btn-icon" title="Xem"><i class="fas fa-eye"></i></button> <button class="btn-icon text-danger" title="Xóa"><i class="fas fa-trash-alt"></i></button></td></tr>
+                            <tr><td>Liên hệ</td><td>/lien-he</td><td>01/10/2023</td><td><button class="btn-icon" title="Sửa"><i class="fas fa-edit"></i></button> <button class="btn-icon" title="Xem"><i class="fas fa-eye"></i></button> <button class="btn-icon text-danger" title="Xóa"><i class="fas fa-trash-alt"></i></button></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="content-banners" class="tab-content">
+                    <div class="section-header sub-header">
+                        <h3>Quản lý Banners</h3>
+                        <button class="btn btn-sm btn-primary"><i class="fas fa-plus"></i> Thêm Banner mới</button>
+                    </div>
+                    <div class="content-block">
+                        <p>Khu vực quản lý banner (upload, sắp xếp kéo thả, đặt link, xóa)...</p>
+                        <div class="banner-list-placeholder">
+                            <div class="banner-item-demo">
+                                <img src="https://via.placeholder.com/150x50/6c5ce7/ffffff?text=Banner1" alt="Banner 1">
+                                <span>Vị trí: Trang chủ | Link: /khuyen-mai</span>
+                                <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                <button class="btn-icon text-danger"><i class="fas fa-trash-alt"></i></button>
+                            </div>
+                            <div class="banner-item-demo">
+                                <img src="https://via.placeholder.com/150x50/a29bfe/ffffff?text=Banner2" alt="Banner 2">
+                                <span>Vị trí: Trang Laptop | Link: /laptop-moi</span>
+                                <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                <button class="btn-icon text-danger"><i class="fas fa-trash-alt"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="content-faq" class="tab-content">
+                    <div class="section-header sub-header">
+                        <h3>Quản lý FAQ</h3>
+                        <button class="btn btn-sm btn-primary"><i class="fas fa-plus"></i> Thêm FAQ mới</button>
+                    </div>
+                    <div class="content-block table-responsive">
+                        <table class="admin-table">
+                            <thead><tr><th>Câu hỏi</th><th>Danh mục</th><th>Hành động</th></tr></thead>
+                            <tbody>
+                            <tr><td>Làm sao để theo dõi đơn hàng?</td><td>Đơn hàng</td><td><button class="btn-icon" title="Sửa"><i class="fas fa-edit"></i></button> <button class="btn-icon text-danger" title="Xóa"><i class="fas fa-trash-alt"></i></button></td></tr>
+                            <tr><td>Chính sách bảo hành như thế nào?</td><td>Chính sách</td><td><button class="btn-icon" title="Sửa"><i class="fas fa-edit"></i></button> <button class="btn-icon text-danger" title="Xóa"><i class="fas fa-trash-alt"></i></button></td></tr>
+                            <tr><td>Cửa hàng có hỗ trợ trả góp không?</td><td>Thanh toán</td><td><button class="btn-icon" title="Sửa"><i class="fas fa-edit"></i></button> <button class="btn-icon text-danger" title="Xóa"><i class="fas fa-trash-alt"></i></button></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ======================= Settings Section ======================= -->
+            <section id="settings-section" class="admin-section">
+                <h2><i class="fas fa-cogs fa-fw"></i>Cài Đặt Cửa Hàng</h2>
+                <nav class="tabs settings-tabs">
+                    <button type="button" class="tab-link active" data-tab="settings-general">Thông tin chung</button>
+                    <button type="button" class="tab-link" data-tab="settings-payments">Thanh toán</button>
+                    <button type="button" class="tab-link" data-tab="settings-shipping">Vận chuyển</button>
+                    <button type="button" class="tab-link" data-tab="settings-emails">Emails</button>
+                    <button type="button" class="tab-link" data-tab="settings-seo">SEO</button>
+                </nav>
+
+                <div id="settings-general" class="tab-content active content-block">
+                    <h3>Thông tin chung</h3>
+                    <form id="generalSettingsForm">
+                        <div class="form-group">
+                            <label for="storeName">Tên cửa hàng</label>
+                            <input type="text" id="storeName" class="form-control" value="TechShop">
+                        </div>
+                        <div class="form-group">
+                            <label for="storeAddress">Địa chỉ</label>
+                            <input type="text" id="storeAddress" class="form-control" value="123 ABC, Phường XYZ, Quận 1, TP. Hồ Chí Minh">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="storeEmail">Email liên hệ</label>
+                                <input type="email" id="storeEmail" class="form-control" value="support@techshop.example.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="storePhone">Hotline</label>
+                                <input type="tel" id="storePhone" class="form-control" value="1900 1234">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="storeLogo">Logo cửa hàng</label>
+                            <input type="file" id="storeLogo" class="form-control-file" accept="image/*">
+                            <div class="image-preview-container" style="margin-top:10px;"><img src="https://via.placeholder.com/150x50/a29bfe/ffffff?text=TechShopLogo" alt="Current Logo" style="max-height: 50px; width:auto;"></div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Lưu cài đặt chung</button>
+                    </form>
+                </div>
+
+                <div id="settings-payments" class="tab-content content-block">
+                    <h3>Cấu hình Thanh toán</h3>
+                    <div class="payment-gateway-setting">
+                        <h4><i class="fas fa-money-bill-wave"></i> Thanh toán khi nhận hàng (COD)</h4>
+                        <div class="form-check form-switch">
+                            <input type="checkbox" id="codEnabled" class="form-check-input" checked>
+                            <label for="codEnabled" class="form-check-label">Kích hoạt COD</label>
+                        </div>
+                        <div class="gateway-details">
+                            <input type="text" class="form-control" placeholder="Tiêu đề hiển thị (VD: Thanh toán khi nhận hàng)" value="Thanh toán khi nhận hàng">
+                            <textarea class="form-control" rows="2" placeholder="Hướng dẫn (Nếu cần)"></textarea>
+                        </div>
+                    </div>
+                    <div class="payment-gateway-setting">
+                        <h4><i class="fas fa-university"></i> Chuyển khoản ngân hàng</h4>
+                        <div class="form-check form-switch">
+                            <input type="checkbox" id="bankTransferEnabled" class="form-check-input" checked>
+                            <label for="bankTransferEnabled" class="form-check-label">Kích hoạt Chuyển khoản</label>
+                        </div>
+                        <div class="gateway-details">
+                            <input type="text" class="form-control" placeholder="Tiêu đề hiển thị" value="Chuyển khoản ngân hàng">
+                            <textarea class="form-control" rows="4" placeholder="Nhập thông tin tài khoản ngân hàng hiển thị cho khách...">Số TK: 123456789
+Ngân hàng: Vietcombank CN HCM
+Chủ TK: CTY TNHH TECHSHOP
+Nội dung: Thanh toan don hang [order_id]</textarea>
+                        </div>
+                    </div>
+                    <div class="payment-gateway-setting">
+                        <h4><img src="https://vnpay.vn/s1/statics.vnpay.vn/2023/6/0kMKNQuySZA3fG930GQH_logo-vnpay.png" alt="VNPAY" class="gateway-logo"> VNPAY</h4>
+                        <div class="form-check form-switch">
+                            <input type="checkbox" id="vnpayEnabled" class="form-check-input">
+                            <label for="vnpayEnabled" class="form-check-label">Kích hoạt VNPAY</label>
+                        </div>
+                        <div class="gateway-details" style="display:none;"> <!-- Show when enabled -->
+                            <div class="form-group">
+                                <label for="vnpayTmnCode">TmnCode</label>
+                                <input type="text" id="vnpayTmnCode" class="form-control" placeholder="TmnCode do VNPAY cung cấp">
+                            </div>
+                            <div class="form-group">
+                                <label for="vnpayHashSecret">HashSecret</label>
+                                <input type="text" id="vnpayHashSecret" class="form-control" placeholder="Chuỗi bí mật HashSecret">
+                            </div>
+                            <div class="form-group form-check">
+                                <input type="checkbox" id="vnpayTestMode" class="form-check-input">
+                                <label for="vnpayTestMode" class="form-check-label">Chế độ thử nghiệm (Sandbox)?</label>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Add More Gateways (Momo, etc.) -->
+                    <button type="submit" class="btn btn-primary">Lưu cài đặt thanh toán</button>
+                </div>
+
+                <div id="settings-shipping" class="tab-content content-block">
+                    <h3>Cấu hình Vận chuyển</h3>
+                    <button class="btn btn-sm btn-secondary"><i class="fas fa-map-marker-alt"></i> Thêm Vùng giao hàng</button>
+                    <div class="shipping-zones-container" style="margin-top: 1.5rem;">
+                        <!-- Example Shipping Zone -->
+                        <div class="shipping-zone">
+                            <h4><i class="fas fa-globe-asia"></i> Nội thành TP.HCM <button class="btn-icon btn-edit-zone"><i class="fas fa-edit"></i></button> <button class="btn-icon text-danger btn-delete-zone"><i class="fas fa-trash-alt"></i></button></h4>
+                            <p><strong>Khu vực áp dụng:</strong> Quận 1, Quận 3, Quận 5, ...</p>
+                            <div class="shipping-methods">
+                                <h5>Phương thức vận chuyển</h5>
+                                <div class="shipping-method-item">
+                                    <span>Giao hàng nhanh (2h)</span>
+                                    <span>Phí cố định: 35.000đ</span>
+                                    <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-icon text-danger"><i class="fas fa-trash-alt"></i></button>
+                                </div>
+                                <div class="shipping-method-item">
+                                    <span>Giao hàng tiêu chuẩn (24h)</span>
+                                    <span>Miễn phí cho đơn từ 500.000đ, dưới tính 20.000đ</span>
+                                    <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-icon text-danger"><i class="fas fa-trash-alt"></i></button>
+                                </div>
+                                <button class="btn btn-xs btn-outline"><i class="fas fa-plus"></i> Thêm phương thức</button>
+                            </div>
+                        </div>
+                        <!-- Add more zones -->
+                    </div>
+                    <button type="submit" class="btn btn-primary">Lưu cài đặt vận chuyển</button>
+                </div>
+
+                <div id="settings-emails" class="tab-content content-block">
+                    <h3>Cài đặt Email Tự động</h3>
+                    <p>Cấu hình thông tin người gửi, và chỉnh sửa nội dung các email gửi cho khách hàng.</p>
+                    <hr>
+                    <div class="email-template-setting">
+                        <h4><i class="fas fa-check-circle"></i> Xác nhận đơn hàng mới</h4>
+                        <div>
+                            <button class="btn btn-sm btn-outline"><i class="fas fa-edit"></i> Sửa mẫu</button>
+                            <button class="btn btn-sm btn-outline"><i class="fas fa-paper-plane"></i> Gửi thử</button>
+                        </div>
+                    </div>
+                    <div class="email-template-setting">
+                        <h4><i class="fas fa-truck"></i> Đơn hàng đã được giao</h4>
+                        <div>
+                            <button class="btn btn-sm btn-outline"><i class="fas fa-edit"></i> Sửa mẫu</button>
+                            <button class="btn btn-sm btn-outline"><i class="fas fa-paper-plane"></i> Gửi thử</button>
+                        </div>
+                    </div>
+                    <div class="email-template-setting">
+                        <h4><i class="fas fa-times-circle"></i> Đơn hàng đã hủy</h4>
+                        <div>
+                            <button class="btn btn-sm btn-outline"><i class="fas fa-edit"></i> Sửa mẫu</button>
+                            <button class="btn btn-sm btn-outline"><i class="fas fa-paper-plane"></i> Gửi thử</button>
+                        </div>
+                    </div>
+                    <div class="email-template-setting">
+                        <h4><i class="fas fa-undo"></i> Xác nhận yêu cầu hoàn tiền</h4>
+                        <div>
+                            <button class="btn btn-sm btn-outline"><i class="fas fa-edit"></i> Sửa mẫu</button>
+                            <button class="btn btn-sm btn-outline"><i class="fas fa-paper-plane"></i> Gửi thử</button>
+                        </div>
+                    </div>
+                    <div class="email-template-setting">
+                        <h4><i class="fas fa-user-plus"></i> Chào mừng thành viên mới</h4>
+                        <div>
+                            <button class="btn btn-sm btn-outline"><i class="fas fa-edit"></i> Sửa mẫu</button>
+                            <button class="btn btn-sm btn-outline"><i class="fas fa-paper-plane"></i> Gửi thử</button>
+                        </div>
+                    </div>
+                    <!-- Add more email templates -->
+                    <button type="submit" class="btn btn-primary" style="margin-top:1.5rem;">Lưu cài đặt Email</button>
+                </div>
+
+                <div id="settings-seo" class="tab-content content-block">
+                    <h3>Cài đặt SEO Mặc định</h3>
+                    <form id="seoSettingsForm">
+                        <div class="form-group">
+                            <label for="defaultSeoTitle">Tiêu đề Trang chủ (Homepage Title)</label>
+                            <input type="text" id="defaultSeoTitle" class="form-control" value="TechShop - Cửa hàng Công nghệ Uy tín Chính hãng">
+                        </div>
+                        <div class="form-group">
+                            <label for="defaultSeoDescription">Mô tả Trang chủ (Homepage Meta Description)</label>
+                            <textarea id="defaultSeoDescription" class="form-control" rows="3">Mua sắm các sản phẩm công nghệ mới nhất: Laptop, Điện thoại, Phụ kiện chính hãng, giá tốt nhất thị trường tại TechShop. Bảo hành uy tín, giao hàng toàn quốc.</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="seoSeparator">Dấu phân cách Tiêu đề</label>
+                            <input type="text" id="seoSeparator" class="form-control" value="|" style="max-width: 100px;">
+                            <small>Dùng để ngăn cách tên trang và tên cửa hàng (VD: Tên Sản Phẩm | TechShop)</small>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Lưu cài đặt SEO</button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- ======================= Admin Accounts Section ======================= -->
+            <section id="admins-section" class="admin-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-user-shield fa-fw"></i>Quản Lý Tài Khoản Admin</h2>
+                    <button class="btn btn-primary"><i class="fas fa-user-plus"></i> Thêm Admin mới</button>
+                </div>
+                <div class="content-block table-responsive">
+                    <table class="admin-table">
+                        <thead>
+                        <tr>
+                            <th>Tên</th>
+                            <th>Email</th>
+                            <th>Vai trò</th>
+                            <th>Trạng thái</th>
+                            <th>Đăng nhập cuối</th>
+                            <th>Hành động</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>Admin Demo</td>
+                            <td>admin.demo@techshop.example</td>
+                            <td>Super Admin</td>
+                            <td><span class="status status-active">Hoạt động</span></td>
+                            <td>25/12/2023 11:00</td>
+                            <td>
+                                <button class="btn-icon" title="Sửa"><i class="fas fa-edit"></i></button>
+                                <button class="btn-icon" title="Đổi mật khẩu"><i class="fas fa-key"></i></button>
+                                <button class="btn-icon text-danger" title="Vô hiệu hóa"><i class="fas fa-user-slash"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Nhân viên A</td>
+                            <td>nhanvien.a@techshop.example</td>
+                            <td>Quản lý Đơn hàng</td>
+                            <td><span class="status status-active">Hoạt động</span></td>
+                            <td>24/12/2023 16:30</td>
+                            <td>
+                                <button class="btn-icon" title="Sửa"><i class="fas fa-edit"></i></button>
+                                <button class="btn-icon" title="Đổi mật khẩu"><i class="fas fa-key"></i></button>
+                                <button class="btn-icon text-danger" title="Vô hiệu hóa"><i class="fas fa-user-slash"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Nhân viên B</td>
+                            <td>nhanvien.b@techshop.example</td>
+                            <td>Biên tập viên Nội dung</td>
+                            <td><span class="status status-inactive">Vô hiệu hóa</span></td>
+                            <td>10/12/2023 08:00</td>
+                            <td>
+                                <button class="btn-icon" title="Sửa"><i class="fas fa-edit"></i></button>
+                                <button class="btn-icon" title="Đổi mật khẩu"><i class="fas fa-key"></i></button>
+                                <button class="btn-icon text-success" title="Kích hoạt"><i class="fas fa-user-check"></i></button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </div> <!-- End .admin-content -->
+    </main> <!-- End .admin-main -->
+</div> <!-- End .admin-container -->
+
+<!-- Placeholder for potential Modals (e.g., confirm delete, add tracking) -->
+<!-- <div class="modal-overlay" id="adminModalOverlay"></div>
+<div class="modal" id="adminConfirmModal"> ... </div> -->
+
+
+<!-- Admin Script -->
+<script src="script.js"></script>
+<!-- Placeholder for Select2/Choices JS if needed -->
+<!-- <script src="path/to/select2.min.js"></script> -->
+<!-- Placeholder for Rich Text Editor JS -->
+<!-- <script src="path/to/tinymce.min.js"></script> -->
+
+</body>
+</html>

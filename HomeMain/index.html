@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trang Chủ | devNova.KLT </title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<!-- Scroll Indicator -->
+<div class="scroll-indicator" id="scrollIndicator"></div>
+
+<!-- Back to Top Button -->
+<a href="#" class="back-to-top" id="backToTop">
+  <i class="fas fa-arrow-up"></i>
+</a>
+
+<!-- Header -->
+<header id="header">
+  <a href="#" class="logo">dev.Nova<span>KLT</span></a>
+
+  <div class="menu-toggle" id="menuToggle">
+    <i class="fas fa-bars"></i>
+  </div>
+
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <div class="close-menu" id="closeMenu">
+
+    </div>
+  </ul>
+<!--  login o day-->
+  <div class="auth-buttons" id="authButtons">
+    <button class="btn btn-outline" id="loginBtnHeader">Login</button>
+    <button class="btn btn-primary" id="signupBtnHeader">Sign Up</button>
+  </div>
+  <div class="user-info" id="userInfo" style="display: none;">
+    <span id="usernameDisplay">Welcome, User!</span>
+    <button class="btn btn-outline" id="logoutBtn">Logout</button>
+  </div>
+</header>
+
+<!-- Hero Section -->
+<section class="hero" id="home">
+  <!-- Particle Background -->
+  <div id="particles-js"></div>
+
+  <div class="hero-content fade-in">
+    <h1>Hi, I'm <span>Zaka</span> <br>Creative Designer</h1>
+    <p>I craft beautiful digital experiences with a focus on user-centered design and cutting-edge technologies.</p>
+    <a href="#projects" class="cta-button">View My Product</a>
+
+    <div class="social-icons">
+      <a href="#"><i class="fab fa-github"></i></a>
+      <a href="#"><i class="fab fa-linkedin-in"></i></a>
+      <a href="#"><i class="fab fa-dribbble"></i></a>
+      <a href="#"><i class="fab fa-behance"></i></a>
+    </div>
+  </div>
+
+  <!-- 3D Model -->
+  <div class="model-container">
+    <div class="model">
+      <div class="face front"><i class="fas fa-code"></i></div>
+      <div class="face back"><i class="fas fa-paint-brush"></i></div>
+      <div class="face right"><i class="fas fa-mobile-alt"></i></div>
+      <div class="face left"><i class="fas fa-laptop-code"></i></div>
+      <div class="face top"><i class="fas fa-palette"></i></div>
+      <div class="face bottom"><i class="fas fa-server"></i></div>
+    </div>
+  </div>
+</section>
+
+<!-- About Section -->
+<section class="section" id="about">
+  <h2 class="section-title fade-in">About <span>Me</span></h2>
+
+  <div class="about-content">
+    <div class="about-text fade-in delay-1">
+      <h3>Designer & Developer</h3>
+      <p>With over 5 years of experience in the digital design industry, I specialize in creating visually stunning and highly functional websites and applications. My approach combines aesthetic sensibility with technical expertise to deliver exceptional user experiences.</p>
+      <p>I believe in the power of design to solve problems and create meaningful connections between brands and their audiences. Every pixel and line of code is crafted with intention and purpose.</p>
+
+      <div class="skills">
+        <span class="skill">UI/UX Design</span>
+        <span class="skill">Web Development</span>
+        <span class="skill">3D Modeling</span>
+        <span class="skill">Motion Graphics</span>
+        <span class="skill">Brand Identity</span>
+        <span class="skill">Responsive Design</span>
+      </div>
+    </div>
+
+    <div class="about-image fade-in delay-2">
+      <div class="image-card">
+        <div class="card-front"></div>
+        <div class="card-back">
+          <p>"Design is not just what it looks like and feels like. Design is how it works." - Steve Jobs</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Projects Section -->
+<section class="section" id="projects">
+  <h2 class="section-title fade-in">My <span>Products</span></h2>
+
+  <div class="projects-grid">
+    <div class="project-card fade-in delay-1">
+      <div class="project-image">
+        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Project 1">
+      </div>
+      <div class="project-info">
+        <h3>E-commerce Platform</h3>
+        <p>Complete online shopping experience with custom CMS</p>
+      </div>
+      <div class="project-links">
+        <a href="#"><i class="fas fa-link"></i></a>
+        <a href="#"><i class="fab fa-github"></i></a>
+      </div>
+    </div>
+
+    <div class="project-card fade-in delay-2">
+      <div class="project-image">
+        <img src="https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1169&q=80" alt="Project 2">
+      </div>
+      <div class="project-info">
+        <h3>Mobile App UI</h3>
+        <p>Fitness tracking application with custom illustrations</p>
+      </div>
+      <div class="project-links">
+        <a href="#"><i class="fas fa-link"></i></a>
+        <a href="#"><i class="fab fa-github"></i></a>
+      </div>
+    </div>
+
+    <div class="project-card fade-in delay-3">
+      <div class="project-image">
+        <img src="https://images.unsplash.com/photo-1559028012-481c04fa702d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1136&q=80" alt="Project 3">
+      </div>
+      <div class="project-info">
+        <h3>Brand Identity</h3>
+        <p>Complete visual identity for a tech startup</p>
+      </div>
+      <div class="project-links">
+        <a href="#"><i class="fas fa-link"></i></a>
+        <a href="#"><i class="fab fa-github"></i></a>
+      </div>
+    </div>
+
+    <div class="project-card fade-in delay-4">
+      <div class="project-image">
+        <img src="https://images.unsplash.com/photo-1522542550221-31fd19575a2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Project 4">
+      </div>
+      <div class="project-info">
+        <h3>Interactive Dashboard</h3>
+        <p>Data visualization platform with real-time updates</p>
+      </div>
+      <div class="project-links">
+        <a href="#"><i class="fas fa-link"></i></a>
+        <a href="#"><i class="fab fa-github"></i></a>
+      </div>
+    </div>
+
+    <div class="project-card fade-in delay-5">
+      <div class="project-image">
+        <img src="https://images.unsplash.com/photo-1559028012-481c04fa702d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1136&q=80" alt="Project 5">
+      </div>
+      <div class="project-info">
+        <h3>3D Product Configurator</h3>
+        <p>Customizable product visualizer for e-commerce</p>
+      </div>
+      <div class="project-links">
+        <a href="#"><i class="fas fa-link"></i></a>
+        <a href="#"><i class="fab fa-github"></i></a>
+      </div>
+    </div>
+
+    <div class="project-card fade-in delay-1">
+      <div class="project-image">
+        <img src="https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1169&q=80" alt="Project 6">
+      </div>
+      <div class="project-info">
+        <h3>AR Experience</h3>
+        <p>Augmented reality app for museum visitors</p>
+      </div>
+      <div class="project-links">
+        <a href="#"><i class="fas fa-link"></i></a>
+        <a href="#"><i class="fab fa-github"></i></a>
+      </div>
+    </div>
+
+    <div class="project-card fade-in delay-1">
+      <div class="project-image">
+        <img src="https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1169&q=80" alt="Project 6">
+      </div>
+      <div class="project-info">
+        <h3>Technology Products</h3>
+        <p>All technology appliances such as computers, phones, ...</p>
+      </div>
+      <div class="project-links">
+        <a href="#"><i class="fas fa-link"></i></a>
+        <a href="#"><i class="fab fa-github"></i></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact Section -->
+<section class="section" id="contact">
+  <h2 class="section-title fade-in">Get In <span>Touch</span></h2>
+
+  <div class="contact-container">
+    <div class="contact-info fade-in delay-1">
+      <div class="contact-item">
+        <div class="contact-icon">
+          <i class="fas fa-map-marker-alt"></i>
+        </div>
+        <div class="contact-text">
+          <h3>VIET NAM</h3>
+          <p>Ha Noi, Codegym</p>
+        </div>
+      </div>
+
+      <div class="contact-item">
+        <div class="contact-icon">
+          <i class="fas fa-envelope"></i>
+        </div>
+        <div class="contact-text">
+          <h3>Email</h3>
+          <a href="mailto:hello@example.com">18khanh.2003@gmail.com</a>
+        </div>
+      </div>
+
+      <div class="contact-item">
+        <div class="contact-icon">
+          <i class="fas fa-phone-alt"></i>
+        </div>
+        <div class="contact-text">
+          <h3>Phone</h3>
+          <a href="tel:+1234567890">+84 (822) 580-060</a>
+        </div>
+      </div>
+
+      <div class="contact-item">
+        <div class="contact-icon">
+          <i class="fas fa-clock"></i>
+        </div>
+        <div class="contact-text">
+          <h3>Working Hours</h3>
+          <p>Mon-Fri: 8AM - 5PM</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-form fade-in delay-2">
+      <form id="contactForm">
+        <div class="form-group">
+          <label for="name">Your Name</label>
+          <input type="text" id="name" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Your Email</label>
+          <input type="email" id="email" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label for="subject">Subject</label>
+          <input type="text" id="subject" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label for="message">Your Message</label>
+          <textarea id="message" class="form-control" required></textarea>
+        </div>
+
+        <button type="submit" class="submit-btn">Send Message</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-content">
+    <!-- Cột 1: Logo & Mô tả ngắn (Tùy chọn) -->
+    <div class="footer-column footer-about">
+      <a href="#" class="footer-logo">dev.Nova<span>KLT</span></a>
+      <p>Cung cấp các giải pháp sáng tạo và trải nghiệm kỹ thuật số độc đáo.</p>
+      <div class="footer-social">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        <a href="#"><i class="fab fa-dribbble"></i></a>
+        <a href="#"><i class="fab fa-behance"></i></a>
+      </div>
+    </div>
+
+    <!-- Cột 2: Thông tin liên hệ -->
+    <div class="footer-column footer-contact">
+      <h4>Liên Hệ</h4>
+      <p><i class="fas fa-map-marker-alt"></i> Hà Nội, CodeGym Mỹ Đình</p>
+      <p><i class="fas fa-phone-alt"></i> <a href="tel:+84822580060">+84 (822) 580-060</a></p>
+      <p><i class="fas fa-envelope"></i> <a href="mailto:18khanh.2003@gmail.com">18khanh.2003@gmail.com</a></p>
+    </div>
+
+    <!-- Cột 3: Bản đồ -->
+    <div class="footer-column footer-map">
+      <h4>Bản Đồ</h4>
+      <!-- Thay thế src bằng mã nhúng Google Map của bạn -->
+      <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.1131157192387!2d105.78131287491149!3d21.02815948780018!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab4cd0c66f05%3A0xea31563511af2e54!2zQ29kZUd5bSBN4bu5IMSQw6xuaA!5e0!3m2!1svi!2s!4v1700000000000!5m2!1svi!2s"
+              width="100%"
+              height="200"
+              style="border:0; border-radius: 5px;"
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+  </div>
+
+  <p class="copyright">© 2024 dev.NovaKLT Creative Portfolio. All rights reserved.</p>
+</footer>
+
+<!-- Modal Overlay -->
+<div class="modal-overlay" id="modalOverlay"></div>
+
+<!-- Login Modal - Cập nhật -->
+<div class="modal" id="loginModal">
+  <button class="close-modal" id="closeLoginModal">×</button>
+  <h2>Login</h2>
+
+  <!-- Phần Login thông thường -->
+  <form id="loginForm" class="modal-form">
+    <div class="form-group">
+      <label for="loginEmail">Email or Username</label>
+      <input type="text" id="loginEmail" class="form-control" required>
+    </div>
+    <div class="form-group">
+      <label for="loginPassword">Password</label>
+      <input type="password" id="loginPassword" class="form-control" required>
+    </div>
+    <div class="form-options">
+      <a href="#" id="forgotPasswordLink">Forgot Password?</a>
+    </div>
+    <button type="submit" class="submit-btn">Login</button>
+  </form>
+
+  <!-- Phần Quên mật khẩu (ẩn mặc định) -->
+  <form id="forgotPasswordForm" class="modal-form" style="display: none;">
+    <p>Enter your email address and we'll send you a link to reset your password.</p>
+    <div class="form-group">
+      <label for="resetEmailInput">Your Email</label>
+      <input type="email" id="resetEmailInput" class="form-control" required>
+    </div>
+    <button type="submit" class="submit-btn" id="sendResetLinkBtn">Send Reset Link</button>
+    <p class="modal-switch"><a href="#" id="backToLoginLink">Back to Login</a></p>
+  </form>
+
+  <!-- Phần Social Login -->
+  <div class="social-login-divider">
+    <span>OR</span>
+  </div>
+  <div class="social-login-buttons">
+    <button class="btn btn-social btn-google" id="loginGoogleBtn"><i class="fab fa-google"></i> Login with Google</button>
+    <button class="btn btn-social btn-facebook" id="loginFacebookBtn"><i class="fab fa-facebook-f"></i> Login with Facebook</button>
+  </div>
+
+  <p class="modal-switch">Don't have an account? <a href="#" id="switchToRegister">Sign Up</a></p>
+</div>
+
+
+<!-- Register Modal - Cập nhật -->
+<div class="modal" id="registerModal">
+  <button class="close-modal" id="closeRegisterModal">×</button>
+  <h2>Create Account</h2>
+  <form id="registerForm" class="modal-form">
+    <div class="form-group">
+      <label for="registerUsername">Username</label>
+      <input type="text" id="registerUsername" class="form-control" required>
+    </div>
+    <div class="form-group">
+      <label for="registerEmail">Email</label>
+      <input type="email" id="registerEmail" class="form-control" required>
+    </div>
+    <!-- Thêm trường Số điện thoại -->
+    <div class="form-group">
+      <label for="registerPhone">Phone Number (Optional)</label>
+      <input type="tel" id="registerPhone" class="form-control"> <!-- type="tel" cho gợi ý bàn phím số -->
+    </div>
+    <div class="form-group">
+      <label for="registerPassword">Password</label>
+      <input type="password" id="registerPassword" class="form-control" required>
+    </div>
+    <div class="form-group">
+      <label for="registerConfirmPassword">Confirm Password</label>
+      <input type="password" id="registerConfirmPassword" class="form-control" required>
+      <small id="passwordMatchError" style="color: var(--accent); display: none;">Passwords do not match.</small>
+    </div>
+    <p class="modal-switch">Already have an account? <a href="#" id="switchToLogin">Login</a></p>
+    <button type="submit" class="submit-btn">Sign Up</button>
+  </form>
+</div>
+
+<!-- JavaScript -->
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
