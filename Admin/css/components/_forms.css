@@ -1,0 +1,295 @@
+/* css/components/_forms.css */
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.6rem; /* More space below label */
+    font-weight: 500;
+    font-size: 0.9rem; /* 14.4px */
+    color: var(--text-muted);
+}
+/* Add asterisk for required fields visually */
+.form-group label[for][required]::after,
+label.required::after { /* Add class .required for non-labeled elements */
+    content: ' *';
+    color: var(--danger-color);
+    font-weight: normal; /* Don't bold the asterisk */
+    margin-left: 2px;
+}
+
+
+/* Input Fields, Textareas, Selects */
+.form-control,
+.form-control-sm,
+select.form-control,
+select.form-control-sm {
+    display: block; /* Ensure selects take full width */
+    width: 100%;
+    padding: 0.8rem 1rem;
+    background-color: var(--dark-bg); /* Slightly darker than card */
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    color: var(--text-light);
+    font-family: inherit;
+    font-size: 0.95rem; /* 15.2px */
+    line-height: var(--line-height-base);
+    transition: border-color var(--transition-duration) ease,
+    background-color var(--transition-duration) ease,
+    box-shadow var(--transition-duration) ease;
+}
+
+/* Select specific styling */
+select.form-control,
+select.form-control-sm {
+    appearance: none; /* Remove default arrow */
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23b8c5cd' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e"); /* Custom arrow */
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 16px 12px;
+    padding-right: 3rem; /* Space for arrow */
+    cursor: pointer;
+}
+
+/* Focus States */
+.form-control:focus,
+.form-control-sm:focus,
+select.form-control:focus,
+select.form-control-sm:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    background-color: var(--sidebar-bg); /* Darken focus background */
+    box-shadow: 0 0 0 3px var(--admin-accent-bg); /* Focus ring */
+}
+
+/* Textarea Specifics */
+textarea.form-control {
+    min-height: 120px; /* Taller textareas */
+    resize: vertical;
+}
+
+/* Small Form Controls */
+.form-control-sm,
+select.form-control-sm {
+    padding: 0.5rem 0.8rem; /* Smaller padding */
+    font-size: 0.9rem; /* Smaller font */
+    height: auto; /* Let content determine height */
+    line-height: 1.5; /* Ensure minimum line height */
+}
+
+select.form-control-sm {
+    background-position: right 0.8rem center;
+    padding-right: 2.5rem;
+}
+
+/* File Input Placeholder Style (more needed if using custom component) */
+.form-control-file {
+    padding: 0.6rem 1rem;
+    background-color: var(--dark-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    color: var(--text-light);
+    cursor: pointer;
+    /* Needs JS for proper label display */
+}
+
+/* Form Row Layout */
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-left: -0.75rem; /* Negative margin trick for consistent spacing */
+    margin-right: -0.75rem;
+}
+
+.form-row .form-group {
+    flex: 1 1 0%; /* Allow grow/shrink, basis 0 */
+    min-width: 200px; /* Prevent excessive shrinking */
+    padding-left: 0.75rem; /* Counteract negative margin */
+    padding-right: 0.75rem;
+    margin-bottom: 0; /* Remove bottom margin when in form-row */
+}
+/* Add margin back if elements wrap */
+@media (max-width: 768px) {
+    .form-row {
+        flex-direction: column; /* Stack form row items */
+        gap: 0;
+        margin-left: 0;
+        margin-right: 0;
+    }
+    .form-row .form-group {
+        padding-left: 0;
+        padding-right: 0;
+        margin-bottom: 1.2rem; /* Add margin between stacked items */
+        min-width: 100%; /* Take full width when stacked */
+    }
+    .form-row .form-group:last-child {
+        margin-bottom: 0; /* Remove margin on last item */
+    }
+}
+
+
+/* Form Actions (Submit/Cancel Buttons) */
+.form-actions {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: center; /* Align buttons vertically if they wrap */
+}
+
+/* Checkboxes & Radios (Basic styling) */
+.form-check {
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem; /* Increased gap */
+}
+
+.form-check-input {
+    width: 1.1em; /* Slightly larger checkbox */
+    height: 1.1em;
+    margin-top: 0.1em; /* Adjust vertical alignment */
+    flex-shrink: 0;
+    background-color: var(--dark-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 3px; /* Slightly rounded */
+    cursor: pointer;
+    appearance: none; /* Remove default appearance */
+    position: relative;
+    transition: background-color var(--transition-duration) ease, border-color var(--transition-duration) ease;
+}
+.form-check-input:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+/* Checkmark */
+.form-check-input:checked::before {
+    content: '\f00c'; /* Font Awesome check */
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    color: var(--text-light);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0.8em;
+    line-height: 1;
+}
+
+/* Radio specific */
+.form-check-input[type="radio"] {
+    border-radius: 50%;
+}
+.form-check-input[type="radio"]:checked::before {
+    content: ''; /* Use background dot instead */
+    width: 0.6em;
+    height: 0.6em;
+    background-color: var(--text-light);
+    border-radius: 50%;
+}
+
+.form-check-label {
+    margin-bottom: 0; /* Remove default label margin */
+    color: var(--text-light);
+    font-weight: normal;
+    cursor: pointer; /* Indicate label is clickable */
+}
+
+
+/* Input Groups (Basic Example) */
+.input-group {
+    display: flex;
+    position: relative;
+    width: 100%;
+    align-items: stretch; /* Make items same height */
+}
+
+.input-group .form-control {
+    flex: 1 1 auto; /* Allow input to grow */
+    min-width: 0; /* Prevent overflow */
+    /* Adjust border radius when part of a group */
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    position: relative; /* Ensure focus outline is correct */
+    z-index: 1;
+}
+/* Ensure focus works correctly */
+.input-group .form-control:focus {
+    z-index: 2;
+}
+
+
+.input-group-text {
+    display: flex;
+    align-items: center;
+    padding: 0.8rem 1rem; /* Match form-control padding */
+    font-size: 0.95rem;
+    font-weight: 400;
+    line-height: var(--line-height-base);
+    color: var(--text-muted);
+    text-align: center;
+    white-space: nowrap;
+    background-color: var(--dark-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    border-left: none; /* Remove left border */
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.input-group > .input-group-text + .form-control {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: var(--border-radius);
+    border-bottom-right-radius: var(--border-radius);
+    border-left: none;
+    border-right: 1px solid var(--border-color);
+}
+.input-group > .form-control + .input-group-text {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+/* Form Validation States */
+.form-control.is-invalid,
+select.form-control.is-invalid,
+textarea.form-control.is-invalid {
+    border-color: var(--danger-color) !important; /* Ensure override */
+}
+
+.form-control.is-invalid:focus,
+select.form-control.is-invalid:focus,
+textarea.form-control.is-invalid:focus {
+    box-shadow: 0 0 0 3px rgba(214, 48, 49, 0.2); /* Red focus ring */
+}
+
+.invalid-feedback {
+    display: block; /* Ensure it's visible, changed from none */
+    width: 100%;
+    margin-top: 0.3rem;
+    font-size: 0.85rem;
+    color: var(--danger-color);
+    font-weight: 500; /* Make error text slightly bolder */
+}
+
+/* Style for inline update controls (e.g., status dropdown in detail view) */
+.form-group.inline-update {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 0.8rem; /* Less margin */
+}
+.form-group.inline-update label {
+    margin-bottom: 0; /* Remove margin below label */
+    flex-shrink: 0; /* Prevent label shrinking */
+    font-size: 0.95rem;
+}
+.form-group.inline-update .form-control-sm {
+    flex-grow: 1;
+    max-width: 200px; /* Limit width */
+}

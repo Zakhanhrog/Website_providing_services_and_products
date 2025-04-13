@@ -1,0 +1,81 @@
+/* css/utilities/_helpers.css */
+
+.text-center { text-align: center !important; }
+.text-left { text-align: left !important; }
+.text-right { text-align: right !important; }
+
+.text-danger { color: var(--danger-color) !important; }
+.text-success { color: var(--success-color) !important; }
+.text-warning { color: var(--warning-color) !important; }
+.text-info { color: var(--info-color) !important; }
+.text-muted { color: var(--text-muted) !important; }
+.text-light { color: var(--text-light) !important; }
+.text-primary { color: var(--primary-color) !important; }
+.text-secondary { color: var(--secondary-color) !important; }
+
+
+/* Margins */
+.m-0 { margin: 0 !important; }
+.mt-0 { margin-top: 0 !important; }
+.mr-0 { margin-right: 0 !important; } /* Use me-0 in Bootstrap 5 */
+.mb-0 { margin-bottom: 0 !important; }
+.ml-0 { margin-left: 0 !important; } /* Use ms-0 in Bootstrap 5 */
+
+.m-1 { margin: 0.5rem !important; }
+.mt-1 { margin-top: 0.5rem !important; }
+.mr-1 { margin-right: 0.5rem !important; }
+.mb-1 { margin-bottom: 0.5rem !important; }
+.ml-1 { margin-left: 0.5rem !important; }
+
+.m-2 { margin: 1rem !important; }
+.mt-2 { margin-top: 1rem !important; }
+.mr-2 { margin-right: 1rem !important; }
+.mb-2 { margin-bottom: 1rem !important; }
+.ml-2 { margin-left: 1rem !important; }
+
+.m-3 { margin: 1.5rem !important; }
+.mt-3 { margin-top: 1.5rem !important; }
+.mr-3 { margin-right: 1.5rem !important; }
+.mb-3 { margin-bottom: 1.5rem !important; }
+.ml-3 { margin-left: 1.5rem !important; }
+
+/* Paddings */
+.p-0 { padding: 0 !important; }
+.pt-0 { padding-top: 0 !important; }
+.pr-0 { padding-right: 0 !important; } /* Use pe-0 */
+.pb-0 { padding-bottom: 0 !important; }
+.pl-0 { padding-left: 0 !important; } /* Use ps-0 */
+
+.p-1 { padding: 0.5rem !important; }
+.pt-1 { padding-top: 0.5rem !important; }
+.pr-1 { padding-right: 0.5rem !important; }
+.pb-1 { padding-bottom: 0.5rem !important; }
+.pl-1 { padding-left: 0.5rem !important; }
+
+.p-2 { padding: 1rem !important; }
+.pt-2 { padding-top: 1rem !important; }
+.pr-2 { padding-right: 1rem !important; }
+.pb-2 { padding-bottom: 1rem !important; }
+.pl-2 { padding-left: 1rem !important; }
+
+.p-3 { padding: 1.5rem !important; }
+.pt-3 { padding-top: 1.5rem !important; }
+.pr-3 { padding-right: 1.5rem !important; }
+.pb-3 { padding-bottom: 1.5rem !important; }
+.pl-3 { padding-left: 1.5rem !important; }
+
+.p-4 { padding: 2rem !important; }
+/* Add p-4 variants if needed */
+
+/* Screen Reader Only */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}

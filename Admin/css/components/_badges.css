@@ -1,0 +1,94 @@
+/* css/components/_badges.css */
+
+/* General Badge Style (used for notification count) */
+.badge {
+    display: inline-flex; /* Use flex for centering */
+    justify-content: center;
+    align-items: center;
+    padding: 0.3em 0.6em; /* Padding relative to font size */
+    font-size: 0.75rem; /* Default small size */
+    font-weight: 600;
+    line-height: 1;
+    color: var(--text-light);
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 10rem; /* Pill shape */
+    background-color: var(--secondary-color); /* Default color */
+}
+
+/* Notification Badge */
+.badge#adminNotificationCount {
+    position: absolute;
+    top: 0px; /* Position relative to padding */
+    right: 0px; /* Position relative to padding */
+    background-color: var(--danger-color);
+    color: white;
+    font-size: 0.7rem;
+    padding: 0; /* Remove padding for circular badge */
+    border-radius: 50%;
+    min-width: 18px;
+    height: 18px;
+    border: 1px solid var(--header-bg); /* Separator from bell */
+}
+
+/* Status Badges (used in tables, etc.) */
+.status {
+    padding: 0.3rem 0.8rem; /* Adjusted padding */
+    border-radius: 15px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: inline-block;
+    text-align: center;
+    min-width: 85px; /* Ensure consistent width */
+    line-height: 1.3; /* Adjust line height */
+    border: 1px solid transparent; /* Base border */
+    vertical-align: middle; /* Align better with text */
+}
+
+.status.status-published,
+.status.status-active,
+.status.status-paid,
+.status.status-completed,
+.status.status-success { /* Generic success */
+    background-color: rgba(0, 184, 148, 0.15);
+    color: var(--success-color);
+    border-color: rgba(0, 184, 148, 0.3);
+}
+
+.status.status-draft,
+.status.status-pending,
+.status.status-processing,
+.status.status-assigned,
+.status.status-waiting,
+.status.status-warning, /* Generic warning */
+.status.status-new { /* Service new */
+    background-color: rgba(253, 203, 110, 0.15);
+    color: var(--warning-color);
+    border-color: rgba(253, 203, 110, 0.3);
+}
+
+.status.status-archived,
+.status.status-inactive,
+.status.status-cancelled,
+.status.status-closed,
+.status.status-muted, /* Generic muted/neutral */
+.status.status-unpaid { /* Unpaid is closer to muted/pending */
+    background-color: rgba(99, 110, 114, 0.15);
+    color: var(--text-muted);
+    border-color: rgba(99, 110, 114, 0.3);
+}
+
+.status.status-failed,
+.status.status-danger { /* Generic danger */
+    background-color: rgba(214, 48, 49, 0.15);
+    color: var(--danger-color);
+    border-color: rgba(214, 48, 49, 0.3);
+}
+
+.status.status-shipped,
+.status.status-info { /* Generic info */
+    background-color: rgba(9, 132, 227, 0.15);
+    color: var(--info-color);
+    border-color: rgba(9, 132, 227, 0.3);
+}

@@ -1,0 +1,215 @@
+/* css/components/_cards.css */
+
+/* General Content Block / Card Style */
+.content-block {
+    background-color: var(--card-bg);
+    padding: 1.8rem; /* Increased padding */
+    border-radius: var(--border-radius);
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow); /* Use lighter shadow */
+    border: 1px solid var(--border-color); /* Add subtle border */
+    position: relative; /* Context for loading */
+}
+
+.content-block h3 {
+    margin-bottom: 1.5rem;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--secondary-color);
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color); /* Add border below h3 */
+}
+
+/* Form View specific style (inherits from content-block) */
+.content-block.form-view {
+    /* Add specific styles if needed */
+}
+
+/* KPI Card Style (Dashboard) */
+.kpi-card {
+    /* Inherits .content-block styles implicitly if used inside dashboard */
+    /* Or define separately if structure differs */
+    background-color: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    display: flex;
+    align-items: center; /* Vertically center icon and text */
+    gap: 1.5rem;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+}
+
+.kpi-card.clickable {
+    cursor: pointer;
+}
+
+.kpi-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25); /* Enhanced hover shadow */
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+.kpi-card .kpi-icon { /* Wrap icon for better control */
+    font-size: 2.5rem;
+    padding: 1.1rem; /* Slightly more padding */
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.05); /* Subtler background */
+    flex-shrink: 0;
+    line-height: 1; /* Ensure icon is centered in padding */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px; /* Fixed size */
+    height: 60px;
+}
+
+/* KPI Icon Colors */
+.kpi-card .icon-success { color: var(--success-color); }
+.kpi-card .icon-warning { color: var(--warning-color); }
+.kpi-card .icon-info    { color: var(--info-color); }
+.kpi-card .icon-danger  { color: var(--danger-color); }
+
+.kpi-card .kpi-content {
+    flex-grow: 1;
+}
+
+.kpi-card h4 {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 0.3rem;
+    font-weight: 500;
+    white-space: nowrap;
+    border-bottom: none; /* Override general h4 border */
+    padding-bottom: 0;
+}
+
+.kpi-card p {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--text-light);
+    margin-bottom: 0.3rem;
+    line-height: 1.2; /* Adjust line height for large numbers */
+}
+
+.kpi-change {
+    font-size: 0.85rem; /* Slightly larger */
+    font-weight: 500;
+    color: var(--text-muted);
+    display: inline-flex; /* Align icon and text */
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.kpi-change.positive { color: var(--success-color); }
+.kpi-change.negative { color: var(--danger-color); }
+
+.kpi-change i {
+    font-size: 0.8em; /* Relative icon size */
+}
+
+/* Quick List Style (Dashboard) */
+.quick-list,
+.activity-log {
+    list-style: none;
+    padding: 0;
+    margin-top: 1rem;
+}
+
+.quick-list li,
+.activity-log li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0; /* Increased padding */
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.9rem;
+    gap: 1rem;
+    transition: background-color var(--transition-duration) ease; /* Hover effect */
+}
+
+.quick-list li:hover,
+.activity-log li:hover {
+    background-color: rgba(255, 255, 255, 0.02); /* Subtle hover */
+}
+
+.quick-list li:last-child,
+.activity-log li:last-child {
+    border-bottom: none;
+}
+
+.quick-list li span {
+    flex-grow: 1;
+    overflow-wrap: break-word;
+    color: var(--text-light);
+    padding-right: 0.5rem; /* Space before button */
+}
+.quick-list li span a.quick-link { /* Style links inside lists */
+    color: var(--primary-color);
+    font-weight: 500;
+}
+.quick-list li span a.quick-link:hover {
+    text-decoration: underline;
+}
+
+
+.quick-list.product-list li {
+    gap: 0.8rem;
+    align-items: center;
+}
+
+.quick-list.product-list img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    border-radius: 4px;
+    flex-shrink: 0;
+    background: var(--dark-bg); /* Background for transparent images */
+}
+
+.activity-log li {
+    flex-direction: column; /* Stack vertically */
+    align-items: flex-start;
+    color: var(--text-muted);
+}
+
+.activity-log li span:first-child { /* The main action text */
+    margin-bottom: 0.3rem;
+    line-height: 1.4;
+}
+.activity-log li span strong { /* Highlight user names */
+    color: var(--secondary-color);
+    font-weight: 600;
+}
+
+.activity-log li .timestamp {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    opacity: 0.8;
+}
+
+/* View All Link (within cards/blocks) */
+.view-all-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem; /* More space */
+    margin-top: 1.2rem; /* More space above */
+    font-weight: 600;
+    color: var(--primary-color);
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.view-all-link i {
+    transition: transform var(--transition-duration) ease;
+}
+
+.view-all-link:hover {
+    color: var(--secondary-color);
+}
+
+.view-all-link:hover i {
+    transform: translateX(3px); /* Arrow moves slightly */
+}

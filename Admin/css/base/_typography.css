@@ -1,0 +1,67 @@
+/* css/base/_typography.css */
+
+/* Links */
+a {
+    text-decoration: none;
+    color: var(--primary-color);
+    transition: var(--transition);
+}
+
+a:hover {
+    color: var(--secondary-color);
+    text-decoration: none; /* Keep no underline on hover by default */
+}
+
+/* Lists */
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+/* Images */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 4px; /* Default smaller radius for images */
+    vertical-align: middle; /* Better alignment */
+    /* Prevent image dragging */
+    -webkit-user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+/* Headings - Basic styling, can be expanded */
+h1, h2, h3, h4, h5, h6 {
+    margin-bottom: 1rem; /* Default margin */
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--text-light); /* Default heading color */
+}
+
+h2 { font-size: 1.8rem; }
+h3 { font-size: 1.5rem; }
+h4 { font-size: 1.2rem; }
+
+/* Paragraphs */
+p {
+    margin-bottom: 1rem;
+}
+
+/* Horizontal Rule */
+hr {
+    border: 0;
+    border-top: 1px solid var(--border-color);
+    margin: 1.5rem 0;
+}
+
+/* Small Text */
+small,
+.form-text { /* Apply to form help text too */
+    color: var(--text-muted);
+    font-size: 0.85rem; /* Slightly larger help text */
+    display: block;
+    margin-top: 0.4rem; /* More space above help text */
+}

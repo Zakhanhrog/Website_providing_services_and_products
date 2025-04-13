@@ -1,0 +1,48 @@
+/* css/main.css */
+
+/* 1. Base Styles */
+@import url('base/_variables.css');
+@import url('base/_reset.css');
+@import url('base/_typography.css');
+
+/* 2. Utilities */
+@import url('utilities/_helpers.css');
+
+/* 3. Components */
+@import url('components/_buttons.css');
+@import url('components/_forms.css');
+@import url('components/_tables.css');
+@import url('components/_badges.css');
+@import url('components/_pagination.css');
+@import url('components/_modals.css');
+@import url('components/_dropdowns.css');
+@import url('components/_cards.css');
+@import url('components/_tabs.css');
+@import url('components/_charts.css');
+@import url('components/_loading.css');
+@import url('components/_misc.css'); /* Search, user menu, image upload etc. */
+
+/* 4. Layout */
+@import url('layout/_sidebar.css');
+@import url('layout/_header.css');
+@import url('layout/_main.css');
+
+/* 5. Sections (Page Specific Styles) */
+@import url('sections/_dashboard.css');
+@import url('sections/_products.css');
+@import url('sections/_orders.css');
+@import url('sections/_services.css');
+@import url('sections/_customers.css');
+@import url('sections/_reports.css');
+@import url('sections/_settings.css');
+@import url('sections/_content.css');
+@import url('sections/_admins.css');
+
+/* 6. Responsive Layout Adjustments (Load Last) */
+@import url('layout/_responsive.css');
+
+/* 7. Print Styles (Optional - Create _print.css if needed) */
+/* @import url('print/_print.css'); */
+
+/* 8. Theme Overrides or Skins (Optional) */
+/* @import url('themes/_dark_mode_overrides.css'); */ /* Already integrated */

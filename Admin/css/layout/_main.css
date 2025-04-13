@@ -1,0 +1,97 @@
+/* css/layout/_main.css */
+
+.admin-main {
+    flex-grow: 1;
+    margin-left: 260px; /* Default sidebar width */
+    transition: margin-left var(--transition-duration) var(--transition-timing);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.admin-main.sidebar-collapsed {
+    margin-left: 80px; /* Collapsed sidebar width */
+}
+
+.admin-content {
+    padding: 2.5rem; /* More padding */
+    flex-grow: 1;
+    background-color: var(--dark-bg);
+    overflow-y: auto; /* Allow content scrolling */
+}
+
+.admin-section {
+    display: none; /* Hidden by default, shown by JS */
+    animation: fadeInAdmin 0.4s ease-out; /* Slightly faster fade */
+    position: relative; /* Context for loading state */
+}
+
+.admin-section.active {
+    display: block;
+}
+
+@keyframes fadeInAdmin {
+    from {
+        opacity: 0;
+        transform: translateY(15px); /* Slightly more movement */
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Section Heading Styles (can be in base/_typography.css too) */
+.admin-section h2,
+.section-header h2 {
+    margin-bottom: 2rem; /* More space below main headings */
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--text-light);
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 0.75rem; /* More padding below border */
+    display: inline-flex; /* Ensure border fits content */
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.admin-section h2 i,
+.section-header h2 i {
+    font-size: 1.5rem;
+    opacity: 0.9;
+}
+
+/* Section Header (used for Title + Button layout) */
+.section-header {
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem; /* Gap between title and button */
+    margin-bottom: 1.5rem;
+}
+
+/* Sub-header variant (e.g., within tabs) */
+.section-header.sub-header {
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.section-header.sub-header h3 {
+    font-size: 1.3rem;
+    margin-bottom: 0; /* Remove default h3 margin */
+    color: var(--secondary-color);
+    font-weight: 500; /* Less emphasis than H2 */
+}
+
+/* Body class added by JS for sidebar state */
+body.admin-sidebar-collapsed .admin-main {
+    margin-left: 80px;
+}
+
+/* Body class added by JS for mobile sidebar */
+body.mobile-sidebar-open {
+    /* Optionally prevent body scrolling when mobile sidebar is open */
+    /* overflow: hidden; */
+}

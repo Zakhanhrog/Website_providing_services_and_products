@@ -1,0 +1,77 @@
+/* css/sections/_products.css */
+
+/* Filters container specific styles if any */
+#products-section .filters-container {
+    /* Add specific styles if needed */
+}
+
+/* Bulk actions specific styles if any */
+#products-section .bulk-actions-container {
+    margin-bottom: 1.5rem;
+    display: flex;
+    gap: 0.8rem;
+    align-items: center;
+}
+#products-section .bulk-actions-container select {
+    max-width: 250px; /* Limit width */
+}
+
+/* Product Form Specifics */
+#product-form-container .wysiwyg-editor-container {
+    /* Wrapper for styling */
+    margin-bottom: 1.5rem; /* Consistent margin */
+}
+
+/* Stock Fields Wrapper */
+#product-form-container .stock-fields {
+    /* JS controls display, basic styles here */
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px dashed var(--border-color);
+}
+
+/* SEO Preview Specifics */
+#product-form-container .seo-preview {
+    border: 1px solid var(--border-color);
+    padding: 1.2rem; /* More padding */
+    margin-top: 1rem;
+    border-radius: var(--border-radius);
+    background-color: var(--dark-bg);
+}
+
+#product-form-container .seo-preview h4 {
+    font-size: 0.9rem;
+    margin-bottom: 0.8rem; /* More space */
+    color: var(--text-muted);
+    font-weight: 500; /* Less emphasis */
+    border-bottom: none; /* Remove border */
+    padding-bottom: 0;
+}
+
+#product-form-container .seo-preview-title {
+    color: #bdc1ff; /* Google title color adjusted */
+    font-size: 1.1rem;
+    margin-bottom: 0.2rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 500;
+}
+
+#product-form-container .seo-preview-url {
+    color: var(--success-color);
+    font-size: 0.9rem;
+    margin-bottom: 0.4rem; /* More space */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#product-form-container .seo-preview-desc {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    line-height: 1.5; /* Improve readability */
+}
+
+/* Styles for Select2/Choices placeholders if needed */
+/* e.g., .select2-container { ... } */

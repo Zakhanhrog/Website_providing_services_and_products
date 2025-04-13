@@ -1,0 +1,66 @@
+/* css/components/_tabs.css */
+
+.tabs {
+    margin-bottom: 0; /* Remove margin as border is below now */
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    flex-wrap: wrap; /* Allow tabs to wrap on small screens */
+    position: relative; /* Ensure tabs are above content */
+    z-index: 1;
+    list-style: none; /* Remove default list style if using <ul> */
+    padding: 0; /* Remove default padding if using <ul> */
+}
+
+/* Style for each tab item if using <li> */
+.tabs li {
+    margin-bottom: -1px; /* Overlap border */
+}
+
+.tabs .tab-link {
+    display: inline-block; /* Or block if using <li> */
+    background: none;
+    border: none;
+    padding: 0.9rem 1.5rem; /* Consistent padding */
+    cursor: pointer;
+    color: var(--text-muted);
+    font-weight: 500;
+    font-size: 0.95rem;
+    position: relative;
+    /* bottom: -1px; */ /* No longer needed if using border */
+    transition: var(--transition);
+    border-bottom: 3px solid transparent; /* Indicator */
+    flex-shrink: 0; /* Prevent shrinking on wrap */
+    white-space: nowrap;
+    text-decoration: none; /* Ensure links look like tabs */
+    margin-bottom: -1px; /* Overlap container border */
+}
+
+.tabs .tab-link:hover {
+    color: var(--text-light);
+    border-bottom-color: var(--secondary-color); /* Indicate hover */
+}
+
+.tabs .tab-link.active {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+    font-weight: 600; /* Emphasize active tab */
+}
+.tabs .tab-link:focus {
+    outline: none; /* Remove default outline */
+    box-shadow: inset 0 -2px 0 var(--primary-color); /* Focus indicator */
+    color: var(--text-light);
+}
+.tabs .tab-link.active:focus {
+    box-shadow: none; /* Remove focus style if already active */
+}
+
+
+.tab-content {
+    display: none; /* Hidden by default */
+    padding-top: 2rem; /* Space between tabs and content */
+    animation: fadeInAdmin 0.4s ease-out; /* Fade in tab content */
+}
+
+.tab-content.active {
+    display: block;
+}

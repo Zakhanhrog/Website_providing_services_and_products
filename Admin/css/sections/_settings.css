@@ -1,0 +1,259 @@
+/* css/sections/_settings.css */
+
+/* Payment Gateway Settings */
+#settings-payments .payment-gateway-setting {
+    border-bottom: 1px dashed var(--border-color);
+    padding: 1.8rem 0; /* More vertical padding */
+}
+
+#settings-payments .payment-gateway-setting:last-of-type {
+    border-bottom: none;
+}
+
+#settings-payments .payment-gateway-setting h4 {
+    font-size: 1.1rem;
+    margin-bottom: 1.2rem; /* More space below h4 */
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    color: var(--text-light);
+    font-weight: 500;
+    border-bottom: none; /* Remove default h-border */
+    padding-bottom: 0;
+}
+
+#settings-payments .payment-gateway-setting h4 i {
+    color: var(--secondary-color);
+    min-width: 20px;
+    text-align: center;
+}
+
+#settings-payments .gateway-logo {
+    height: 22px; /* Slightly larger */
+    width: auto;
+    margin-right: 8px; /* More space */
+    vertical-align: middle;
+    background: white;
+    padding: 3px; /* More padding */
+    border-radius: 3px;
+}
+
+/* Switch Toggle Style */
+#settings-payments .form-check.form-switch {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.2rem; /* More space below switch */
+}
+
+#settings-payments .form-check.form-switch .form-check-input { /* Target the input directly */
+    height: 1.2em; /* Taller switch */
+    width: 2.4em; /* Wider switch */
+    appearance: none;
+    background-color: var(--dark-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 1.2em;
+    position: relative;
+    cursor: pointer;
+    outline: none;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    margin-right: 0.8rem; /* More space after switch */
+    flex-shrink: 0;
+}
+
+#settings-payments .form-check.form-switch .form-check-input::before { /* The toggle handle */
+    content: '';
+    display: block;
+    height: calc(1.2em - 6px); /* Adjust handle size */
+    width: calc(1.2em - 6px);
+    background-color: var(--text-muted);
+    border-radius: 50%;
+    position: absolute;
+    top: 2px; /* Position handle within track */
+    left: 2px;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+#settings-payments .form-check.form-switch .form-check-input:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+#settings-payments .form-check.form-switch .form-check-input:checked::before {
+    background-color: white;
+    transform: translateX(1.2em); /* Move handle to the right */
+}
+
+#settings-payments .form-check.form-switch .form-check-label { /* Style the label */
+    color: var(--text-light);
+    font-weight: 500;
+    cursor: pointer;
+    margin-bottom: 0;
+}
+
+/* Gateway Details (Collapsible Area) */
+#settings-payments .gateway-details {
+    margin-top: 1rem;
+    padding-left: 1.5rem; /* More indent */
+    border-left: 3px solid var(--border-color); /* Thicker indent border */
+    transition: max-height 0.4s ease-out, opacity 0.4s ease-out, margin-top 0.4s ease-out; /* Transition for show/hide */
+    overflow: hidden;
+    max-height: 0; /* Hidden by default */
+    opacity: 0;
+    /* Ensure margin doesn't cause jump when hidden */
+    margin-top: 0;
+}
+
+#settings-payments .gateway-details[style*="display: block"] { /* Target when shown by JS */
+    max-height: 500px; /* Or large enough value */
+    opacity: 1;
+    margin-top: 1rem; /* Restore margin when shown */
+}
+
+#settings-payments .gateway-details .form-group {
+    margin-bottom: 1rem; /* Consistent margin */
+}
+#settings-payments .gateway-details input,
+#settings-payments .gateway-details textarea {
+    max-width: 450px; /* Slightly wider fields */
+}
+
+/* Shipping Zones */
+#settings-shipping .shipping-zones-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.8rem; /* More space between zones */
+    margin-top: 1.5rem;
+}
+
+#settings-shipping .shipping-zone {
+    border: 1px solid var(--border-color);
+    padding: 1.5rem; /* More padding */
+    border-radius: var(--border-radius);
+    background-color: var(--dark-bg); /* Darker background for zones */
+}
+
+#settings-shipping .shipping-zone h4 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.8rem; /* More space below h4 */
+    font-size: 1.1rem;
+    color: var(--text-light);
+    border-bottom: none; /* Remove default heading border */
+    padding-bottom: 0;
+}
+
+#settings-shipping .shipping-zone h4 i.fa-globe-asia { /* Style zone icon */
+    margin-right: 0.6rem;
+    color: var(--secondary-color);
+}
+
+#settings-shipping .shipping-zone h4 .zone-actions .btn-icon { /* Style action buttons */
+    margin-left: 0.5rem;
+}
+
+#settings-shipping .shipping-zone > p { /* Direct child paragraph (zone description) */
+    margin-bottom: 1rem;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+#settings-shipping .shipping-methods {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px dashed var(--border-color);
+}
+
+#settings-shipping .shipping-methods h5 {
+    font-size: 1rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+    font-weight: 500;
+}
+
+#settings-shipping .shipping-method-item {
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping */
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.8rem; /* Gap between elements */
+    padding: 0.8rem 0; /* More padding */
+    font-size: 0.9rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+#settings-shipping .shipping-method-item:last-child {
+    border-bottom: none;
+}
+
+#settings-shipping .shipping-method-item span:first-child { /* Method name */
+    font-weight: 500;
+    color: var(--text-light);
+    flex-basis: 40%; /* Give name more space */
+}
+
+#settings-shipping .shipping-method-item span:nth-child(2) { /* Method cost/description */
+    color: var(--text-muted);
+    flex-basis: 40%;
+}
+
+#settings-shipping .shipping-method-item .method-actions {
+    flex-basis: 15%;
+    text-align: right;
+}
+
+#settings-shipping .shipping-method-item .method-actions .btn-icon {
+    margin-left: 0.5rem;
+}
+
+/* Email Templates */
+#settings-emails .email-template-list {
+    margin-top: 1rem;
+}
+
+#settings-emails .email-template-setting {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem; /* Gap between title and buttons */
+    padding: 1.2rem 0; /* More padding */
+    border-bottom: 1px dashed var(--border-color);
+}
+
+#settings-emails .email-template-setting:last-of-type {
+    border-bottom: none;
+}
+
+#settings-emails .email-template-setting h4 {
+    font-size: 1rem;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem; /* More space */
+    color: var(--text-light);
+    font-weight: 500;
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+#settings-emails .email-template-setting h4 i {
+    color: var(--secondary-color);
+    font-size: 1.1rem;
+    min-width: 20px;
+    text-align: center;
+}
+
+#settings-emails .email-template-setting .template-actions { /* Wrap buttons */
+    display: flex;
+    gap: 0.5rem;
+    flex-shrink: 0; /* Prevent shrinking */
+}
+
+/* SEO Settings */
+#settings-seo form {
+    max-width: 700px; /* Limit width of SEO form */
+}
+#settings-seo input[name="seoSeparator"] {
+    max-width: 100px;
+}

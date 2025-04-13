@@ -1,0 +1,76 @@
+/* css/sections/_services.css */
+
+/* Service Detail Specifics */
+#service-detail-view .service-detail-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+#service-detail-view .service-detail-col h4 {
+    font-size: 1.15rem;
+    margin-bottom: 1rem;
+    color: var(--text-light);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.6rem;
+    font-weight: 500;
+}
+
+#service-detail-view .service-detail-col p {
+    margin-bottom: 0.9rem;
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+#service-detail-view .service-detail-col p strong {
+    color: var(--text-light);
+    font-weight: 500;
+    margin-right: 0.5rem;
+}
+#service-detail-view .service-detail-col p a {
+    color: var(--primary-color);
+}
+#service-detail-view .service-detail-col p a:hover {
+    text-decoration: underline;
+}
+
+/* Internal notes section (shares styles with orders) */
+#service-detail-view .internal-notes-section {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color);
+}
+#service-detail-view .internal-notes-section > h4 {
+    font-size: 1.15rem;
+    margin-bottom: 1rem;
+}
+#service-detail-view .internal-notes-section .activity-log {
+    /* Use general activity log styles from _cards.css or define here */
+    list-style: none;
+    padding: 0.8rem;
+    margin: 0;
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background-color: var(--dark-bg);
+    font-size: 0.9rem;
+}
+#service-detail-view .internal-notes-section .activity-log li {
+    padding: 0.5rem 0;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
+    color: var(--text-muted);
+}
+#service-detail-view .internal-notes-section .activity-log li:last-child {
+    border-bottom: none;
+}
+/* Style specific history parts if needed */
+
+/* Responsive for Service Detail */
+@media (max-width: 768px) {
+    #service-detail-view .service-detail-grid {
+        grid-template-columns: 1fr; /* Stack detail columns */
+        gap: 1.5rem;
+    }
+}

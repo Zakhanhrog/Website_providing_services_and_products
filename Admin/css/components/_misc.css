@@ -1,0 +1,220 @@
+/* css/components/_misc.css */
+
+/* Search Bar */
+.search-bar {
+    display: flex;
+    align-items: center;
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    padding: 0.3rem 0.8rem; /* Increased padding */
+    border: 1px solid var(--border-color);
+    transition: border-color var(--transition-duration) ease;
+}
+
+.search-bar:focus-within {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px var(--admin-accent-bg); /* Focus ring */
+}
+
+.search-bar input[type="search"] {
+    background: none;
+    border: none;
+    outline: none;
+    color: var(--text-light);
+    padding: 0.4rem 0.5rem;
+    font-size: 0.9rem; /* 14.4px */
+    width: 250px;
+    font-family: inherit; /* Inherit font */
+}
+
+.search-bar input[type="search"]::placeholder {
+    color: var(--text-muted);
+    opacity: 0.8;
+}
+
+.search-bar input[type="search"]::-webkit-search-cancel-button {
+    /* Style the clear button if needed */
+    cursor: pointer;
+}
+
+.search-bar button {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 0 0.5rem;
+    transition: color var(--transition-duration) ease;
+    margin-left: 0.3rem; /* Space before button */
+}
+
+.search-bar button:hover {
+    color: var(--primary-color);
+}
+
+/* User Menu Components */
+.user-menu {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    /* Position relative is handled by _dropdowns.css */
+}
+
+.user-avatar {
+    width: 38px; /* Slightly larger */
+    height: 38px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--primary-color);
+    flex-shrink: 0; /* Prevent shrinking */
+}
+
+.user-name {
+    font-weight: 500;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    /* Display handled by media queries */
+}
+
+.user-menu .fa-chevron-down {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-left: 0.3rem;
+    transition: transform var(--transition-duration) ease;
+}
+
+.user-menu:hover .fa-chevron-down,
+.user-menu.active .fa-chevron-down { /* Rotate when active */
+    transform: rotate(180deg);
+}
+
+/* Notification Icon */
+.notification-icon i.fa-bell {
+    font-size: 1.3rem; /* Larger bell */
+    color: var(--text-muted);
+    transition: var(--transition);
+    display: block; /* Ensure icon behaves predictably */
+}
+
+.notification-icon:hover i.fa-bell,
+.notification-icon.active i.fa-bell { /* Highlight when active */
+    color: var(--text-light);
+}
+
+/* Image Upload Placeholders/Previews */
+.image-upload-placeholder {
+    border: 2px dashed var(--border-color);
+    padding: 2rem;
+    text-align: center;
+    color: var(--text-muted);
+    background-color: var(--dark-bg);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background-color var(--transition-duration) ease,
+    border-color var(--transition-duration) ease;
+    margin-bottom: 1rem;
+    display: flex; /* Center content */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 120px; /* Minimum height */
+}
+
+.image-upload-placeholder:hover {
+    background-color: var(--sidebar-bg);
+    border-color: var(--primary-color);
+}
+
+.image-upload-placeholder i {
+    margin-bottom: 0.5rem; /* Space below icon */
+}
+
+.image-preview-container,
+.gallery-preview-grid {
+    margin-top: 1rem;
+}
+
+.gallery-preview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 1rem;
+}
+
+.gallery-item,
+.image-preview-container > div { /* Assuming preview is wrapped in div */
+    position: relative;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    overflow: hidden;
+    background-color: var(--dark-bg);
+}
+
+.gallery-item img,
+.image-preview-container img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1; /* Square previews */
+    object-fit: contain; /* Show whole image */
+}
+
+/* More specific selector */
+.gallery-item .btn-remove-image,
+.image-preview-container .gallery-item .btn-remove-image {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: rgba(214, 48, 49, 0.8);
+    border: none;
+    color: white;
+    border-radius: 50%;
+    width: 24px; /* Larger button */
+    height: 24px;
+    font-size: 0.8rem;
+    line-height: 22px; /* Adjust for border-box */
+    text-align: center;
+    cursor: pointer;
+    padding: 0;
+    transition: background-color var(--transition-duration) ease;
+    z-index: 1; /* Ensure button is above image */
+}
+
+.gallery-item .btn-remove-image:hover,
+.image-preview-container .gallery-item .btn-remove-image:hover {
+    background: rgba(214, 48, 49, 1); /* Darken on hover */
+}
+
+/* Note Box Style (for customer notes etc.) */
+.note-box {
+    background-color: var(--dark-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 0.8rem 1rem;
+    font-size: 0.9rem;
+    white-space: pre-wrap; /* Preserve line breaks */
+    max-height: 150px; /* Limit height */
+    overflow-y: auto;
+}
+
+/* Attachment List Style */
+.attachment-list {
+    list-style: none;
+    padding: 0;
+    margin: 0.5rem 0 1rem 0;
+}
+.attachment-list li {
+    margin-bottom: 0.5rem;
+}
+.attachment-list li a {
+    color: var(--primary-color);
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+.attachment-list li a:hover {
+    text-decoration: underline;
+}
+.attachment-list li a i {
+    color: var(--text-muted);
+}

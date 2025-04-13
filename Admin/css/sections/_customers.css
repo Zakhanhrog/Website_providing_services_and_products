@@ -1,0 +1,91 @@
+/* css/sections/_customers.css */
+
+/* Customer Detail View */
+#customer-detail-view .address-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Grid for addresses */
+    gap: 1.5rem;
+    margin-bottom: 1.5rem; /* Space below list */
+}
+
+#customer-detail-view .address-item {
+    background-color: var(--dark-bg);
+    padding: 1.2rem;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    position: relative; /* For tags and actions */
+    display: flex; /* Allow flex for layout */
+    flex-direction: column; /* Stack content vertically */
+}
+
+#customer-detail-view .address-item p {
+    font-size: 0.9rem;
+    margin: 0 0 0.5rem 0;
+    color: var(--text-muted);
+    line-height: 1.4;
+    flex-grow: 1; /* Allow text to take space */
+}
+
+#customer-detail-view .address-item p strong {
+    color: var(--text-light);
+    display: block;
+    font-weight: 500;
+    margin-bottom: 0.2rem;
+}
+
+#customer-detail-view .address-tags { /* Container for badges */
+    /* Positioned absolutely within the item */
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    display: flex;
+    flex-direction: column; /* Stack vertically */
+    gap: 0.4rem; /* Space between tags */
+    align-items: flex-end; /* Align to right */
+}
+
+#customer-detail-view .address-tags .badge {
+    /* Use status classes defined in _badges.css */
+    padding: 0.3rem 0.6rem;
+    font-size: 0.7rem;
+    white-space: nowrap; /* Prevent wrapping */
+}
+
+#customer-detail-view .address-actions {
+    margin-top: 1rem;
+    padding-top: 0.8rem;
+    border-top: 1px dashed var(--border-color);
+    display: flex;
+    gap: 0.5rem;
+    flex-shrink: 0; /* Prevent actions shrinking */
+}
+
+/* Customer Notes Tab Styling */
+#customer-notes h5 { /* History heading */
+    margin-top: 1.5rem;
+    margin-bottom: 0.8rem;
+    font-size: 1rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+#customer-notes .activity-log {
+    /* Use general log styles */
+    list-style: none;
+    padding: 0.8rem;
+    margin: 0;
+    max-height: 250px; /* Taller history */
+    overflow-y: auto;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background-color: var(--dark-bg);
+    font-size: 0.9rem;
+}
+#customer-notes .activity-log li {
+    padding: 0.5rem 0;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
+    color: var(--text-muted);
+}
+#customer-notes .activity-log li:last-child {
+    border-bottom: none;
+}

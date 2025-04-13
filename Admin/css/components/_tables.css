@@ -1,0 +1,235 @@
+/* css/components/_tables.css */
+
+.table-responsive {
+    overflow-x: auto;
+    /* Add custom scrollbar for table container if desired */
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-thumb-color) var(--card-bg);
+    margin-bottom: 1rem; /* Add some space below responsive container */
+}
+
+.table-responsive::-webkit-scrollbar {
+    height: 8px; /* Horizontal scrollbar height */
+}
+.table-responsive::-webkit-scrollbar-track {
+    background: var(--card-bg);
+    border-radius: 4px;
+}
+.table-responsive::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbar-thumb-color);
+    border-radius: 4px;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 0; /* Remove top margin as table-responsive has bottom margin */
+    background-color: var(--card-bg); /* Ensure table bg matches */
+    border: 1px solid var(--border-color); /* Border around table */
+    border-radius: var(--border-radius); /* Rounded corners for table */
+    overflow: hidden; /* Clip content to border-radius */
+}
+
+.admin-table th,
+.admin-table td {
+    padding: 1rem 1.1rem; /* Increased padding */
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.9rem;
+    vertical-align: middle;
+    white-space: nowrap; /* Prevent wrapping by default */
+}
+
+.admin-table th {
+    color: var(--text-muted);
+    font-weight: 600;
+    background-color: rgba(0, 0, 0, 0.1); /* Slightly darker header */
+    cursor: default; /* Default cursor */
+    position: sticky; /* Make header sticky if table scrolls vertically */
+    top: 0; /* Required for sticky */
+    z-index: 1; /* Ensure header is above scrolling content */
+}
+
+/* Sortable Header Styles */
+.admin-table th.sortable {
+    cursor: pointer;
+    position: relative;
+    padding-right: 2rem; /* Space for sort icon */
+}
+
+.admin-table th.sortable::after { /* Placeholder for sort icon */
+    content: '\f0dc'; /* fa-sort */
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    position: absolute;
+    right: 0.8rem;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.4;
+    transition: opacity var(--transition-duration) ease;
+}
+
+.admin-table th.sortable:hover::after {
+    opacity: 0.8;
+}
+
+.admin-table th.sortable.asc::after {
+    content: '\f0de'; /* fa-sort-up */
+    opacity: 1;
+    color: var(--primary-color);
+}
+
+.admin-table th.sortable.desc::after {
+    content: '\f0dd'; /* fa-sort-down */
+    opacity: 1;
+    color: var(--primary-color);
+}
+
+
+.admin-table tbody tr {
+    transition: background-color var(--transition-duration) ease;
+}
+
+.admin-table tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.03); /* Subtle row hover */
+}
+
+.admin-table tbody tr:last-child td {
+    border-bottom: none; /* Remove border on last row */
+}
+
+/* Specific Cell Styling */
+.admin-table td img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    border-radius: 4px;
+    background: var(--dark-bg); /* Background for images */
+    vertical-align: middle;
+    margin-right: 0.5rem; /* Space next to image */
+}
+
+.admin-table td a {
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+.admin-table td a:hover {
+    color: var(--secondary-color);
+    text-decoration: underline;
+}
+
+/* Inline Price Styling */
+.admin-table .old-price-inline {
+    font-size: 0.8em;
+    text-decoration: line-through;
+    color: var(--text-muted);
+    margin-left: 0.5rem; /* More space */
+    opacity: 0.8;
+}
+
+/* Stock Status Colors in Tables */
+.admin-table td.stock-low {
+    color: var(--warning-color);
+    font-weight: 600;
+}
+
+.admin-table td.stock-out {
+    color: var(--danger-color);
+    font-weight: 600;
+}
+
+/* Table specific empty state cell */
+.admin-table td.empty-state-cell {
+    text-align: center;
+    padding: 2rem 1rem;
+    color: var(--text-muted);
+    font-style: italic;
+    white-space: normal; /* Allow message to wrap */
+}
+.admin-table tr.empty-state-row:hover {
+    background-color: transparent; /* Don't highlight empty row */
+}
+.admin-table td.empty-state-cell i {
+    display: block; /* Ensure icon is on its own line */
+}
+
+
+/* Mini Table (used in details) */
+.mini-table th,
+.mini-table td {
+    padding: 0.7rem 0.9rem; /* Smaller padding */
+    font-size: 0.85rem;
+    white-space: normal; /* Allow wrapping in mini tables */
+}
+.mini-table {
+    margin-top: 0;
+    border: none; /* Remove outer border for embedded tables */
+    border-radius: 0;
+}
+.mini-table thead th {
+    background-color: transparent; /* Remove distinct header bg */
+    border-bottom: 1px solid var(--border-color);
+}
+
+
+/* Responsive Table Column Hiding */
+@media (max-width: 768px) {
+    /* Hide less important columns on smaller screens */
+    /* Product Table */
+    #products-section .admin-table th:nth-child(4), /* SKU */
+    #products-section .admin-table td:nth-child(4),
+    #products-section .admin-table th:nth-child(6), /* Stock */
+    #products-section .admin-table td:nth-child(6)
+    {
+        display: none;
+    }
+
+    /* Order Table */
+    #orders-section .admin-table th:nth-child(4), /* Date */
+    #orders-section .admin-table td:nth-child(4),
+    #orders-section .admin-table th:nth-child(7), /* Status Dropdown */
+    #orders-section .admin-table td:nth-child(7)
+    {
+        display: none;
+    }
+
+    /* Service Table */
+    #services-section .admin-table th:nth-child(5), /* Date */
+    #services-section .admin-table td:nth-child(5),
+    #services-section .admin-table th:nth-child(7), /* Assignee */
+    #services-section .admin-table td:nth-child(7)
+    {
+        display: none;
+    }
+
+    /* Customer Table */
+    #customers-section .admin-table th:nth-child(4), /* Reg Date */
+    #customers-section .admin-table td:nth-child(4),
+    #customers-section .admin-table th:nth-child(5), /* Order Count */
+    #customers-section .admin-table td:nth-child(5)
+    {
+        display: none;
+    }
+
+    /* Admin Table */
+    #admins-section .admin-table th:nth-child(5), /* Last Login */
+    #admins-section .admin-table td:nth-child(5)
+    {
+        display: none;
+    }
+
+
+    /* Adjust remaining columns */
+    .admin-table th,
+    .admin-table td {
+        font-size: 0.85rem;
+        padding: 0.8rem 0.6rem; /* Reduced padding */
+        white-space: normal; /* Allow text wrap */
+    }
+
+    /* Keep action column nowrap if desired */
+    .admin-table td:last-child {
+        white-space: nowrap;
+    }
+}

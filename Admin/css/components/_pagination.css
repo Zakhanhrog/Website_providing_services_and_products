@@ -1,0 +1,85 @@
+/* css/components/_pagination.css */
+
+.pagination-container {
+    margin-top: 2rem; /* More space above */
+    display: flex;
+    justify-content: center; /* Center pagination */
+}
+
+.pagination {
+    display: inline-flex;
+    padding-left: 0;
+    list-style: none;
+    border-radius: var(--border-radius);
+    overflow: hidden; /* Clip background */
+    box-shadow: var(--shadow);
+}
+
+.page-item {
+    /* No specific styles needed directly on item */
+}
+
+.page-link {
+    position: relative;
+    display: block;
+    padding: 0.7rem 1.1rem; /* Larger click area */
+    margin-left: -1px; /* Overlap borders */
+    line-height: 1.25;
+    color: var(--primary-color);
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    transition: var(--transition);
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    border-top-width: 0; /* Remove top/bottom border for cleaner look */
+    border-bottom-width: 0;
+}
+
+.page-item:first-child .page-link {
+    border-left-width: 0; /* Remove left border on first */
+    border-top-left-radius: var(--border-radius);
+    border-bottom-left-radius: var(--border-radius);
+}
+
+.page-item:last-child .page-link {
+    border-right-width: 0; /* Remove right border on last */
+    border-top-right-radius: var(--border-radius);
+    border-bottom-right-radius: var(--border-radius);
+}
+
+.page-link:hover {
+    z-index: 2;
+    color: var(--text-light);
+    background-color: var(--primary-color);
+    border-color: var(--primary-color); /* Keep border consistent */
+}
+
+.page-item.active .page-link {
+    z-index: 3;
+    color: var(--text-light);
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    cursor: default; /* Indicate it's the current page */
+}
+
+.page-item.disabled .page-link {
+    color: var(--text-muted);
+    pointer-events: none;
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+    opacity: 0.6;
+}
+
+/* Prevent hover effect on disabled link */
+.page-item.disabled .page-link:hover {
+    background-color: var(--card-bg);
+    color: var(--text-muted);
+}
+
+/* Responsive adjustments for pagination if needed */
+@media (max-width: 576px) {
+    .page-link {
+        padding: 0.6rem 0.9rem; /* Smaller pagination links */
+    }
+}

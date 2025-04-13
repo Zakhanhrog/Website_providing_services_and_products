@@ -1,0 +1,193 @@
+/* css/components/_dropdowns.css */
+
+/* --- User Menu Dropdown --- */
+.user-menu {
+    position: relative; /* Context for dropdown */
+    cursor: pointer;
+}
+
+.user-dropdown {
+    position: absolute;
+    top: calc(100% + 12px); /* Slightly closer */
+    right: 0;
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-dark);
+    min-width: 200px; /* Wider dropdown */
+    z-index: 1010;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: opacity var(--transition-duration) ease,
+    transform var(--transition-duration) ease,
+    visibility 0s var(--transition-duration);
+    border: 1px solid var(--border-color); /* Subtle border */
+    overflow: hidden; /* Ensure border-radius clips content */
+    padding: 0.5rem 0; /* Padding top/bottom */
+}
+
+.user-dropdown.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    transition-delay: 0s;
+}
+
+.user-dropdown a {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem; /* More space */
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    padding: 0.7rem 1.3rem; /* Adjusted padding */
+    text-decoration: none;
+    transition: background-color var(--transition-duration) ease,
+    color var(--transition-duration) ease;
+    white-space: nowrap;
+}
+
+.user-dropdown a i {
+    font-size: 1rem;
+    color: var(--secondary-color);
+    width: 18px; /* Slightly wider */
+    text-align: center;
+    transition: color var(--transition-duration) ease;
+}
+
+.user-dropdown a:hover {
+    background-color: var(--admin-accent-bg);
+    color: var(--text-light);
+}
+
+.user-dropdown a:hover i {
+    color: var(--primary-color);
+}
+
+/* --- Notification Panel --- */
+.notification-icon {
+    position: relative; /* Context for panel and badge */
+    cursor: pointer;
+    padding: 0.5rem; /* Click area */
+}
+
+.notification-panel {
+    position: absolute;
+    top: calc(100% + 12px);
+    right: -10px; /* Adjust position */
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-dark);
+    width: 340px; /* Fixed width */
+    max-width: 90vw; /* Ensure it fits on small screens */
+    z-index: 1010;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: opacity var(--transition-duration) ease,
+    transform var(--transition-duration) ease,
+    visibility 0s var(--transition-duration);
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+    display: flex; /* Use flex for structure */
+    flex-direction: column;
+}
+
+.notification-panel.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    transition-delay: 0s;
+}
+
+.notification-panel h4 {
+    padding: 0.9rem 1.3rem; /* Match dropdown item padding */
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 0;
+    font-size: 1rem;
+    font-weight: 600; /* Bolder heading */
+    color: var(--text-light);
+    flex-shrink: 0; /* Prevent header shrinking */
+}
+
+#adminNotificationList {
+    list-style: none;
+    padding: 0;
+    max-height: 350px; /* Increased height */
+    overflow-y: auto;
+    flex-grow: 1; /* Allow list to take available space */
+    /* Custom Scrollbar */
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-thumb-color) var(--card-bg);
+}
+
+#adminNotificationList::-webkit-scrollbar {
+    width: 5px;
+}
+
+#adminNotificationList::-webkit-scrollbar-track {
+    background: var(--card-bg);
+}
+
+#adminNotificationList::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbar-thumb-color);
+    border-radius: 3px;
+}
+
+.notification-panel li {
+    border-bottom: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: background-color var(--transition-duration) ease;
+    padding: 0.9rem 1.3rem; /* Consistent padding */
+    display: block; /* Ensure list items behave block-like */
+}
+
+.notification-panel li:last-child {
+    border-bottom: none;
+}
+
+.notification-panel li:hover,
+.notification-panel li:focus { /* Add focus style */
+    background-color: var(--admin-accent-bg);
+    outline: none; /* Remove default focus outline if adding background */
+}
+
+.notification-panel li.unread span:first-of-type { /* Target first span for bolding */
+    font-weight: 600;
+    color: var(--text-light);
+}
+
+.notification-panel li span {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    white-space: normal;
+    line-height: 1.4;
+    overflow-wrap: break-word; /* Ensure long words wrap */
+    margin-bottom: 0.2rem; /* Space before timestamp */
+}
+
+.notification-panel li .timestamp {
+    font-size: 0.75rem;
+    color: var(--secondary-color);
+    display: block;
+    padding: 0; /* Remove padding as it's on li now */
+    margin-bottom: 0;
+}
+
+/* "Clear/View All" link */
+.notification-panel .view-all#clearAdminNotifications {
+    text-align: center;
+    font-weight: 600;
+    color: var(--primary-color);
+    border-top: 1px solid var(--border-color);
+    display: block;
+    padding: 0.9rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color var(--transition-duration) ease;
+    flex-shrink: 0; /* Prevent shrinking */
+}
+
+.notification-panel .view-all#clearAdminNotifications:hover {
+    background-color: var(--admin-accent-bg);
+}

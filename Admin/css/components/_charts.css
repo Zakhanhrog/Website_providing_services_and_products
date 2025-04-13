@@ -1,0 +1,30 @@
+/* css/components/_charts.css */
+
+.chart-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 1.8rem;
+    margin-bottom: 2.5rem;
+}
+
+.chart-container {
+    /* Assumes .content-block provides background, padding, border */
+    min-height: 380px; /* Increased height */
+    display: flex;
+    flex-direction: column;
+}
+
+.chart-container canvas {
+    flex-grow: 1;
+    max-height: 320px; /* Limit canvas height */
+    width: 100% !important; /* Ensure Chart.js respects container */
+    height: auto !important; /* Allow Chart.js to control aspect ratio */
+}
+
+/* Ensure chart legends are styled correctly */
+.chart-container .chartjs-legend ul {
+    /* Add styling if needed */
+}
+.chart-container .chartjs-legend li {
+    /* Add styling if needed */
+}

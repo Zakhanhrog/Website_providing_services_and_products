@@ -1,0 +1,82 @@
+/* css/layout/_responsive.css */
+/* Contains MAJOR layout changes based on screen size */
+
+@media (max-width: 992px) {
+    .admin-sidebar {
+        transform: translateX(-100%);
+        box-shadow: none; /* Remove shadow when hidden */
+    }
+
+    .admin-sidebar.active {
+        transform: translateX(0);
+        box-shadow: 5px 0 15px rgba(0, 0, 0, 0.15); /* Show shadow when active */
+    }
+
+    .admin-main {
+        margin-left: 0 !important; /* Override default margin, use !important cautiously */
+    }
+
+    /* Ensure collapsed state doesn't apply margin on mobile */
+    .admin-main.sidebar-collapsed {
+        margin-left: 0 !important;
+    }
+    body.admin-sidebar-collapsed .admin-main {
+        margin-left: 0 !important;
+    }
+
+
+    #sidebarToggle {
+        display: block; /* Show toggle button */
+    }
+
+    /* Adjust header padding on mobile */
+    .admin-header {
+        padding: 0.8rem 1rem; /* Less padding */
+    }
+
+    /* Hide search bar and user name */
+    .search-bar,
+    .user-name {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    html {
+        font-size: 15px; /* Slightly smaller base font */
+    }
+
+    /* Adjust header gaps */
+    .header-left,
+    .header-right {
+        gap: 0.8rem; /* Reduced gap */
+    }
+
+    .admin-content {
+        padding: 1.5rem; /* Less content padding */
+    }
+
+    /* Adjust section heading size */
+    .admin-section h2,
+    .section-header h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+}
+
+
+@media (max-width: 576px) {
+    html {
+        font-size: 14px; /* Further reduce base font */
+    }
+
+    .admin-content {
+        padding: 1rem; /* Even less padding */
+    }
+
+    /* Adjust pagination size further if needed */
+    /* .page-link {
+        padding: 0.5rem 0.7rem;
+        font-size: 0.9em;
+    } */
+}

@@ -1,0 +1,84 @@
+/* css/components/_loading.css */
+
+.is-loading {
+    position: relative; /* Ensure container has position context */
+    pointer-events: none; /* Prevent interaction while loading */
+    /* Optionally dim content slightly */
+    /* filter: blur(1px) opacity(0.8); */
+}
+
+.is-loading::before { /* Overlay */
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(45, 52, 54, 0.7); /* Dark overlay */
+    z-index: 10;
+    border-radius: inherit; /* Inherit parent border radius */
+    opacity: 0;
+    animation: fadeInOverlay 0.3s forwards;
+    /* Ensure overlay covers absolutely positioned children if needed */
+    /* isolation: isolate; */
+}
+
+.is-loading::after { /* Spinner */
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 30px;
+    height: 30px;
+    margin-top: -15px; /* Center spinner */
+    margin-left: -15px; /* Center spinner */
+    border: 3px solid rgba(255, 255, 255, 0.2); /* Spinner track */
+    border-top-color: var(--primary-color); /* Spinner active color */
+    border-radius: 50%;
+    animation: loading-spinner 0.8s linear infinite;
+    z-index: 11; /* Above overlay */
+    opacity: 0;
+    animation-delay: 0.1s; /* Slight delay before spinner appears */
+    animation-fill-mode: forwards; /* Keep spinner visible after animation */
+    animation-name: loading-spinner, fadeInSpinner; /* Combine animations */
+    animation-duration: 0.8s, 0.3s;
+    animation-timing-function: linear, ease-out;
+    animation-iteration-count: infinite, 1;
+}
+
+@keyframes fadeInOverlay {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeInSpinner {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes loading-spinner {
+    to { transform: rotate(360deg); }
+}
+
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 2rem 1rem;
+    color: var(--text-muted);
+    width: 100%; /* Ensure it takes full width */
+}
+
+.empty-state i.fas, /* Target FontAwesome icons */
+.empty-state .icon { /* Or a generic icon class */
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    opacity: 0.6;
+    display: block; /* Ensure icon is on its own line */
+}
+
+.empty-state p {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 0; /* Remove default paragraph margin */
+}

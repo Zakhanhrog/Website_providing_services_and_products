@@ -1,0 +1,38 @@
+/* css/sections/_reports.css */
+
+#reports-section .report-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 1.8rem;
+    margin-top: 2rem; /* Space after filters */
+}
+
+#reports-section .report-summary {
+    /* Uses .content-block styles */
+    /* Add specific styles for summary blocks */
+}
+
+#reports-section .report-summary p {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    margin-bottom: 0.8rem;
+}
+
+#reports-section .report-summary strong {
+    color: var(--text-light);
+    font-weight: 600;
+}
+#reports-section .report-summary strong.text-warning { color: var(--warning-color) !important; }
+#reports-section .report-summary strong.text-danger { color: var(--danger-color) !important; }
+
+#reports-section .report-summary a {
+    font-size: 0.9em; /* Smaller link */
+    margin-left: 0.5rem;
+}
+
+/* Responsive for reports */
+@media (max-width: 768px) {
+    #reports-section .report-grid {
+        grid-template-columns: 1fr; /* Stack */
+    }
+}

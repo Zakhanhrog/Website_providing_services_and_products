@@ -1,0 +1,971 @@
+    <!DOCTYPE html>
+    <html lang="vi">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>User retouch | Tech Shop</title>
+
+
+
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+        <!-- Google Font (Poppins) -->
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="styles.css">
+    </head>
+
+    <body>
+    <div class="dashboard-container">
+
+        <!-- ======================= Sidebar Navigation ======================= -->
+        <aside class="dashboard-sidebar">
+            <div class="sidebar-logo">
+                <a href="#">Tech<span>Shop.</span></a>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <a href="#" class="sidebar-link active" data-section="overview">
+                            <i class="fas fa-tachometer-alt fa-fw"></i>
+                            <span>Tổng Quan</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="sidebar-link" data-section="store">
+                            <i class="fas fa-store fa-fw"></i>
+                            <span>Cửa Hàng</span>
+                        </a>
+                    </li>
+                    <!-- === ADD CART LINK HERE === -->
+                    <li>
+                        <a href="#" class="sidebar-link" data-section="cart">
+                            <i class="fas fa-shopping-cart fa-fw"></i>
+                            <span>Giỏ Hàng</span>
+                            <!-- Optional: Add badge inside span if needed -->
+                
+                        </a>
+                    </li>
+                    <!-- === END CART LINK === -->
+                    <li>
+                        <a href="#" class="sidebar-link" data-section="service-request">
+                            <i class="fas fa-concierge-bell fa-fw"></i>
+                            <span>Yêu Cầu Dịch Vụ</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="sidebar-link" data-section="order-history">
+                            <i class="fas fa-history fa-fw"></i>
+                            <span>Lịch Sử Đơn Hàng</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="sidebar-link" data-section="wishlist">
+                            <i class="fas fa-heart fa-fw"></i>
+                            <span>Danh Sách Yêu Thích</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="sidebar-link" data-section="account">
+                            <i class="fas fa-user-cog fa-fw"></i>
+                            <span>Tài Khoản Của Tôi</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="sidebar-link" data-section="support">
+                            <i class="fas fa-headset fa-fw"></i>
+                            <span>Hỗ Trợ</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="sidebar-link" data-section="contact-feedback">
+                            <i class="fas fa-envelope-open-text fa-fw"></i>
+                            <span>Liên Hệ & Phản Hồi</span>
+                        </a>
+                    </li>
+                    <!-- Logout moved out of main nav list -->
+                </ul>
+            </nav>
+            <!-- Logout Link - Styled Separately -->
+            <div class="sidebar-logout">
+                <a href="#" id="logoutLinkSidebar" class="sidebar-logout-link">
+                    <i class="fas fa-sign-out-alt fa-fw"></i>
+                    <span>Đăng Xuất</span>
+                </a>
+            </div>
+            <div class="sidebar-footer">
+                <p>© 2024 TechShop</p>
+            </div>
+        </aside>
+
+        <!-- ======================= Main Content Area ======================= -->
+        <main class="dashboard-main">
+            <!-- Header -->
+            <header class="dashboard-header">
+                <div class="header-left">
+                    <button id="sidebarToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="search-bar">
+                        <input type="text" placeholder="Tìm kiếm đơn hàng, sản phẩm...">
+                        <button>
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                <!-- === HEADER RIGHT REORDERED === -->
+                <div class="header-right">
+                    <!-- Theme Toggle Switch Dark/Light -->
+                    <div class="theme-switch-wrapper">
+                        <label class="theme-switch" for="themeToggleCheckbox">
+                            <input type="checkbox" id="themeToggleCheckbox">
+                            <span class="slider">
+                    
+                                <i class="fas fa-moon dark-icon"></i>
+                            </span>
+                        </label>
+                    </div>
+                    <!-- User Menu -->
+                    <div class="user-menu" id="userMenuToggle">
+                        <img src="" alt="Avatar" class="user-avatar"> <!-- Placeholder -->
+                        <span class="user-name">Tên Người Dùng</span>
+                        <i class="fas fa-chevron-down"></i>
+                        <div class="user-dropdown" id="userDropdown">
+                            <a href="#" class="sidebar-link" data-section="account">
+                                <i class="fas fa-user-circle fa-fw"></i> Tài khoản
+                            </a>
+                            <a href="#" id="logoutLinkDropdown">
+                                <i class="fas fa-sign-out-alt fa-fw"></i> Đăng xuất
+                            </a>
+                        </div>
+                    </div>
+                    <!-- Cart Icon Removed from Header -->
+                    <!-- Notification Icon -->
+                    <div class="notification-icon" id="notificationBell">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge" id="notificationCount">0</span>
+                        <div class="notification-panel" id="notificationPanel">
+                            <h4>Thông báo</h4>
+                            <ul id="notificationList">
+                                <li class="no-notifications">Chưa có thông báo mới.</li>
+                            </ul>
+                            <a href="#" class="view-all" id="clearNotifications">Đánh dấu đã đọc</a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dynamic Content Sections -->
+            <div class="dashboard-content">
+
+                <!-- Overview Section (Unchanged) -->
+                <section id="overview-section" class="dashboard-section active">
+                    <!-- ... content ... -->
+                    <h2><i class="fas fa-tachometer-alt fa-fw"></i>Tổng Quan</h2>
+                    <p class="welcome-message">Chào mừng trở lại, [Tên Người Dùng]!</p>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <i class="fas fa-box-open icon-primary"></i>
+                            <div>
+                                <h4>Đơn hàng đang xử lý</h4>
+                                <p>2</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-tools icon-secondary"></i>
+                            <div>
+                                <h4>Yêu cầu dịch vụ</h4>
+                                <p>1</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-bell icon-warning"></i>
+                            <div>
+                                <h4>Thông báo mới</h4>
+                                <p id="overviewNotificationCount">0</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-star icon-success"></i>
+                            <div>
+                                <h4>Điểm tích lũy (Demo)</h4>
+                                <p>1,250</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-block">
+                        <h3>Hoạt động gần đây</h3>
+                        <table class="recent-activity-table">
+                            <thead>
+                            <tr>
+                                <th>Loại</th>
+                                <th>Mã</th>
+                                <th>Chi tiết</th>
+                                <th>Trạng thái</th>
+                                <th>Ngày</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td><span class="badge badge-product">Sản phẩm</span></td>
+                                <td>#P789</td>
+                                <td>Laptop Gaming ABC</td>
+                                <td><span class="status status-shipped">Đang giao</span></td>
+                                <td>20/10/2023</td>
+                                <td><button class="btn-view-details btn-link-style" data-order-id="P789">Xem</button></td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge badge-service">Dịch vụ</span></td>
+                                <td>#S456</td>
+                                <td>Tư vấn lắp đặt mạng</td>
+                                <td><span class="status status-processing">Đang xử lý</span></td>
+                                <td>19/10/2023</td>
+                                <td><button class="btn-view-details btn-link-style" data-order-id="S456">Xem</button></td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge badge-product">Sản phẩm</span></td>
+                                <td>#P123</td>
+                                <td>Điện thoại XYZ Pro</td>
+                                <td><span class="status status-delivered">Đã giao</span></td>
+                                <td>15/10/2023</td>
+                                <td><button class="btn-view-details btn-link-style" data-order-id="P123">Xem</button></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <a href="#" class="view-all-link sidebar-link" data-section="order-history">Xem tất cả lịch sử</a>
+                    </div>
+                
+                    <div class="content-block suggestions">
+                        <h3>Gợi ý cho bạn (Demo)</h3>
+                        <div class="suggestion-items">
+                            <div class="suggestion-item">
+                                <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80" alt="Phụ kiện">
+                                <p>Bàn phím cơ cho Laptop Gaming</p>
+                                <button class="btn btn-sm btn-outline">Xem ngay</button>
+                            </div>
+                            <div class="suggestion-item">
+                                <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80" alt="Dịch vụ">
+                                <p>Dịch vụ bảo trì máy tính định kỳ</p>
+                                <button class="btn btn-sm btn-outline">Tìm hiểu</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Store Section (Unchanged) -->
+                <section id="store-section" class="dashboard-section">
+                    <h2><i class="fas fa-store fa-fw"></i> Cửa Hàng Sản Phẩm</h2>
+                    <!-- ... rest of store content ... -->
+                    <div class="store-layout">
+                        <aside class="store-filters">
+                            <h3><i class="fas fa-filter"></i> Bộ lọc</h3>
+                            <div class="filter-group">
+                                <h4>Danh mục</h4>
+                                <ul class="filter-list category-filter">
+                                    <li><a href="#" class="filter-link active" data-filter-type="category" data-filter-value="all">Tất cả</a></li>
+                                    <li><a href="#" class="filter-link" data-filter-type="category" data-filter-value="laptops">Laptop</a></li>
+                                    <li><a href="#" class="filter-link" data-filter-type="category" data-filter-value="desktops">Máy bàn</a></li>
+                                    <li><a href="#" class="filter-link" data-filter-type="category" data-filter-value="phones">Điện thoại</a></li>
+                                    <li><a href="#" class="filter-link" data-filter-type="category" data-filter-value="accessories">Phụ kiện</a></li>
+                                    <li><a href="#" class="filter-link" data-filter-type="category" data-filter-value="monitors">Màn hình</a></li>
+                                    <li><a href="#" class="filter-link" data-filter-type="category" data-filter-value="components">Linh kiện</a></li>
+                                </ul>
+                            </div>
+                            <div class="filter-group">
+                                <h4>Thương hiệu</h4>
+                                <ul class="filter-list brand-filter">
+                                    <li><a href="#" class="filter-link active" data-filter-type="brand" data-filter-value="all">Tất cả</a></li>
+                                    <li><a href="#" class="filter-link" data-filter-type="brand" data-filter-value="TechBrand">TechBrand</a></li>
+                                    <li><a href="#" class="filter-link" data-filter-type="brand" data-filter-value="NovaTech">NovaTech</a></li>
+                                    <li><a href="#" class="filter-link" data-filter-type="brand" data-filter-value="GadgetPro">GadgetPro</a></li>
+                                    <li><a href="#" class="filter-link" data-filter-type="brand" data-filter-value="ZyStore">ZyStore</a></li>
+                                </ul>
+                            </div>
+                            <div class="filter-group">
+                                <h4>Khoảng giá</h4>
+                                <div class="price-range-slider">
+                                    <label for="priceRange">Tối đa:</label>
+                                    <span id="priceRangeValue">50.000.000</span>đ
+                                    <input type="range" id="priceRange" name="priceRange" min="100000" max="50000000" value="50000000" step="100000" class="form-control-range">
+                                </div>
+                                <button class="btn btn-sm btn-outline btn-apply-filter" style="margin-top: 10px;">Áp dụng</button>
+                            </div>
+                            <div class="filter-group">
+                                <h4>Đánh giá</h4>
+                                <ul class="filter-list rating-filter">
+                                    <li>
+                                        <a href="#" class="filter-link rating-link" data-rating="5">
+                                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><span>& Up</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="filter-link rating-link" data-rating="4">
+                                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><span>& Up</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="filter-link rating-link" data-rating="3">
+                                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><span>& Up</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <button class="btn btn-sm btn-danger btn-clear-filters" style="width: 100%; margin-top: 15px;">
+                                <i class="fas fa-times"></i> Xóa bộ lọc
+                            </button>
+                        </aside>
+                        <div class="store-products-area">
+                            <div class="loading-overlay" id="storeLoadingOverlay">
+                                <div class="spinner"></div>
+                                <p>Đang tải...</p>
+                            </div>
+                            <div class="store-top-controls">
+                                <div class="results-count">Hiển thị 1-8 / 50 SP</div>
+                                <div class="controls-right">
+                                    <select id="sortBy" class="form-control form-control-sm">
+                                        <option value="newest">Mới nhất</option>
+                                        <option value="price-asc">Giá tăng dần</option>
+                                        <option value="price-desc">Giá giảm dần</option>
+                                        <option value="rating">Đánh giá</option>
+                                    </select>
+                                    <div class="view-toggle">
+                                        <button class="btn-view-mode active" data-view="grid" title="Lưới"><i class="fas fa-th"></i></button>
+                                        <button class="btn-view-mode" data-view="list" title="Danh sách"><i class="fas fa-list"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- === STORE SEARCH INPUT === -->
+                            <div class="store-search-container">
+                                <input type="search" id="storeSearchInput" class="form-control" placeholder="Tìm sản phẩm trong cửa hàng...">
+                                <button id="storeSearchButton" class="btn btn-sm btn-primary">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                            <!-- === END STORE SEARCH INPUT === -->
+                            <div class="product-grid" id="productGrid">
+                                <!-- Product Card Example 1 (Laptop - TechBrand) -->
+                                <div class="product-card" data-product-id="TB-LP-01" data-category="laptops" data-brand="TechBrand">
+                                    <div class="product-image">
+                                        <img src=" https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80" alt="Laptop TechBrand Pro 14">
+                                        <span class="badge badge-new">Mới</span>
+                                        <button class="wishlist-btn" title="Thêm vào yêu thích"><i class="far fa-heart"></i></button>
+                                    </div>
+                                    <div class="product-content">
+                                        <a href="#" class="product-category-link">Laptop</a>
+                                        <h4><a href="#">Laptop TechBrand Pro 14</a></h4>
+                                        <div class="rating">
+                                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                                            <span class="rating-count">(150)</span>
+                                        </div>
+                                        <p class="price">32.500.000đ</p>
+                                    </div>
+                                    <div class="product-actions">
+                                        <button class="btn btn-primary btn-sm btn-add-cart">Thêm</button>
+                                        <button class="btn btn-outline btn-sm btn-view-detail">Chi tiết</button>
+                                    </div>
+                                </div>
+                                <!-- ... other product cards ... -->
+                            <div class="product-card" data-product-id="NT-PH-01" data-category="phones" data-brand="NovaTech">
+                                    <div class="product-image">
+                                        <img src=" https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80" alt="NovaTech Phone X">
+                                        <span class="badge badge-popular">Hot</span>
+                                        <button class="wishlist-btn" title="Thêm vào yêu thích"><i class="far fa-heart"></i></button>
+                                    </div>
+                                    <div class="product-content">
+                                        <a href="#" class="product-category-link">Điện thoại</a>
+                                        <h4><a href="#">NovaTech Phone X</a></h4>
+                                        <div class="rating">
+                                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                                            <span class="rating-count">(210)</span>
+                                        </div>
+                                        <p class="price">18.990.000đ</p>
+                                    </div>
+                                    <div class="product-actions">
+                                        <button class="btn btn-primary btn-sm btn-add-cart">Thêm</button>
+                                        <button class="btn btn-outline btn-sm btn-view-detail">Chi tiết</button>
+                                    </div>
+                                </div>
+                                <div class="product-card" data-product-id="GP-AC-01" data-category="accessories" data-brand="GadgetPro">
+                                    <div class="product-image">
+                                        <img src="https://images.unsplash.com/photo-1593642634315-48f5414c3ad9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80
+                                        " alt="Chuột GadgetPro Z1">
+                                        <button class="wishlist-btn" title="Thêm vào yêu thích"><i class="far fa-heart"></i></button>
+                                    </div>
+                                    <div class="product-content">
+                                        <a href="#" class="product-category-link">Phụ kiện</a>
+                                        <h4><a href="#">Chuột không dây GadgetPro Z1</a></h4>
+                                        <div class="rating">
+                                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                                            <span class="rating-count">(300)</span>
+                                        </div>
+                                        <p class="price">950.000đ</p>
+                                    </div>
+                                    <div class="product-actions">
+                                        <button class="btn btn-primary btn-sm btn-add-cart">Thêm</button>
+                                        <button class="btn btn-outline btn-sm btn-view-detail">Chi tiết</button>
+                                    </div>
+                                </div>
+                                <div class="product-card" data-product-id="ZS-MN-01" data-category="monitors" data-brand="ZyStore">
+                                    <div class="product-image">
+                                        <img src="https://images.unsplash.com/photo-1593642634315-48f5414c3ad9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80
+                                        " alt="Màn hình ZyStore 27 QHD">
+                                        <button class="wishlist-btn" title="Thêm vào yêu thích"><i class="far fa-heart"></i></button>
+                                    </div>
+                                    <div class="product-content">
+                                        <a href="#" class="product-category-link">Màn hình</a>
+                                        <h4><a href="#">Màn hình ZyStore 27" QHD</a></h4>
+                                        <div class="rating">
+                                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i><i class="far fa-star"></i>
+                                            <span class="rating-count">(80)</span>
+                                        </div>
+                                        <p class="price">7.200.000đ</p>
+                                    </div>
+                                    <div class="product-actions">
+                                        <button class="btn btn-primary btn-sm btn-add-cart">Thêm</button>
+                                        <button class="btn btn-outline btn-sm btn-view-detail">Chi tiết</button>
+                                    </div>
+                                </div>
+                                <div class="product-card" data-product-id="TB-DT-01" data-category="desktops" data-brand="TechBrand">
+                                    <div class="product-image">
+                                        <img src="https://images.unsplash.com/photo-1593642634315-48f5414c3ad9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80
+                                        " alt="PC TechBrand Elite i9">
+                                        <button class="wishlist-btn" title="Thêm vào yêu thích"><i class="far fa-heart"></i></button>
+                                    </div>
+                                    <div class="product-content">
+                                        <a href="#" class="product-category-link">Máy bàn</a>
+                                        <h4><a href="#">PC TechBrand Elite i9</a></h4>
+                                        <div class="rating">
+                                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                                            <span class="rating-count">(45)</span>
+                                        </div>
+                                        <p class="price">45.000.000đ</p>
+                                    </div>
+                                    <div class="product-actions">
+                                        <button class="btn btn-primary btn-sm btn-add-cart">Thêm</button>
+                                        <button class="btn btn-outline btn-sm btn-view-detail">Chi tiết</button>
+                                    </div>
+                                </div>
+                                <div class="product-card" data-product-id="NT-CP-01" data-category="components" data-brand="NovaTech">
+                                    <div class="product-image">
+                                        <img src="https://images.unsplash.com/photo-1664478546384-d546e059c9ee?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80" alt="SSD NovaTech 2TB">
+                                        <span class="badge badge-top-rated">Top</span>
+                                        <button class="wishlist-btn" title="Thêm vào yêu thích"><i class="far fa-heart"></i></button>
+                                    </div>
+                                    <div class="product-content">
+                                        <a href="#" class="product-category-link">Linh kiện</a>
+                                        <h4><a href="#">SSD NovaTech Speedster 2TB</a></h4>
+                                        <div class="rating">
+                                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                                            <span class="rating-count">(450)</span>
+                                        </div>
+                                        <p class="price">4.800.000đ</p>
+                                    </div>
+                                    <div class="product-actions">
+                                        <button class="btn btn-primary btn-sm btn-add-cart">Thêm</button>
+                                        <button class="btn btn-outline btn-sm btn-view-detail">Chi tiết</button>
+                                    </div>
+                                </div>
+                                <div class="product-card" data-product-id="TB-AC-01" data-category="accessories" data-brand="TechBrand">
+                                    <div class="product-image">
+                                        <img src="https://images.unsplash.com/photo-1664478546384-d546e059c9ee?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80" alt="Webcam TechBrand HD">
+                                        <button class="wishlist-btn" title="Thêm vào yêu thích"><i class="far fa-heart"></i></button>
+                                    </div>
+                                    <div class="product-content">
+                                        <a href="#" class="product-category-link">Phụ kiện</a>
+                                        <h4><a href="#">Webcam TechBrand HD 1080p</a></h4>
+                                        <div class="rating">
+                                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                                            <span class="rating-count">(99)</span>
+                                        </div>
+                                        <p class="price">1.150.000đ</p>
+                                    </div>
+                                    <div class="product-actions">
+                                        <button class="btn btn-primary btn-sm btn-add-cart">Thêm</button>
+                                        <button class="btn btn-outline btn-sm btn-view-detail">Chi tiết</button>
+                                    </div>
+                                </div>
+                                <div class="product-card" data-product-id="GP-PH-01" data-category="phones" data-brand="GadgetPro">
+                                    <div class="product-image">
+                                        <img src="https://images.unsplash.com/photo-1607428158389-7363ac3446f8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80" alt="GadgetPro Phone Lite">
+                                        <span class="badge badge-sale">Sale</span>
+                                        <button class="wishlist-btn" title="Thêm vào yêu thích"><i class="far fa-heart"></i></button>
+                                    </div>
+                                    <div class="product-content">
+                                        <a href="#" class="product-category-link">Điện thoại</a>
+                                        <h4><a href="#">GadgetPro Phone Lite</a></h4>
+                                        <div class="rating">
+                                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i><i class="far fa-star"></i>
+                                            <span class="rating-count">(55)</span>
+                                        </div>
+                                        <p class="price">8.500.000đ <span class="old-price">9.200.000đ</span></p>
+                                    </div>
+                                    <div class="product-actions">
+                                        <button class="btn btn-primary btn-sm btn-add-cart">Thêm</button>
+                                        <button class="btn btn-outline btn-sm btn-view-detail">Chi tiết</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-list" id="productList" style="display: none;">
+                                <!-- JS will populate this view -->
+                            </div>
+                            <nav class="pagination-container" aria-label="Page navigation">
+                                <ul class="pagination">
+                                    <li class="page-item disabled"><a class="page-link" href="#" aria-label="Previous">«</a></li>
+                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item"><span class="page-link">...</span></li>
+                                    <li class="page-item"><a class="page-link" href="#">5</a></li>
+                                    <li class="page-item"><a class="page-link" href="#" aria-label="Next">»</a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ======================= NEW CART SECTION ======================= -->
+                <section id="cart-section" class="dashboard-section">
+                    <h2><i class="fas fa-shopping-cart fa-fw"></i> Giỏ Hàng</h2>
+                    <div class="content-block"> <!-- Wrap content in content-block for consistent styling -->
+                        <div class="cart-section-layout"> <!-- Optional: Add a wrapper for potential two-column layout later -->
+
+                            <div class="cart-items-area"> <!-- Area for item list -->
+                                <div class="cart-items-container" id="cartItemsContainer">
+                                    <p class="empty-cart-message">Giỏ hàng trống.</p>
+                                    <!-- Cart items added by JS -->
+                                </div>
+                            </div>
+
+                            <div class="cart-checkout-area"> <!-- Area for checkout options and summary -->
+                                <div class="cart-checkout-options">
+                                    <h4>Thông tin nhận hàng & Thanh toán</h4>
+                                    <div class="form-group">
+                                        <label for="cartAddressSelect">Địa chỉ nhận hàng *</label>
+                                        <select id="cartAddressSelect" class="form-control form-control-sm">
+                                            <option value="">-- Chọn địa chỉ --</option>
+                                            <option value="addr1">123 ABC, XYZ, LMN, HCM (Mặc định)</option>
+                                            <option value="addr2">Tòa DEF, GHI, LMN, HCM (Công ty)</option>
+                                        </select>
+                                        <button class="btn btn-sm btn-link-style add-address-btn" style="margin-top: 5px;">Quản lý địa chỉ</button>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="cartPhoneNumber">Số điện thoại nhận hàng *</label>
+                                        <input type="tel" id="cartPhoneNumber" class="form-control form-control-sm" placeholder="Nhập SĐT người nhận">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Phương thức thanh toán *</label>
+                                        <div class="payment-options">
+                                            <div class="form-check">
+                                                <input type="radio" name="paymentMethod" id="paymentCOD" value="cod" checked>
+                                                <label for="paymentCOD"><i class="fas fa-truck"></i> Thanh toán khi nhận hàng (COD)</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input type="radio" name="paymentMethod" id="paymentVNPAY" value="vnpay">
+                                                <label for="paymentVNPAY"><i class="fas fa-credit-card"></i> VNPAY / Thẻ ngân hàng (Demo)</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group voucher-group">
+                                        <label for="cartVoucherInput">Mã giảm giá</label>
+                                        <div class="input-group">
+                                            <input type="text" id="cartVoucherInput" class="form-control form-control-sm" placeholder="Nhập mã voucher">
+                                            <button id="applyVoucherButton" class="btn btn-sm btn-outline">Áp dụng</button>
+                                        </div>
+                                        <small id="voucherMessage" class="voucher-message"></small>
+                                    </div>
+                                    <div class="form-group points-group">
+                                        <label>Đổi điểm thưởng (Bạn có <span id="availablePoints">1250</span> điểm)</label>
+                                        <div class="form-check">
+                                            <input type="checkbox" id="applyPointsCheckbox">
+                                            <label for="applyPointsCheckbox">Dùng <span id="pointsToUse">0</span> điểm (<span id="pointsDiscountValue">0đ</span>)</label>
+                                        </div>
+                                        <small id="pointsMessage" class="points-message"></small>
+                                    </div>
+                                </div>
+
+                                <div class="cart-summary">
+                                    <div class="totals-breakdown">
+                                        <p>Tạm tính: <span id="cartSubtotalAmount">0đ</span></p>
+                                        <p style="display: none;" id="voucherDiscountRow">Giảm giá voucher: <span id="cartVoucherDiscount">-0đ</span></p>
+                                        <p style="display: none;" id="pointsDiscountRow">Giảm từ điểm: <span id="cartPointsDiscount">-0đ</span></p>
+                                    </div>
+                                    <h4>Tổng cộng: <span id="cartTotalAmount">0đ</span></h4>
+                                    <button class="btn btn-primary btn-checkout" id="checkoutButton" disabled>
+                                        <i class="fas fa-check-circle"></i> Đặt hàng
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div><!-- /.cart-section-layout -->
+                    </div><!-- /.content-block -->
+                </section>
+                <!-- ======================= END CART SECTION ======================= -->
+
+                <!-- Service Request Section (Unchanged) -->
+                <section id="service-request-section" class="dashboard-section">
+                    <h2><i class="fas fa-concierge-bell fa-fw"></i>Gửi Yêu Cầu Dịch Vụ</h2>
+                    <!-- ... content ... -->
+                    <form id="serviceRequestForm" class="service-request-form">
+                        <div class="form-group">
+                            <label for="serviceType">Loại dịch vụ *</label>
+                            <select id="serviceType" class="form-control" required>
+                                <option value="">-- Chọn --</option>
+                                <option value="repair">Sửa chữa</option>
+                                <option value="installation">Lắp đặt</option>
+                                <option value="consulting">Tư vấn</option>
+                                <option value="development">Phát triển PM</option>
+                                <option value="other">Khác</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="requestTitle">Tiêu đề *</label>
+                            <input type="text" id="requestTitle" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="requestDescription">Mô tả chi tiết *</label>
+                            <textarea id="requestDescription" class="form-control" rows="5" required></textarea>
+                        </div>
+                        <div class="form-group file-upload-group">
+                            <label for="requestFiles">Đính kèm tệp (Demo)</label>
+                            <input type="file" id="requestFiles" class="form-control-file" multiple>
+                            <small>Tối đa 5MB/tệp.</small>
+                        </div>
+                        <!-- Priority Section Removed -->
+                        <button type="submit" class="btn btn-primary">Gửi Yêu Cầu</button>
+                    </form>
+                    <div class="content-block recent-requests">
+                        <h3>Yêu cầu gần đây</h3>
+                        <ul>
+                            <li><button class="btn-view-details btn-link-style" data-order-id="S456">#S456 - Tư vấn mạng - Đang xử lý</button></li>
+                            <li><button class="btn-view-details btn-link-style" data-order-id="S112">#S112 - Sửa laptop - Hoàn thành</button></li>
+                        </ul>
+                        <a href="#" class="view-all-link sidebar-link" data-section="order-history">Xem tất cả</a>
+                    </div>
+                </section>
+
+                <!-- Order History Section (Unchanged) -->
+                <section id="order-history-section" class="dashboard-section">
+                    <h2><i class="fas fa-history fa-fw"></i>Lịch Sử Đơn Hàng</h2>
+                    <!-- ... content ... -->
+                    <div class="tabs">
+                        <button class="tab-link active" data-tab="product-orders">Sản Phẩm</button>
+                        <button class="tab-link" data-tab="service-orders">Dịch Vụ</button>
+                    </div>
+                    <div id="product-orders" class="tab-content active">
+                        <h3>Đơn Hàng Sản Phẩm</h3>
+                        <table class="order-table">
+                            <thead>
+                            <tr>
+                                <th>Mã ĐH</th>
+                                <th>Ngày Đặt</th>
+                                <th>SP Chính</th>
+                                <th>Tổng Tiền</th>
+                                <th>Trạng thái</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>#P789</td>
+                                <td>20/10/23</td>
+                                <td>Laptop Gaming...</td>
+                                <td>25.5tr</td>
+                                <td><span class="status status-shipped">Đang giao</span></td>
+                                <td><button class="btn btn-sm btn-outline btn-view-details" data-order-id="P789">Chi tiết</button></td>
+                            </tr>
+                            <tr>
+                                <td>#P123</td>
+                                <td>15/10/23</td>
+                                <td>Điện thoại XYZ</td>
+                                <td>18.0tr</td>
+                                <td><span class="status status-delivered">Đã giao</span></td>
+                                <td><button class="btn btn-sm btn-outline btn-view-details" data-order-id="P123">Chi tiết</button></td>
+                            </tr>
+                            <tr>
+                                <td>#P098</td>
+                                <td>01/10/23</td>
+                                <td>Tai nghe Z</td>
+                                <td>1.2tr</td>
+                                <td><span class="status status-cancelled">Đã hủy</span></td>
+                                <td><button class="btn btn-sm btn-outline btn-view-details" data-order-id="P098">Chi tiết</button></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="service-orders" class="tab-content">
+                        <h3>Yêu Cầu Dịch Vụ</h3>
+                        <table class="order-table">
+                            <thead>
+                            <tr>
+                                <th>Mã YC</th>
+                                <th>Ngày Gửi</th>
+                                <th>Loại</th>
+                                <th>Tiêu đề</th>
+                                <th>Trạng thái</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>#S456</td>
+                                <td>19/10/23</td>
+                                <td>Tư vấn</td>
+                                <td>Tư vấn mạng</td>
+                                <td><span class="status status-processing">Đang xử lý</span></td>
+                                <td><button class="btn btn-sm btn-outline btn-view-details" data-order-id="S456">Chi tiết</button></td>
+                            </tr>
+                            <tr>
+                                <td>#S112</td>
+                                <td>05/10/23</td>
+                                <td>Sửa chữa</td>
+                                <td>Sửa laptop</td>
+                                <td><span class="status status-completed">Hoàn thành</span></td>
+                                <td><button class="btn btn-sm btn-outline btn-view-details" data-order-id="S112">Chi tiết</button></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Wishlist Section (Unchanged) -->
+                <section id="wishlist-section" class="dashboard-section">
+                    <h2><i class="fas fa-heart fa-fw"></i>Danh Sách Yêu Thích</h2>
+                    <!-- ... content ... -->
+                    <div class="wishlist-grid" id="wishlistGrid">
+                        <!-- JS Populates This -->
+                        </div>
+                        <p class="empty-wishlist" id="emptyWishlistMessage">Danh sách yêu thích trống.</p>
+                </section>
+
+                <!-- Account Section (Unchanged) -->
+                <section id="account-section" class="dashboard-section">
+                    <h2><i class="fas fa-user-cog fa-fw"></i>Tài Khoản Của Tôi</h2>
+                    <!-- ... content ... -->
+                    <div class="account-tabs">
+                        <button class="account-tab-link active" data-account-tab="personal-info">Cá nhân</button>
+                        <button class="account-tab-link" data-account-tab="addresses">Địa chỉ</button>
+                        <button class="account-tab-link" data-account-tab="change-password">Mật khẩu</button>
+                        <button class="account-tab-link" data-account-tab="payment-methods">Thanh toán</button>
+                        <button class="account-tab-link" data-account-tab="notifications">Thông báo</button>
+                        <button class="account-tab-link" data-account-tab="loyalty">Điểm thưởng</button>
+                    </div>
+                    <div id="personal-info" class="account-tab-content active">
+                        <h3>Thông tin cá nhân</h3>
+                        <form id="personalInfoForm">
+                            <div class="form-group">
+                                <label for="accName">Họ tên</label>
+                                <input type="text" id="accName" class="form-control" value="Tên Người Dùng">
+                            </div>
+                            <div class="form-group">
+                                <label for="accEmail">Email</label>
+                                <input type="email" id="accEmail" class="form-control" value="user@example.com" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label for="accPhone">Điện thoại</label>
+                                <input type="tel" id="accPhone" class="form-control" value="09xxxxxxxx">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Lưu</button>
+                        </form>
+                    </div>
+                    <div id="addresses" class="account-tab-content">
+                        <h3>Địa chỉ</h3>
+                        <div class="address-list">
+                            <div class="address-item default">
+                                <p>
+                                    <strong>Người Dùng</strong><br>
+                                    09xxxxxxxx<br>
+                                    123 ABC, XYZ, LMN, HCM<br>
+                                    <span class="badge badge-success">Mặc định</span>
+                                </p>
+                                <div class="address-actions">
+                                    <button class="btn btn-sm btn-outline">Sửa</button>
+                                    <button class="btn btn-sm btn-danger">Xóa</button>
+                                </div>
+                            </div>
+                            <div class="address-item">
+                                <p>
+                                    <strong>Công ty</strong><br>
+                                    09xxxxxxxx<br>
+                                    Tòa DEF, GHI, LMN, HCM
+                                </p>
+                                <div class="address-actions">
+                                    <button class="btn btn-sm btn-outline">Sửa</button>
+                                    <button class="btn btn-sm btn-danger">Xóa</button>
+                                    <button class="btn btn-sm btn-secondary">Mặc định</button>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary"><i class="fas fa-plus"></i> Thêm địa chỉ</button>
+                    </div>
+                    <div id="change-password" class="account-tab-content">
+                        <h3>Đổi mật khẩu</h3>
+                        <form id="changePasswordForm">
+                            <div class="form-group">
+                                <label for="currentPassword">Hiện tại</label>
+                                <input type="password" id="currentPassword" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="newPassword">Mới</label>
+                                <input type="password" id="newPassword" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="confirmNewPassword">Xác nhận</label>
+                                <input type="password" id="confirmNewPassword" class="form-control" required>
+                                <small id="passwordMatchErrorAcc" style="color: var(--accent-color); display: none;">Không khớp.</small>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Cập nhật</button>
+                        </form>
+                    </div>
+                    <div id="payment-methods" class="account-tab-content">
+                        <h3>Thanh toán (Demo)</h3>
+                        <p>Quản lý thẻ.</p>
+                        <div class="payment-method-item">
+                            <i class="fab fa-cc-visa fa-2x"></i>
+                            <span>**** 1234</span>
+                            <button class="btn btn-sm btn-danger">Xóa</button>
+                        </div>
+                        <button class="btn btn-primary"><i class="fas fa-plus"></i> Thêm thẻ</button>
+                    </div>
+                    <div id="notifications" class="account-tab-content">
+                        <h3>Thông báo (Demo)</h3>
+                        <form id="notificationSettingsForm">
+                            <div class="form-check">
+                                <input type="checkbox" id="notifyOrderStatus" checked>
+                                <label for="notifyOrderStatus">Cập nhật đơn hàng</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="notifyServiceUpdate" checked>
+                                <label for="notifyServiceUpdate">Cập nhật dịch vụ</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="notifyPromo">
+                                <label for="notifyPromo">Khuyến mãi</label>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="margin-top: 15px;">Lưu</button>
+                        </form>
+                    </div>
+                    <div id="loyalty" class="account-tab-content">
+                        <h3>Điểm thưởng (Demo)</h3>
+                        <p>Điểm: <strong>1,250</strong></p>
+                        <p>Cấp độ: <strong>Bạc</strong></p>
+                        <button class="btn btn-primary">Xem ưu đãi</button>
+                    </div>
+                </section>
+
+                <!-- Support Section (Unchanged) -->
+                <section id="support-section" class="dashboard-section">
+                    <h2><i class="fas fa-headset fa-fw"></i>Hỗ Trợ</h2>
+                    <!-- ... content ... -->
+                    <div class="support-grid">
+                        <div class="support-faq">
+                            <h3>FAQ</h3>
+                            <details>
+                                <summary>Theo dõi đơn hàng?</summary>
+                                <p>Vào "Lịch sử đơn hàng", nhấn "Chi tiết".</p>
+                            </details>
+                            <details>
+                                <summary>Bảo hành?</summary>
+                                <p>Xem trang chính sách hoặc liên hệ.</p>
+                            </details>
+                            <details>
+                                <summary>Hủy yêu cầu DV?</summary>
+                                <p>Liên hệ hotline hoặc gửi yêu cầu hỗ trợ.</p>
+                            </details>
+                        </div>
+                        <div class="support-contact">
+                            <h3>Gửi yêu cầu</h3>
+                            <form id="supportForm">
+                                <div class="form-group">
+                                    <label for="supportSubject">Chủ đề *</label>
+                                    <input type="text" id="supportSubject" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="supportOrderRef">Mã ĐH/YC</label>
+                                    <input type="text" id="supportOrderRef" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="supportMessage">Nội dung *</label>
+                                    <textarea id="supportMessage" class="form-control" rows="4" required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Gửi</button>
+                            </form>
+                            <h4>Liên hệ trực tiếp:</h4>
+                            <p><i class="fas fa-phone-alt"></i> 1900 1234</p>
+                            <p><i class="fas fa-envelope"></i> support@techshop.example</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Contact & Feedback Section (Unchanged) -->
+                <section id="contact-feedback-section" class="dashboard-section">
+                    <h2><i class="fas fa-envelope-open-text fa-fw"></i> Liên Hệ & Phản Hồi</h2>
+                    <!-- ... content ... -->
+                    <div class="contact-grid"> <!-- Use grid for layout -->
+                        <div class="contact-info-block content-block">
+                            <h3>Thông tin liên hệ TechShop</h3>
+                            <p><i class="fas fa-map-marker-alt fa-fw"></i> <strong>Địa chỉ:</strong> 123 Đường ABC, Phường Q, Quận XYZ, Thành phố HCM</p>
+                            <p><i class="fas fa-phone-alt fa-fw"></i> <strong>Hotline:</strong> <a href="tel:19001234">1900 1234</a> (Nhánh 1: Bán hàng, Nhánh 2: Hỗ trợ kỹ thuật)</p>
+                            <p><i class="fas fa-envelope fa-fw"></i> <strong>Email:</strong> <a href="mailto:support@techshop.example">support@techshop.example</a></p>
+                            <p><i class="fas fa-headset fa-fw"></i> <strong>Hỗ trợ trực tuyến:</strong> Nhấn vào biểu tượng chat ở góc dưới màn hình.</p>
+                            <p><i class="fas fa-clock fa-fw"></i> <strong>Giờ làm việc:</strong> 8:00 - 17:30 (Thứ 2 - Thứ 7)</p>
+                            <!-- Optional Map -->
+                            <div class="map-placeholder">
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.447378466678!2d106.62965271474894!3d10.77700399232079!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f35f6a179c5%3A0x8a3b1f6f8c5e6a9c!2zVHLGsOG7nW5nIMSQ4bqhaSBo4buNYyBCw6FjaCBraG9hIC0gxJBIUUcgVFAuSENN!5e0!3m2!1svi!2s!4v1678886500000!5m2!1svi!2s" width="100%" height="250" style="border:0; border-radius: var(--border-radius-sm);" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                            </div>
+                        </div>
+
+                        <div class="shop-feedback-block content-block">
+                            <h3>Phản hồi từ TechShop (Demo)</h3>
+                            <div id="shopFeedbackList">
+                                <p class="empty-feedback">Chưa có phản hồi mới từ cửa hàng cho các yêu cầu của bạn.</p>
+                                <!-- Feedback items will be added here by JS -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div> <!-- End .dashboard-content -->
+        </main> <!-- End .dashboard-main -->
+    </div> <!-- End .dashboard-container -->
+
+    <!-- Modals (Cart Modal #modalCart is no longer used for main display) -->
+    <div class="modal-overlay" id="modalOverlay"></div>
+    <!-- <div class="modal modal-cart" id="cartModal"> ... No longer needed for display ... </div> -->
+    <div class="modal modal-detail" id="detailModal">
+        <button class="close-modal" id="closeDetailModal">×</button>
+        <div class="detail-modal-content" id="detailModalContent">
+            <p>Đang tải...</p>
+        </div>
+    </div>
+
+    <!-- Chatbox Widget (Unchanged) -->
+    <div id="chatboxWidget">
+        <button id="chatboxToggle">
+            <i class="fas fa-comments"></i>
+            <i class="fas fa-times" style="display: none;"></i>
+        </button>
+        <div id="chatboxContent">
+            <div class="chatbox-header"> Hỗ trợ trực tuyến </div>
+            <div class="chatbox-messages">
+                <p class="message system">Chào bạn! TechShop có thể giúp gì cho bạn?</p>
+                <p class="message user">Tôi cần tư vấn về laptop gaming.</p>
+                <p class="message agent">Chào bạn, bạn cần tư vấn cụ thể về mẫu nào ạ?</p>
+            </div>
+            <div class="chatbox-input">
+                <input type="text" placeholder="Nhập tin nhắn...">
+                <button><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <script src="classValue.js"></script>
+    <script src="JS/initialization.js"></script>
+    <script src="JS/logicEvent.js"></script>
+
+    </body>
+    </html>

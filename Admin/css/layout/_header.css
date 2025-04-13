@@ -1,0 +1,42 @@
+/* css/layout/_header.css */
+
+.admin-header {
+    background-color: var(--header-bg);
+    padding: 0.8rem 2rem; /* Adjusted padding */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    box-shadow: var(--shadow); /* Use lighter shadow */
+    flex-shrink: 0; /* Prevent shrinking */
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+#sidebarToggle {
+    background: none;
+    border: none;
+    color: var(--text-light);
+    font-size: 1.4rem; /* Slightly larger */
+    cursor: pointer;
+    padding: 0.5rem; /* Add padding for easier clicking */
+    display: none; /* Hidden by default on desktop, shown via media query */
+    transition: color var(--transition-duration) ease;
+}
+
+#sidebarToggle:hover {
+    color: var(--primary-color);
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 1.8rem; /* Consistent gap */
+}

@@ -1,0 +1,44 @@
+/* css/sections/_content.css */
+
+#content-section .banner-list-placeholder {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+#content-section .banner-item-demo {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: var(--dark-bg);
+    padding: 0.8rem 1.2rem; /* More padding */
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+}
+
+#content-section .banner-item-demo img {
+    height: 45px; /* Taller banner preview */
+    width: auto;
+    max-width: 150px; /* Limit width */
+    flex-shrink: 0;
+    object-fit: contain;
+    background: var(--sidebar-bg); /* Different bg for contrast */
+}
+
+#content-section .banner-item-demo span {
+    flex-grow: 1;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    overflow: hidden; /* Prevent long text overflow */
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#content-section .banner-item-demo .banner-actions {
+    flex-shrink: 0; /* Prevent actions wrapping */
+}
+
+#content-section .banner-item-demo .banner-actions .btn-icon {
+    margin-left: 0.5rem;
+}
