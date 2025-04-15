@@ -1,536 +1,820 @@
-// --- Mobile Menu Toggle ---
-const menuToggle = document.getElementById('menuToggle');
-const navLinks = document.getElementById('navLinks');
-const closeMenu = document.getElementById('closeMenu'); // Nút đóng menu trong phiên bản mobile
-const navLinkItems = document.querySelectorAll('.nav-links a'); // Lấy tất cả link trong nav
+// --- START OF REFACTORED script.js (OOP MVC) ---
 
-if (menuToggle && navLinks) {
-    menuToggle.addEventListener('click', () => {
-        navLinks.classList.add('active');
-        updateAuthButtonsInMobileMenu(); // Cập nhật nút auth khi mở menu
-    });
+/**
+ * ============================================================
+ * --- MODEL ---
+ * Manages application state and data.
+ * Does not interact with the DOM.
+ * ============================================================
+ */
+class Model {
+    #isLoggedIn = false; // Private field for encapsulation
+    #username = null;
+    #scrollThresholds = {
+        header: 50,
+        backToTop: 300
+    };
+
+    login(userIdentifier) {
+        this.#isLoggedIn = true;
+        // Simulate deriving username (e.g., from email or provided name)
+        this.#username = userIdentifier ? (userIdentifier.includes('@') ? userIdentifier.split('@')[0] : userIdentifier) : 'User';
+        console.log("Model: State updated to Logged In. User:", this.#username);
+    }
+
+    logout() {
+        this.#isLoggedIn = false;
+        this.#username = null;
+        console.log("Model: State updated to Logged Out.");
+    }
+
+    isUserLoggedIn() {
+        return this.#isLoggedIn;
+    }
+
+    getUsername() {
+        return this.#username;
+    }
+
+    getScrollThreshold(key) {
+        return this.#scrollThresholds[key];
+    }
 }
 
-if (closeMenu && navLinks) {
-    closeMenu.addEventListener('click', () => {
-        navLinks.classList.remove('active');
-    });
-}
+/**
+ * ============================================================
+ * --- VIEW ---
+ * Handles all DOM interactions and UI updates.
+ * Is instructed by the Controller.
+ * ============================================================
+ */
+class View {
+    // --- Element Selectors (Cached in Constructor) ---
+    elements = {};
 
-// Close menu when clicking on a navigation link (cho mobile)
-if (navLinks && navLinkItems.length > 0) {
-    navLinkItems.forEach(link => {
-        // Chỉ áp dụng cho link điều hướng section (href bắt đầu bằng #)
-        if (link.getAttribute('href') && link.getAttribute('href').startsWith('#')) {
-            link.addEventListener('click', () => {
-                if (navLinks.classList.contains('active')) { // Chỉ đóng nếu menu đang mở
-                    navLinks.classList.remove('active');
-                }
-                // Smooth scroll sẽ được xử lý ở phần dưới
+    constructor() {
+        this._cacheDOMElements();
+    }
+
+    _cacheDOMElements() {
+        this.elements = {
+            // Mobile Menu
+            menuToggle: document.getElementById('menuToggle'),
+            navLinks: document.getElementById('navLinks'),
+            closeMenu: document.getElementById('closeMenu'),
+            navLinkItems: document.querySelectorAll('.nav-links a'),
+            // Header
+            header: document.getElementById('header'),
+            // Back to Top
+            backToTopButton: document.getElementById('backToTop'),
+            // Scroll Indicator
+            scrollIndicator: document.getElementById('scrollIndicator'),
+            // Fade In Elements
+            fadeInElements: document.querySelectorAll('.fade-in'),
+            // Particles Container
+            particlesJsContainer: document.getElementById('particles-js'),
+            // Contact Form
+            contactForm: document.getElementById('contactForm'),
+            contactName: document.getElementById('name'),
+            contactEmail: document.getElementById('email'),
+            contactSubject: document.getElementById('subject'),
+            contactMessage: document.getElementById('message'),
+            // Modals & Overlays
+            modalOverlay: document.getElementById('modalOverlay'),
+            loginModal: document.getElementById('loginModal'),
+            registerModal: document.getElementById('registerModal'),
+            // Header Auth/User Info
+            loginBtnHeader: document.getElementById('loginBtnHeader'),
+            signupBtnHeader: document.getElementById('signupBtnHeader'),
+            authButtonsContainer: document.getElementById('authButtons'),
+            userInfoContainer: document.getElementById('userInfo'),
+            usernameDisplay: document.getElementById('usernameDisplay'),
+            logoutBtn: document.getElementById('logoutBtn'),
+            // Modal Internals
+            closeLoginModalBtn: document.getElementById('closeLoginModal'),
+            closeRegisterModalBtn: document.getElementById('closeRegisterModal'),
+            switchToRegisterLink: document.getElementById('switchToRegister'),
+            switchToLoginLink: document.getElementById('switchToLogin'),
+            // Forms
+            loginForm: document.getElementById('loginForm'),
+            loginEmailInput: document.getElementById('loginEmail'), // Specific input needed
+            loginPasswordInput: document.getElementById('loginPassword'), // Specific input needed
+            registerForm: document.getElementById('registerForm'),
+            forgotPasswordForm: document.getElementById('forgotPasswordForm'),
+            forgotPasswordLink: document.getElementById('forgotPasswordLink'),
+            backToLoginLink: document.getElementById('backToLoginLink'),
+            sendResetLinkBtn: document.getElementById('sendResetLinkBtn'),
+            resetEmailInput: document.getElementById('resetEmailInput'),
+            // Register Form Inputs
+            registerUsername: document.getElementById('registerUsername'),
+            registerEmail: document.getElementById('registerEmail'),
+            registerPhone: document.getElementById('registerPhone'),
+            registerPassword: document.getElementById('registerPassword'),
+            registerConfirmPassword: document.getElementById('registerConfirmPassword'),
+            passwordMatchError: document.getElementById('passwordMatchError'),
+            // Social Login Buttons
+            loginGoogleBtn: document.getElementById('loginGoogleBtn'),
+            loginFacebookBtn: document.getElementById('loginFacebookBtn'),
+            // Cloned Mobile Elements (will be populated if needed)
+            authButtonsMobile: null,
+            userInfoMobile: null,
+            usernameDisplayMobile: null,
+            logoutBtnMobile: null
+        };
+        // Add a check for critical elements
+        if (!this.elements.navLinks || !this.elements.modalOverlay) {
+            console.warn("View: Core elements like navLinks or modalOverlay not found!");
+        }
+    }
+
+    // Helper to check if an element exists before trying to use it
+    _elementExists(elementRef) {
+        return elementRef !== null && typeof elementRef !== 'undefined';
+    }
+
+    // --- UI Update Methods ---
+    toggleMobileMenu(show) {
+        if (this._elementExists(this.elements.navLinks)) {
+            this.elements.navLinks.classList.toggle('active', show);
+        }
+    }
+
+    isMobileMenuOpen() {
+        return this._elementExists(this.elements.navLinks) && this.elements.navLinks.classList.contains('active');
+    }
+
+    updateHeaderScroll(scrolled) {
+        if (this._elementExists(this.elements.header)) {
+            this.elements.header.classList.toggle('scrolled', scrolled);
+        }
+    }
+
+    updateBackToTopButton(show) {
+        if (this._elementExists(this.elements.backToTopButton)) {
+            this.elements.backToTopButton.classList.toggle('active', show);
+        }
+    }
+
+    updateScrollIndicator(percentage) {
+        if (this._elementExists(this.elements.scrollIndicator)) {
+            this.elements.scrollIndicator.style.width = `${percentage}%`;
+        }
+    }
+
+    scrollToTop() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    smoothScrollTo(selector) {
+        const targetElement = document.querySelector(selector);
+        if (targetElement) {
+            const headerOffset = this._elementExists(this.elements.header) ? this.elements.header.offsetHeight : 0;
+            const elementPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
+            const offsetPosition = elementPosition - headerOffset - 20; // Adjust as needed
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
             });
-        }
-    });
-}
-
-// --- Header Scroll Effect ---
-const header = document.getElementById('header');
-if (header) {
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-            header.classList.add('scrolled');
         } else {
-            header.classList.remove('scrolled');
+            console.warn(`View: Element with selector "${selector}" not found for smooth scrolling.`);
         }
-    });
-}
+    }
 
-// --- Back to Top Button ---
-const backToTopButton = document.getElementById('backToTop');
-if (backToTopButton) {
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 300) {
-            backToTopButton.classList.add('active');
+    initFadeInObserver(callback) {
+        if (this.elements.fadeInElements && this.elements.fadeInElements.length > 0 && typeof IntersectionObserver !== 'undefined') {
+            const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
+            const scrollObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        callback(entry.target); // Notify controller
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+            this.elements.fadeInElements.forEach(el => scrollObserver.observe(el));
+        }
+    }
+
+    activateFadeInElement(element) {
+        element.classList.add('active');
+    }
+
+    initParticles() {
+        if (typeof particlesJS === 'function' && this._elementExists(this.elements.particlesJsContainer)) {
+            particlesJS('particles-js', { /* --- Paste original particlesJS config here --- */
+                "particles": { "number": { "value": 80, "density": { "enable": true, "value_area": 800 } }, "color": { "value": "#ffffff" }, "shape": { "type": "circle", "stroke": { "width": 0, "color": "#000000" }, "polygon": { "nb_sides": 5 } }, "opacity": { "value": 0.5, "random": false, "anim": { "enable": false, "speed": 1, "opacity_min": 0.1, "sync": false } }, "size": { "value": 3, "random": true, "anim": { "enable": false, "speed": 40, "size_min": 0.1, "sync": false } }, "line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.4, "width": 1 }, "move": { "enable": true, "speed": 4, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false, "attract": { "enable": false, "rotateX": 600, "rotateY": 1200 } } }, "interactivity": { "detect_on": "canvas", "events": { "onhover": { "enable": true, "mode": "repulse" }, "onclick": { "enable": true, "mode": "push" }, "resize": true }, "modes": { "grab": { "distance": 400, "line_linked": { "opacity": 1 } }, "bubble": { "distance": 400, "size": 40, "duration": 2, "opacity": 8, "speed": 3 }, "repulse": { "distance": 100, "duration": 0.4 }, "push": { "particles_nb": 4 }, "remove": { "particles_nb": 2 } } }, "retina_detect": true
+            });
+        } else if (!this._elementExists(this.elements.particlesJsContainer)) {
+            console.warn("View: 'particles-js' element not found.");
         } else {
-            backToTopButton.classList.remove('active');
+            console.warn("View: particles.js library not loaded.");
         }
-    });
+    }
 
-    backToTopButton.addEventListener('click', (e) => {
-        e.preventDefault();
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    });
-}
+    resetForm(formElement) {
+        if (this._elementExists(formElement)) formElement.reset();
+    }
 
-// --- Scroll Indicator ---
-const scrollIndicator = document.getElementById('scrollIndicator');
-if (scrollIndicator) {
-    window.addEventListener('scroll', () => {
-        const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-        const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        // Tránh chia cho 0 nếu scrollHeight = 0
-        const scrollPercentage = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
-        scrollIndicator.style.width = scrollPercentage + '%';
-    });
-}
+    getFormValues(formId) {
+        const values = {};
+        const formElement = this.elements[formId];
+        if (!this._elementExists(formElement)) {
+            console.error(`View: Cannot get values, form with ID "${formId}" not found in cached elements.`);
+            return values;
+        }
 
-// --- Fade-in Animation on Scroll ---
-const fadeInElements = document.querySelectorAll('.fade-in');
-if (fadeInElements.length > 0 && typeof IntersectionObserver !== 'undefined') {
-    const observerOptions = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.1
-    };
+        switch(formId) {
+            case 'contactForm':
+                if(this._elementExists(this.elements.contactName)) values.name = this.elements.contactName.value;
+                if(this._elementExists(this.elements.contactEmail)) values.email = this.elements.contactEmail.value;
+                if(this._elementExists(this.elements.contactSubject)) values.subject = this.elements.contactSubject.value;
+                if(this._elementExists(this.elements.contactMessage)) values.message = this.elements.contactMessage.value;
+                break;
+            case 'loginForm':
+                // Use the specifically cached inputs
+                if(this._elementExists(this.elements.loginEmailInput)) values.emailOrUsername = this.elements.loginEmailInput.value;
+                if(this._elementExists(this.elements.loginPasswordInput)) values.password = this.elements.loginPasswordInput.value;
+                break;
+            case 'registerForm':
+                if(this._elementExists(this.elements.registerUsername)) values.username = this.elements.registerUsername.value;
+                if(this._elementExists(this.elements.registerEmail)) values.email = this.elements.registerEmail.value;
+                if(this._elementExists(this.elements.registerPhone)) values.phone = this.elements.registerPhone.value;
+                if(this._elementExists(this.elements.registerPassword)) values.password = this.elements.registerPassword.value;
+                if(this._elementExists(this.elements.registerConfirmPassword)) values.confirmPassword = this.elements.registerConfirmPassword.value;
+                break;
+            case 'forgotPasswordForm':
+                if(this._elementExists(this.elements.resetEmailInput)) values.email = this.elements.resetEmailInput.value;
+                break;
+            default:
+                console.warn(`View: getFormValues called for unknown form ID "${formId}"`);
+        }
+        return values;
+    }
 
-    const observerCallback = (entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('active');
-                observer.unobserve(entry.target);
+    showAlert(message) {
+        alert(message); // Keep original alert behavior
+    }
+
+    // --- Modal Management ---
+    openModal(modalElement) {
+        if (!this._elementExists(modalElement) || !this._elementExists(this.elements.modalOverlay)) return;
+        this.elements.modalOverlay.classList.add('active');
+        modalElement.classList.add('active');
+        // Reset internal form states if opening login modal
+        if (modalElement === this.elements.loginModal) {
+            this.showLoginForm(true); // Ensure login form is default
+        }
+    }
+
+    closeModal() {
+        if (!this._elementExists(this.elements.modalOverlay)) return;
+        this.elements.modalOverlay.classList.remove('active');
+        if (this._elementExists(this.elements.loginModal)) this.elements.loginModal.classList.remove('active');
+        if (this._elementExists(this.elements.registerModal)) this.elements.registerModal.classList.remove('active');
+        this.showPasswordMatchError(false); // Hide error on close
+        this.showLoginForm(true); // Ensure login form is visible next time login modal opens
+    }
+
+    showLoginForm(show) {
+        if (this._elementExists(this.elements.loginForm)) this.elements.loginForm.style.display = show ? 'block' : 'none';
+        if (this._elementExists(this.elements.forgotPasswordForm)) this.elements.forgotPasswordForm.style.display = show ? 'none' : 'block';
+    }
+
+    showPasswordMatchError(show) {
+        if (this._elementExists(this.elements.passwordMatchError)) {
+            this.elements.passwordMatchError.style.display = show ? 'block' : 'none';
+        }
+    }
+
+    focusElement(element) {
+        if(this._elementExists(element)) element.focus();
+    }
+
+    // --- Auth UI State ---
+    displayLoggedInState(username) {
+        if (this._elementExists(this.elements.authButtonsContainer)) this.elements.authButtonsContainer.style.display = 'none';
+        if (this._elementExists(this.elements.userInfoContainer)) {
+            this.elements.userInfoContainer.style.display = 'flex';
+            if (this._elementExists(this.elements.usernameDisplay)) this.elements.usernameDisplay.textContent = `Welcome, ${username}!`;
+        }
+        // Mobile menu update will be triggered by Controller if menu is open
+    }
+
+    displayLoggedOutState() {
+        if (this._elementExists(this.elements.userInfoContainer)) this.elements.userInfoContainer.style.display = 'none';
+        if (this._elementExists(this.elements.authButtonsContainer)) this.elements.authButtonsContainer.style.display = 'flex';
+        // Mobile menu update will be triggered by Controller if menu is open
+    }
+
+    // --- Mobile Menu Auth Elements Handling ---
+    // This method ensures the elements are created/cloned if needed
+    // It requires the CONTROLLER'S event handlers to attach to the new buttons
+    _ensureMobileAuthElements(handlers) {
+        if (!this._elementExists(this.elements.navLinks)) return; // Need navLinks to append to
+
+        // --- Clone Auth Buttons (Login/Signup) ---
+        if (!this.elements.authButtonsMobile && this._elementExists(this.elements.authButtonsContainer)) {
+            this.elements.authButtonsMobile = this.elements.authButtonsContainer.cloneNode(true);
+            this.elements.authButtonsMobile.id = ''; // Avoid duplicate IDs
+            this.elements.authButtonsMobile.className = 'auth-buttons-mobile'; // Use class for styling
+            // Apply mobile styles
+            Object.assign(this.elements.authButtonsMobile.style, {
+                display: 'flex', flexDirection: 'column', marginTop: '2rem',
+                width: '80%', alignItems: 'center'
+            });
+
+            const mobileLoginBtn = this.elements.authButtonsMobile.querySelector('button[id^="loginBtnHeader"]');
+            const mobileSignupBtn = this.elements.authButtonsMobile.querySelector('button[id^="signupBtnHeader"]');
+
+            if(mobileLoginBtn) {
+                mobileLoginBtn.id = 'loginBtnHeaderMobile'; // Unique ID for mobile
+                mobileLoginBtn.style.marginBottom = '1rem';
+                // Attach Controller's handler
+                if (handlers.openLoginModal) {
+                    mobileLoginBtn.addEventListener('click', handlers.openLoginModal);
+                } else { console.warn("View: Missing openLoginModal handler for mobile button.");}
             }
-        });
-    };
+            if(mobileSignupBtn) {
+                mobileSignupBtn.id = 'signupBtnHeaderMobile'; // Unique ID for mobile
+                mobileSignupBtn.style.marginBottom = '1rem';
+                // Attach Controller's handler
+                if (handlers.openRegisterModal) {
+                    mobileSignupBtn.addEventListener('click', handlers.openRegisterModal);
+                } else { console.warn("View: Missing openRegisterModal handler for mobile button.");}
+            }
+            this.elements.navLinks.appendChild(this.elements.authButtonsMobile);
+        }
 
-    const scrollObserver = new IntersectionObserver(observerCallback, observerOptions);
-    fadeInElements.forEach(el => {
-        scrollObserver.observe(el);
-    });
-}
+        // --- Clone User Info (Welcome/Logout) ---
+        if (!this.elements.userInfoMobile && this._elementExists(this.elements.userInfoContainer)) {
+            this.elements.userInfoMobile = this.elements.userInfoContainer.cloneNode(true);
+            this.elements.userInfoMobile.id = ''; // Avoid duplicate IDs
+            this.elements.userInfoMobile.className = 'user-info-mobile'; // Use class for styling
+            // Apply mobile styles
+            Object.assign(this.elements.userInfoMobile.style, {
+                display: 'flex', flexDirection: 'column', marginTop: '2rem',
+                width: '80%', alignItems: 'center'
+            });
 
-// --- Smooth Scrolling for Navigation Links ---
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        const href = this.getAttribute('href');
-        // Chỉ xử lý nếu href không phải chỉ là "#" (back-to-top đã xử lý)
-        if (href && href !== '#' && href.length > 1) {
-            e.preventDefault();
-            const targetElement = document.querySelector(href);
-
-            if (targetElement) {
-                const headerOffset = header ? header.offsetHeight : 0; // Lấy chiều cao header (nếu có)
-                const elementPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
-                const offsetPosition = elementPosition - headerOffset - 20; // Trừ chiều cao header và thêm khoảng đệm
-
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: 'smooth'
+            this.elements.usernameDisplayMobile = this.elements.userInfoMobile.querySelector('span');
+            if(this._elementExists(this.elements.usernameDisplayMobile)) {
+                this.elements.usernameDisplayMobile.id = 'usernameDisplayMobile'; // Unique ID
+                Object.assign(this.elements.usernameDisplayMobile.style, {
+                    marginBottom: '1rem', display: 'block', textAlign: 'center'
                 });
             }
-        }
-    });
-});
 
-// --- Particles.js Initialization ---
-// Kiểm tra xem particlesJS có tồn tại không trước khi gọi
-if (typeof particlesJS === 'function') {
-    particlesJS('particles-js', {
-        "particles": {
-            "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
-            "color": { "value": "#ffffff" },
-            "shape": { "type": "circle", "stroke": { "width": 0, "color": "#000000" }, "polygon": { "nb_sides": 5 } },
-            "opacity": { "value": 0.5, "random": false, "anim": { "enable": false, "speed": 1, "opacity_min": 0.1, "sync": false } },
-            "size": { "value": 3, "random": true, "anim": { "enable": false, "speed": 40, "size_min": 0.1, "sync": false } },
-            "line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.4, "width": 1 },
-            "move": { "enable": true, "speed": 4, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false, "attract": { "enable": false, "rotateX": 600, "rotateY": 1200 } }
-        },
-        "interactivity": {
-            "detect_on": "canvas",
-            "events": { "onhover": { "enable": true, "mode": "repulse" }, "onclick": { "enable": true, "mode": "push" }, "resize": true },
-            "modes": {
-                "grab": { "distance": 400, "line_linked": { "opacity": 1 } },
-                "bubble": { "distance": 400, "size": 40, "duration": 2, "opacity": 8, "speed": 3 },
-                "repulse": { "distance": 100, "duration": 0.4 },
-                "push": { "particles_nb": 4 },
-                "remove": { "particles_nb": 2 }
+            this.elements.logoutBtnMobile = this.elements.userInfoMobile.querySelector('button');
+            if(this._elementExists(this.elements.logoutBtnMobile)) {
+                this.elements.logoutBtnMobile.id = 'logoutBtnMobile'; // Unique ID
+                this.elements.logoutBtnMobile.style.width = '100%';
+                // Attach Controller's handler
+                if (handlers.logout) {
+                    this.elements.logoutBtnMobile.addEventListener('click', handlers.logout);
+                } else { console.warn("View: Missing logout handler for mobile button."); }
             }
-        },
-        "retina_detect": true
-    });
-} else {
-    console.warn("particles.js library not loaded or 'particles-js' element not found.");
-}
-
-
-// --- Contact Form Submission (Simulation) ---
-const contactForm = document.getElementById('contactForm');
-if (contactForm) {
-    contactForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const name = document.getElementById('name').value;
-        const email = document.getElementById('email').value;
-        const subject = document.getElementById('subject').value;
-        const message = document.getElementById('message').value;
-
-        console.log('Contact Form Data:', { name, email, subject, message });
-        alert('Thank you for your message! We will get back to you soon.');
-        contactForm.reset();
-        // Ở đây cần code backend để gửi mail thực sự
-    });
-}
-
-
-// ============================================================
-// --- Authentication & Modal Logic ---
-// ============================================================
-
-// --- Get Modal Elements ---
-const modalOverlay = document.getElementById('modalOverlay');
-const loginModal = document.getElementById('loginModal');
-const registerModal = document.getElementById('registerModal');
-
-// --- Get Header Buttons & User Info Elements ---
-const loginBtnHeader = document.getElementById('loginBtnHeader');
-const signupBtnHeader = document.getElementById('signupBtnHeader');
-const authButtonsContainer = document.getElementById('authButtons'); // Container cho nút Login/Signup
-const userInfoContainer = document.getElementById('userInfo');     // Container cho thông tin user đã đăng nhập
-const usernameDisplay = document.getElementById('usernameDisplay');   // Span hiển thị tên user
-const logoutBtn = document.getElementById('logoutBtn');           // Nút Logout
-
-// --- Get Modal Internal Buttons & Links ---
-const closeLoginModalBtn = document.getElementById('closeLoginModal');
-const closeRegisterModalBtn = document.getElementById('closeRegisterModal');
-const switchToRegisterLink = document.getElementById('switchToRegister'); // Link chuyển từ Login -> Register
-const switchToLoginLink = document.getElementById('switchToLogin');     // Link chuyển từ Register -> Login
-
-// --- Get Forms & Form Elements ---
-const loginForm = document.getElementById('loginForm');               // Form đăng nhập
-const registerForm = document.getElementById('registerForm');           // Form đăng ký
-const forgotPasswordForm = document.getElementById('forgotPasswordForm'); // Form quên mật khẩu (mới)
-const forgotPasswordLink = document.getElementById('forgotPasswordLink'); // Link mở form quên mật khẩu (mới)
-const backToLoginLink = document.getElementById('backToLoginLink');     // Link quay lại login từ form quên mật khẩu (mới)
-const sendResetLinkBtn = document.getElementById('sendResetLinkBtn');   // Nút gửi link reset trong form quên mật khẩu (mới)
-const resetEmailInput = document.getElementById('resetEmailInput');     // Input email trong form quên mật khẩu (mới)
-
-// Các input trong form đăng ký
-const registerUsername = document.getElementById('registerUsername');
-const registerEmail = document.getElementById('registerEmail');
-const registerPhone = document.getElementById('registerPhone');         // Input số điện thoại (mới)
-const registerPassword = document.getElementById('registerPassword');
-const registerConfirmPassword = document.getElementById('registerConfirmPassword');
-const passwordMatchError = document.getElementById('passwordMatchError'); // Thông báo lỗi trùng mật khẩu
-
-// --- Get Social Login Buttons (mới) ---
-const loginGoogleBtn = document.getElementById('loginGoogleBtn');
-const loginFacebookBtn = document.getElementById('loginFacebookBtn');
-
-// --- Authentication State Simulation ---
-let isLoggedIn = false; // Biến toàn cục để theo dõi trạng thái đăng nhập (chỉ là giả lập)
-
-// --- Modal Open/Close Functions ---
-function openModal(modalElement) {
-    if (!modalElement || !modalOverlay) return; // Kiểm tra tồn tại
-    modalOverlay.classList.add('active');
-    modalElement.classList.add('active');
-    // Reset trạng thái hiển thị của các form bên trong login modal khi mở
-    if (modalElement === loginModal && loginForm && forgotPasswordForm) {
-        loginForm.style.display = 'block';
-        forgotPasswordForm.style.display = 'none';
-    }
-}
-
-function closeModal() {
-    if (!modalOverlay) return;
-    modalOverlay.classList.remove('active');
-    if (loginModal && loginModal.classList.contains('active')) {
-        loginModal.classList.remove('active');
-    }
-    if (registerModal && registerModal.classList.contains('active')) {
-        registerModal.classList.remove('active');
-    }
-    // Reset thông báo lỗi và trạng thái form khi đóng modal
-    if (passwordMatchError) {
-        passwordMatchError.style.display = 'none';
-    }
-    // Đảm bảo form login luôn hiển thị lại khi mở modal login lần sau
-    if (loginForm && forgotPasswordForm) {
-        loginForm.style.display = 'block';
-        forgotPasswordForm.style.display = 'none';
-    }
-}
-
-// --- Event Listeners for Opening Modals ---
-if (loginBtnHeader) loginBtnHeader.addEventListener('click', () => openModal(loginModal));
-if (signupBtnHeader) signupBtnHeader.addEventListener('click', () => openModal(registerModal));
-
-// --- Event Listeners for Closing Modals ---
-if (closeLoginModalBtn) closeLoginModalBtn.addEventListener('click', closeModal);
-if (closeRegisterModalBtn) closeRegisterModalBtn.addEventListener('click', closeModal);
-if (modalOverlay) modalOverlay.addEventListener('click', closeModal); // Đóng khi click ra ngoài
-
-// --- Event Listeners for Switching Between Modals ---
-if (switchToRegisterLink) {
-    switchToRegisterLink.addEventListener('click', (e) => {
-        e.preventDefault();
-        closeModal(); // Đóng modal hiện tại (Login)
-        // Dùng setTimeout để đợi hiệu ứng đóng modal hoàn thành một chút
-        setTimeout(() => openModal(registerModal), 150);
-    });
-}
-
-if (switchToLoginLink) {
-    switchToLoginLink.addEventListener('click', (e) => {
-        e.preventDefault();
-        closeModal(); // Đóng modal hiện tại (Register)
-        setTimeout(() => openModal(loginModal), 150);
-    });
-}
-
-// --- Forgot Password Flow Logic (mới) ---
-if (forgotPasswordLink && loginForm && forgotPasswordForm) {
-    forgotPasswordLink.addEventListener('click', (e) => {
-        e.preventDefault();
-        loginForm.style.display = 'none';       // Ẩn form đăng nhập thông thường
-        forgotPasswordForm.style.display = 'block'; // Hiện form quên mật khẩu
-    });
-}
-
-if (backToLoginLink && loginForm && forgotPasswordForm) {
-    backToLoginLink.addEventListener('click', (e) => {
-        e.preventDefault();
-        forgotPasswordForm.style.display = 'none'; // Ẩn form quên mật khẩu
-        loginForm.style.display = 'block';         // Hiện lại form đăng nhập
-    });
-}
-
-// Xử lý khi submit form quên mật khẩu
-if (forgotPasswordForm) {
-    forgotPasswordForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const email = resetEmailInput ? resetEmailInput.value : null;
-        if (!email) {
-            alert('Please enter your email address.');
-            return;
+            this.elements.navLinks.appendChild(this.elements.userInfoMobile);
         }
-        console.log('Simulating sending password reset link to:', email);
-        // --- !!! BACKEND REQUIRED HERE để gửi email thực sự !!! ---
-        alert(`Password reset link simulation: An email has been sent to ${email} with instructions.`);
-        closeModal(); // Đóng modal sau khi "gửi"
-        forgotPasswordForm.reset(); // Reset input email
-    });
-}
-
-
-// --- Update UI based on Login State ---
-function showLoggedInState(username) {
-    isLoggedIn = true;
-    if (authButtonsContainer) authButtonsContainer.style.display = 'none'; // Ẩn nút Login/Signup
-    if (userInfoContainer) {
-        userInfoContainer.style.display = 'flex'; // Hiện thông tin user
-        if (usernameDisplay) usernameDisplay.textContent = `Welcome, ${username}!`; // Cập nhật tên user
-    }
-    updateAuthButtonsInMobileMenu(); // Cập nhật trạng thái trong mobile menu
-}
-
-function showLoggedOutState() {
-    isLoggedIn = false;
-    if (userInfoContainer) userInfoContainer.style.display = 'none'; // Ẩn thông tin user
-    if (authButtonsContainer) authButtonsContainer.style.display = 'flex'; // Hiện nút Login/Signup
-    updateAuthButtonsInMobileMenu(); // Cập nhật trạng thái trong mobile menu
-}
-
-// --- Update Authentication Buttons/Info in Mobile Menu ---
-// Hàm này đảm bảo các nút/thông tin đăng nhập cũng được hiển thị đúng trong menu mobile
-function updateAuthButtonsInMobileMenu() {
-    if (!navLinks || !navLinks.classList.contains('active')) return; // Chỉ thực thi khi menu mobile đang mở
-
-    let authButtonsMobile = navLinks.querySelector('.auth-buttons-mobile');
-    let userInfoMobile = navLinks.querySelector('.user-info-mobile');
-
-    // --- Clone và thêm nút/info vào menu mobile nếu chưa có ---
-    // Chỉ clone một lần duy nhất
-    if (!authButtonsMobile && authButtonsContainer) {
-        authButtonsMobile = authButtonsContainer.cloneNode(true);
-        authButtonsMobile.id = ''; // Bỏ id gốc để tránh trùng lặp
-        authButtonsMobile.classList.remove('auth-buttons'); // Bỏ class gốc
-        authButtonsMobile.classList.add('auth-buttons-mobile'); // Thêm class mới cho mobile
-        // Style lại cho phù hợp menu mobile
-        authButtonsMobile.style.display = 'flex';
-        authButtonsMobile.style.flexDirection = 'column';
-        authButtonsMobile.style.marginTop = '2rem';
-        authButtonsMobile.style.width = '80%';
-        authButtonsMobile.style.alignItems = 'center';
-        authButtonsMobile.querySelectorAll('button').forEach(btn => {
-            btn.style.marginBottom = '1rem';
-            btn.id = btn.id + 'Mobile'; // Thêm suffix 'Mobile' vào ID nút clone
-        });
-        navLinks.appendChild(authButtonsMobile);
-
-        // --- Gắn lại Event Listener cho các nút vừa clone ---
-        const loginBtnMobile = navLinks.querySelector('#loginBtnHeaderMobile');
-        const signupBtnMobile = navLinks.querySelector('#signupBtnHeaderMobile');
-        if (loginBtnMobile) loginBtnMobile.addEventListener('click', () => openModal(loginModal));
-        if (signupBtnMobile) signupBtnMobile.addEventListener('click', () => openModal(registerModal));
     }
 
-    if (!userInfoMobile && userInfoContainer) {
-        userInfoMobile = userInfoContainer.cloneNode(true);
-        userInfoMobile.id = ''; // Bỏ id gốc
-        userInfoMobile.classList.remove('user-info');
-        userInfoMobile.classList.add('user-info-mobile'); // Thêm class mới
-        // Style lại
-        userInfoMobile.style.display = 'flex';
-        userInfoMobile.style.flexDirection = 'column';
-        userInfoMobile.style.marginTop = '2rem';
-        userInfoMobile.style.width = '80%';
-        userInfoMobile.style.alignItems = 'center';
-        const usernameSpanMobile = userInfoMobile.querySelector('span'); // Lấy span bên trong
-        if(usernameSpanMobile) {
-            usernameSpanMobile.id = 'usernameDisplayMobile'; // Đặt ID riêng
-            usernameSpanMobile.style.marginBottom = '1rem';
-            usernameSpanMobile.style.display = 'block';
-            usernameSpanMobile.style.textAlign = 'center';
+    // Updates the visibility of auth elements within the mobile menu
+    updateMobileMenuAuthState(isLoggedIn, username, handlers) {
+        // Ensure elements exist first, passing handlers needed for potential cloning
+        this._ensureMobileAuthElements(handlers);
+
+        // Now update visibility based on login state
+        if (this._elementExists(this.elements.authButtonsMobile)) {
+            this.elements.authButtonsMobile.style.display = isLoggedIn ? 'none' : 'flex';
         }
-        const logoutBtnMobileClone = userInfoMobile.querySelector('button');
-        if(logoutBtnMobileClone) {
-            logoutBtnMobileClone.id = 'logoutBtnMobile'; // Đặt ID riêng
-            logoutBtnMobileClone.style.width = '100%';
-            // --- Gắn lại Event Listener cho nút logout clone ---
-            logoutBtnMobileClone.addEventListener('click', () => {
-                console.log('Simulating logout from mobile menu');
-                alert('Logged out (simulation)!');
-                showLoggedOutState(); // Cập nhật UI
-                closeModal(); // Đóng modal login/register nếu đang mở
-                if (navLinks) navLinks.classList.remove('active'); // Đóng menu mobile
+        if (this._elementExists(this.elements.userInfoMobile)) {
+            this.elements.userInfoMobile.style.display = isLoggedIn ? 'flex' : 'none';
+            if (isLoggedIn && this._elementExists(this.elements.usernameDisplayMobile)) {
+                // Use the provided username for display
+                this.elements.usernameDisplayMobile.textContent = `Welcome, ${username}!`;
+            }
+        }
+    }
+
+
+    // --- Binding for Internal View Logic (called by Controller during init) ---
+    // Binds events that primarily affect the view itself, like password matching feedback
+    bindRegisterPasswordMatch(handler) {
+        if (this._elementExists(this.elements.registerConfirmPassword)) {
+            this.elements.registerConfirmPassword.addEventListener('input', handler);
+        }
+        if (this._elementExists(this.elements.registerPassword)) {
+            this.elements.registerPassword.addEventListener('input', handler); // Check on original password change too
+        }
+    }
+
+    // Bind handlers for modal close buttons and overlay click
+    bindModalCloseEvents(handler) {
+        if (this._elementExists(this.elements.closeLoginModalBtn)) {
+            this.elements.closeLoginModalBtn.addEventListener('click', handler);
+        }
+        if (this._elementExists(this.elements.closeRegisterModalBtn)) {
+            this.elements.closeRegisterModalBtn.addEventListener('click', handler);
+        }
+        if (this._elementExists(this.elements.modalOverlay)) {
+            this.elements.modalOverlay.addEventListener('click', (e) => {
+                if (e.target === this.elements.modalOverlay) { // Only close if clicking overlay itself
+                    handler();
+                }
             });
         }
-        navLinks.appendChild(userInfoMobile);
+    }
+}
+
+
+/**
+ * ============================================================
+ * --- CONTROLLER ---
+ * Handles events, updates Model, tells View what to display.
+ * Connects Model and View.
+ * ============================================================
+ */
+class Controller {
+    constructor(model, view) {
+        this.model = model;
+        this.view = view;
+
+        // Pre-bind 'this' for event handlers to ensure correct context
+        this.handleScroll = this.handleScroll.bind(this);
+        this.handleMenuToggle = this.handleMenuToggle.bind(this);
+        this.handleMenuClose = this.handleMenuClose.bind(this);
+        this.handleMobileNavClick = this.handleMobileNavClick.bind(this);
+        this.handleBackToTopClick = this.handleBackToTopClick.bind(this);
+        this.handleSmoothScrollClick = this.handleSmoothScrollClick.bind(this);
+        this.handleFadeInElement = this.handleFadeInElement.bind(this);
+        this.handleContactSubmit = this.handleContactSubmit.bind(this);
+        this.handleOpenLoginModal = this.handleOpenLoginModal.bind(this);
+        this.handleOpenRegisterModal = this.handleOpenRegisterModal.bind(this);
+        this.handleCloseModal = this.handleCloseModal.bind(this);
+        this.handleSwitchToRegister = this.handleSwitchToRegister.bind(this);
+        this.handleSwitchToLogin = this.handleSwitchToLogin.bind(this);
+        this.handleShowForgotPassword = this.handleShowForgotPassword.bind(this);
+        this.handleShowLoginFromForgot = this.handleShowLoginFromForgot.bind(this);
+        this.handleForgotPasswordSubmit = this.handleForgotPasswordSubmit.bind(this);
+        this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
+        this.handleRegisterSubmit = this.handleRegisterSubmit.bind(this);
+        this.handlePasswordMatchInput = this.handlePasswordMatchInput.bind(this);
+        this.handleSocialLogin = this.handleSocialLogin.bind(this);
+        this.handleLogout = this.handleLogout.bind(this);
+
+        // Store handlers needed for mobile element cloning/binding
+        this.mobileAuthEventHandlers = {
+            openLoginModal: this.handleOpenLoginModal,
+            openRegisterModal: this.handleOpenRegisterModal,
+            logout: this.handleLogout
+        };
     }
 
-    // --- Cập nhật hiển thị dựa trên trạng thái isLoggedIn ---
-    if (authButtonsMobile) {
-        authButtonsMobile.style.display = isLoggedIn ? 'none' : 'flex';
+    init() {
+        console.log("Controller: Initializing...");
+        this.bindEvents();
+
+        // Set initial UI state based on Model
+        this._updateAuthStateUI(); // Use helper to update both header and potentially mobile menu
+
+        // Initialize other view features
+        this.view.initParticles();
+        this.view.initFadeInObserver(this.handleFadeInElement);
+        console.log("Controller: Initialization complete.");
     }
-    if (userInfoMobile) {
-        userInfoMobile.style.display = isLoggedIn ? 'flex' : 'none';
-        if (isLoggedIn) {
-            // Cập nhật tên user trong menu mobile
-            const usernameSpanMobile = userInfoMobile.querySelector('#usernameDisplayMobile');
-            if (usernameSpanMobile && usernameDisplay) {
-                usernameSpanMobile.textContent = usernameDisplay.textContent;
+
+    // Helper to update auth UI in both header and mobile menu (if open)
+    _updateAuthStateUI() {
+        if (this.model.isUserLoggedIn()) {
+            this.view.displayLoggedInState(this.model.getUsername());
+            if (this.view.isMobileMenuOpen()) {
+                this.view.updateMobileMenuAuthState(true, this.model.getUsername(), this.mobileAuthEventHandlers);
+            }
+        } else {
+            this.view.displayLoggedOutState();
+            if (this.view.isMobileMenuOpen()) {
+                this.view.updateMobileMenuAuthState(false, null, this.mobileAuthEventHandlers);
             }
         }
     }
-}
 
 
-// --- Form Submission Simulation ---
+    bindEvents() {
+        // --- Window Scroll Events ---
+        window.addEventListener('scroll', this.handleScroll);
 
-// Login Form Submit
-if (loginForm) {
-    loginForm.addEventListener('submit', (e) => {
+        // --- Mobile Menu ---
+        if (this.view._elementExists(this.view.elements.menuToggle)) {
+            this.view.elements.menuToggle.addEventListener('click', this.handleMenuToggle);
+        }
+        if (this.view._elementExists(this.view.elements.closeMenu)) {
+            this.view.elements.closeMenu.addEventListener('click', this.handleMenuClose);
+        }
+        if (this.view.elements.navLinkItems && this.view.elements.navLinkItems.length > 0) {
+            this.view.elements.navLinkItems.forEach(link => {
+                const href = link.getAttribute('href');
+                if (href && href.startsWith('#') && href.length > 1) { // Internal nav links
+                    link.addEventListener('click', (e) => this.handleMobileNavClick(e, link)); // Pass event and link
+                }
+            });
+        }
+
+        // --- Back to Top ---
+        if (this.view._elementExists(this.view.elements.backToTopButton)) {
+            this.view.elements.backToTopButton.addEventListener('click', this.handleBackToTopClick);
+        }
+
+        // --- Smooth Scrolling for any relevant # link ---
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            const href = anchor.getAttribute('href');
+            // Ensure it's not just "#" and not handled by mobile nav click already (though harmless redundancy is okay here)
+            if (href && href !== '#' && href.length > 1) {
+                anchor.addEventListener('click', (e) => this.handleSmoothScrollClick(e, anchor));
+            }
+        });
+
+
+        // --- Contact Form ---
+        if (this.view._elementExists(this.view.elements.contactForm)) {
+            this.view.elements.contactForm.addEventListener('submit', this.handleContactSubmit);
+        }
+
+        // --- Modal Opening (Header Buttons) ---
+        if (this.view._elementExists(this.view.elements.loginBtnHeader)) {
+            this.view.elements.loginBtnHeader.addEventListener('click', this.handleOpenLoginModal);
+        }
+        if (this.view._elementExists(this.view.elements.signupBtnHeader)) {
+            this.view.elements.signupBtnHeader.addEventListener('click', this.handleOpenRegisterModal);
+        }
+
+        // --- Modal Closing (Using View's internal binding) ---
+        this.view.bindModalCloseEvents(this.handleCloseModal);
+
+        // --- Modal Switching ---
+        if (this.view._elementExists(this.view.elements.switchToRegisterLink)) {
+            this.view.elements.switchToRegisterLink.addEventListener('click', this.handleSwitchToRegister);
+        }
+        if (this.view._elementExists(this.view.elements.switchToLoginLink)) {
+            this.view.elements.switchToLoginLink.addEventListener('click', this.handleSwitchToLogin);
+        }
+
+        // --- Forgot Password Flow ---
+        if (this.view._elementExists(this.view.elements.forgotPasswordLink)) {
+            this.view.elements.forgotPasswordLink.addEventListener('click', this.handleShowForgotPassword);
+        }
+        if (this.view._elementExists(this.view.elements.backToLoginLink)) {
+            this.view.elements.backToLoginLink.addEventListener('click', this.handleShowLoginFromForgot);
+        }
+        if (this.view._elementExists(this.view.elements.forgotPasswordForm)) {
+            this.view.elements.forgotPasswordForm.addEventListener('submit', this.handleForgotPasswordSubmit);
+        }
+
+        // --- Form Submissions ---
+        if (this.view._elementExists(this.view.elements.loginForm)) {
+            this.view.elements.loginForm.addEventListener('submit', this.handleLoginSubmit);
+        }
+        if (this.view._elementExists(this.view.elements.registerForm)) {
+            this.view.elements.registerForm.addEventListener('submit', this.handleRegisterSubmit);
+        }
+
+        // --- Register Form Password Match Check (Using View's internal binding) ---
+        this.view.bindRegisterPasswordMatch(this.handlePasswordMatchInput);
+
+        // --- Social Login ---
+        if (this.view._elementExists(this.view.elements.loginGoogleBtn)) {
+            this.view.elements.loginGoogleBtn.addEventListener('click', () => this.handleSocialLogin('Google'));
+        }
+        if (this.view._elementExists(this.view.elements.loginFacebookBtn)) {
+            this.view.elements.loginFacebookBtn.addEventListener('click', () => this.handleSocialLogin('Facebook'));
+        }
+
+        // --- Logout ---
+        if (this.view._elementExists(this.view.elements.logoutBtn)) {
+            this.view.elements.logoutBtn.addEventListener('click', this.handleLogout);
+        }
+        // Note: Logout handler for mobile button is attached dynamically by View._ensureMobileAuthElements
+    }
+
+    // --- Event Handlers ---
+
+    handleScroll() {
+        const scrollY = window.scrollY;
+        const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+        const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrollPercentage = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+
+        // Header
+        this.view.updateHeaderScroll(scrollY > this.model.getScrollThreshold('header'));
+        // Back to Top
+        this.view.updateBackToTopButton(scrollY > this.model.getScrollThreshold('backToTop'));
+        // Scroll Indicator
+        this.view.updateScrollIndicator(scrollPercentage);
+    }
+
+    handleMenuToggle() {
+        this.view.toggleMobileMenu(true);
+        // Crucial: Update mobile auth state *after* menu is shown
+        this.view.updateMobileMenuAuthState(this.model.isUserLoggedIn(), this.model.getUsername(), this.mobileAuthEventHandlers);
+    }
+
+    handleMenuClose() {
+        this.view.toggleMobileMenu(false);
+    }
+
+    handleMobileNavClick(event, linkElement) {
+        const href = linkElement.getAttribute('href');
+        // Only prevent default and scroll smoothly for internal section links
+        if (href && href.startsWith('#') && href.length > 1) {
+            event.preventDefault(); // Prevent default jump for section links
+            this.view.toggleMobileMenu(false); // Close menu first
+            // Use setTimeout to allow menu closing animation before scrolling
+            setTimeout(() => this.view.smoothScrollTo(href), 50);
+        } else {
+            // Allow default behavior for external links, but still close menu
+            this.view.toggleMobileMenu(false);
+        }
+    }
+
+    handleBackToTopClick(e) {
         e.preventDefault();
-        const emailOrUsername = document.getElementById('loginEmail')?.value; // Lấy email/username
-        const password = document.getElementById('loginPassword')?.value; // Lấy password
-        console.log('Simulating login attempt for:', emailOrUsername);
-        // --- !!! BACKEND REQUIRED HERE để xác thực thực sự !!! ---
-        // Giả lập thành công
-        alert('Login successful (simulation)!');
-        closeModal(); // Đóng modal
-        // Lấy phần tên từ email hoặc username làm tên hiển thị (ví dụ)
-        const displayName = emailOrUsername ? (emailOrUsername.includes('@') ? emailOrUsername.split('@')[0] : emailOrUsername) : 'User';
-        showLoggedInState(displayName); // Cập nhật UI sang trạng thái đăng nhập
-        loginForm.reset(); // Reset form
-    });
-}
+        this.view.scrollToTop();
+    }
 
-// Register Form Submit
-if (registerForm) {
-    registerForm.addEventListener('submit', (e) => {
+    handleSmoothScrollClick(e, anchorElement) {
+        const href = anchorElement.getAttribute('href');
+        // Double check it's a valid internal link (excluding plain '#')
+        if (href && href !== '#' && href.length > 1) {
+            e.preventDefault(); // Prevent default jump
+            // Check if mobile menu is open, close it if needed before scrolling
+            if(this.view.isMobileMenuOpen()) {
+                this.view.toggleMobileMenu(false);
+                setTimeout(() => this.view.smoothScrollTo(href), 50); // Delay scroll slightly
+            } else {
+                this.view.smoothScrollTo(href);
+            }
+        }
+    }
+
+    handleFadeInElement(element) {
+        this.view.activateFadeInElement(element);
+    }
+
+    handleContactSubmit(e) {
         e.preventDefault();
-        // Lấy giá trị từ các input, kiểm tra null trước khi truy cập .value
-        const username = registerUsername ? registerUsername.value : null;
-        const email = registerEmail ? registerEmail.value : null;
-        const phone = registerPhone ? registerPhone.value : ''; // Lấy số điện thoại (mới), để trống nếu không nhập
-        const password = registerPassword ? registerPassword.value : null;
-        const confirmPassword = registerConfirmPassword ? registerConfirmPassword.value : null;
+        const formData = this.view.getFormValues('contactForm');
+        // Basic check if needed
+        if (!formData.name || !formData.email || !formData.message) {
+            this.view.showAlert('Please fill in Name, Email, and Message.');
+            return;
+        }
+        console.log('Contact Form Data:', formData);
+        this.view.showAlert('Thank you for your message! We will get back to you soon.');
+        this.view.resetForm(this.view.elements.contactForm);
+        // TODO: Add actual backend submission logic here
+    }
 
-        // Kiểm tra các trường bắt buộc
-        if (!username || !email || !password || !confirmPassword) {
-            alert('Please fill in all required fields.');
+    handleOpenLoginModal() {
+        this.view.openModal(this.view.elements.loginModal);
+    }
+
+    handleOpenRegisterModal() {
+        this.view.openModal(this.view.elements.registerModal);
+    }
+
+    handleCloseModal() {
+        this.view.closeModal();
+    }
+
+    _switchModal(targetModalElement) {
+        this.view.closeModal();
+        setTimeout(() => this.view.openModal(targetModalElement), 150); // Delay for transition
+    }
+
+    handleSwitchToRegister(e) {
+        e.preventDefault();
+        this._switchModal(this.view.elements.registerModal);
+    }
+
+    handleSwitchToLogin(e) {
+        e.preventDefault();
+        this._switchModal(this.view.elements.loginModal);
+    }
+
+    handleShowForgotPassword(e) {
+        e.preventDefault();
+        this.view.showLoginForm(false); // Hide login, show forgot
+    }
+
+    handleShowLoginFromForgot(e) {
+        e.preventDefault();
+        this.view.showLoginForm(true); // Hide forgot, show login
+    }
+
+    handleForgotPasswordSubmit(e) {
+        e.preventDefault();
+        const formData = this.view.getFormValues('forgotPasswordForm');
+        if (!formData.email) {
+            this.view.showAlert('Please enter your email address.');
+            this.view.focusElement(this.view.elements.resetEmailInput);
+            return;
+        }
+        console.log('Simulating sending password reset link to:', formData.email);
+        // --- !!! BACKEND REQUIRED HERE !!! ---
+        this.view.showAlert(`Password reset link simulation: An email has been sent to ${formData.email} with instructions.`);
+        this.view.closeModal();
+        this.view.resetForm(this.view.elements.forgotPasswordForm);
+    }
+
+    handleLoginSubmit(e) {
+        e.preventDefault();
+        const formData = this.view.getFormValues('loginForm');
+        if (!formData.emailOrUsername || !formData.password) {
+            this.view.showAlert('Please enter both email/username and password.');
+            return;
+        }
+        console.log('Simulating login attempt for:', formData.emailOrUsername);
+        // --- !!! BACKEND REQUIRED HERE for actual validation !!! ---
+        // Simulate success
+        this.view.showAlert('Login successful (simulation)!');
+        this.model.login(formData.emailOrUsername); // Update model state
+        this.view.closeModal();
+        this._updateAuthStateUI(); // Update UI everywhere
+        this.view.resetForm(this.view.elements.loginForm);
+    }
+
+    handleRegisterSubmit(e) {
+        e.preventDefault();
+        const formData = this.view.getFormValues('registerForm');
+
+        // Basic validation
+        if (!formData.username || !formData.email || !formData.password || !formData.confirmPassword) {
+            this.view.showAlert('Please fill in all required fields.');
             return;
         }
 
-        // Kiểm tra trùng mật khẩu (Client-side)
-        if (password !== confirmPassword) {
-            if (passwordMatchError) passwordMatchError.style.display = 'block';
-            if (registerConfirmPassword) registerConfirmPassword.focus();
-            return; // Dừng submit nếu mật khẩu không khớp
-        } else {
-            if (passwordMatchError) passwordMatchError.style.display = 'none'; // Ẩn lỗi nếu khớp
+        // Password match validation
+        if (formData.password !== formData.confirmPassword) {
+            this.view.showPasswordMatchError(true);
+            this.view.focusElement(this.view.elements.registerConfirmPassword);
+            return; // Stop submission
         }
+        // Ensure error is hidden if they match (might have been shown before)
+        this.view.showPasswordMatchError(false);
 
-        console.log('Simulating registration for:', { username, email, phone }); // Log cả số điện thoại
-        // --- !!! BACKEND REQUIRED HERE để tạo user thực sự !!! ---
-        // Giả lập thành công
-        alert('Registration successful (simulation)! You are now logged in.');
-        closeModal(); // Đóng modal
-        showLoggedInState(username); // Cập nhật UI (đăng nhập luôn sau khi đăng ký - giả lập)
-        registerForm.reset(); // Reset form
-    });
-}
 
-// --- Password Match Check while typing in Register Form ---
-if (registerConfirmPassword && registerPassword && passwordMatchError) {
-    registerConfirmPassword.addEventListener('input', () => {
-        if (registerPassword.value === registerConfirmPassword.value) {
-            passwordMatchError.style.display = 'none';
-        } else if (registerConfirmPassword.value !== '') { // Chỉ hiện lỗi nếu đã nhập gì đó
-            passwordMatchError.style.display = 'block';
+        console.log('Simulating registration for:', { username: formData.username, email: formData.email, phone: formData.phone });
+        // --- !!! BACKEND REQUIRED HERE for actual registration !!! ---
+        // Simulate success and immediate login
+        this.view.showAlert('Registration successful (simulation)! You are now logged in.');
+        this.model.login(formData.username); // Update model state
+        this.view.closeModal();
+        this._updateAuthStateUI(); // Update UI everywhere
+        this.view.resetForm(this.view.elements.registerForm);
+    }
+
+    // Handler passed to the view for password input events
+    handlePasswordMatchInput() {
+        // Get current values directly from view elements for real-time check
+        const password = this.view.elements.registerPassword ? this.view.elements.registerPassword.value : '';
+        const confirmPassword = this.view.elements.registerConfirmPassword ? this.view.elements.registerConfirmPassword.value : '';
+
+        // Only show error if confirm password field is not empty and passwords don't match
+        const showError = confirmPassword !== '' && password !== confirmPassword;
+        this.view.showPasswordMatchError(showError);
+    }
+
+    handleSocialLogin(provider) {
+        console.log(`Simulating Login with ${provider}...`);
+        // --- !!! BACKEND & OAuth/SDK REQUIRED HERE !!! ---
+        this.view.showAlert(`Simulating ${provider} Login. This requires server-side integration.`);
+        // Simulate success
+        this.model.login(`${provider} User`);
+        this.view.closeModal();
+        this._updateAuthStateUI(); // Update UI everywhere
+    }
+
+    handleLogout() {
+        console.log('Simulating logout...');
+        // --- !!! BACKEND REQUIRED HERE to invalidate session/token !!! ---
+        this.view.showAlert('Logged out (simulation)!');
+        this.model.logout(); // Update model state
+        this._updateAuthStateUI(); // Update UI everywhere
+        this.view.closeModal(); // Close any open auth modal
+        // Ensure mobile menu closes if the logout was triggered from there
+        if(this.view.isMobileMenuOpen()) {
+            this.view.toggleMobileMenu(false);
         }
-    });
-    // Kiểm tra lại khi thay đổi cả ô password gốc
-    registerPassword.addEventListener('input', () => {
-        if (registerConfirmPassword.value !== '' && registerPassword.value !== registerConfirmPassword.value) {
-            passwordMatchError.style.display = 'block';
-        } else {
-            passwordMatchError.style.display = 'none';
-        }
-    });
+    }
 }
 
 
-// --- Social Login Button Click Simulation (mới) ---
-if (loginGoogleBtn) {
-    loginGoogleBtn.addEventListener('click', () => {
-        console.log('Simulating Login with Google...');
-        // --- !!! BACKEND & Google OAuth REQUIRED HERE !!! ---
-        alert('Simulating Google Login. This requires server-side integration with Google OAuth.');
-        // Giả lập đăng nhập thành công
-        closeModal();
-        showLoggedInState('Google User'); // Hiển thị tên tạm
-    });
-}
-
-if (loginFacebookBtn) {
-    loginFacebookBtn.addEventListener('click', () => {
-        console.log('Simulating Login with Facebook...');
-        // --- !!! BACKEND & Facebook SDK/OAuth REQUIRED HERE !!! ---
-        alert('Simulating Facebook Login. This requires server-side integration with Facebook Login.');
-        // Giả lập đăng nhập thành công
-        closeModal();
-        showLoggedInState('Facebook User'); // Hiển thị tên tạm
-    });
-}
-
-
-// --- Logout Button Click ---
-if (logoutBtn) {
-    logoutBtn.addEventListener('click', () => {
-        console.log('Simulating logout from header');
-        // --- !!! BACKEND REQUIRED HERE để xóa session/token thực sự !!! ---
-        alert('Logged out (simulation)!');
-        showLoggedOutState(); // Cập nhật UI về trạng thái chưa đăng nhập
-    });
-}
-
-// --- Initial State Check ---
-// Đảm bảo trạng thái UI đúng khi trang vừa tải xong (mặc định là chưa đăng nhập)
+// --- Application Initialization ---
 document.addEventListener('DOMContentLoaded', () => {
-    showLoggedOutState();
-    // Trong ứng dụng thực tế, bạn có thể kiểm tra session/token ở đây
-    // để xác định trạng thái đăng nhập thực sự và gọi showLoggedInState nếu cần.
-    // Ví dụ: checkLoginStatusFromServer().then(user => { if(user) showLoggedInState(user.name); });
+    const appModel = new Model();
+    const appView = new View();
+    const appController = new Controller(appModel, appView);
+
+    appController.init(); // Start the application
 });
+
+// --- END OF REFACTORED script.js (OOP MVC) ---
