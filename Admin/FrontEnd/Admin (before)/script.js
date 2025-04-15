@@ -1,5 +1,5 @@
 
-// --- START OF (REVISED & COMPLETED) FILE script.js ---
+// --- START OF (REVISED & COMPLETED) FILE script_before.js ---
 
 document.addEventListener('DOMContentLoaded', () => {
 
